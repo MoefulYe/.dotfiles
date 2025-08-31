@@ -1,0 +1,7 @@
+{ config, lib, ... }:
+{
+  environment = {
+    variables = {
+    };
+  };
+}

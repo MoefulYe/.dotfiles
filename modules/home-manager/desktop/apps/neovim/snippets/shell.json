@@ -1,0 +1,16 @@
+{
+  "boilerplate": {
+    "prefix" : "boiler",
+    "body": [
+      "#!/usr/bin/env bash",
+      "set -eEuo pipefail",
+      "shopt -s failglob"
+    ]
+  },
+  "failglob": {
+    "prefix": "failglob",
+    "body": [
+      "shopt -s failglob"
+    ]
+  }
+}
