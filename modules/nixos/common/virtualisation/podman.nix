@@ -12,10 +12,12 @@
       podman = {
         enable = true;
         # Required for containers under podman-compose to be able to talk to each other.
-        dockerCompat = true;
+        # dockerCompat = true;
         defaultNetwork.settings.dns_enabled = true;
       };
     };
+    # virtualisation.docker.enable = true;
+    # users.users."ashenye".extraGroups = [ "docker" ];
 
     # Useful other development tools
     environment.systemPackages = with pkgs; [

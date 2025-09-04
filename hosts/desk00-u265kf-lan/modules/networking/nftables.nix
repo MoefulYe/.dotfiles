@@ -51,7 +51,7 @@ in
     nftables.enable = true;
     nftables.tables."sys-fw" = {
       enable = true;
-      family = "ip";
+      family = "inet";
       # 添加dns劫持
       content = ''
           set exposed-tcp-ports {
@@ -92,7 +92,7 @@ in
 
           chain rpfilter-allow {}
           chain mihomo-prerouting {
-            ip protocol { tcp, udp } socket transparent 1 meta mark set ${builtins.toString toBeTproxiedByMihomoMark} accept # 绕过已经建立的连接
+            meta l4proto { tcp, udp } socket transparent 1 meta mark set ${builtins.toString toBeTproxiedByMihomoMark} accept # 绕过已经建立的连接
             meta mark ${builtins.toString toBeTproxiedByMihomoMark} goto mihomo-tproxy                               # 已经打上default_mark标记的属于本机流量转过来的，直接进入透明代理
           	tcp dport @exposed-tcp-ports accept
         	 	udp dport @exposed-udp-ports accept
@@ -134,12 +134,12 @@ in
             tcp sport @exposed-tcp-ports accept                               
             udp sport @exposed-udp-ports accept
             ip daddr @private_addrs accept                           # 绕过目标地址为保留ip的地址
-            ip protocol { tcp, udp } meta mark set ${builtins.toString toBeTproxiedByMihomoMark} # 其他流量重路由到prerouting
+            meta l4proto { tcp, udp } meta mark set ${builtins.toString toBeTproxiedByMihomoMark} # 其他流量重路由到prerouting
           }
 
 
           chain mihomo-tproxy {
-            ip protocol { tcp, udp } tproxy to :${builtins.toString tproxyPort} meta mark set ${builtins.toString toBeTproxiedByMihomoMark} accept
+            meta l4proto {tcp, udp} tproxy to :${builtins.toString tproxyPort} meta mark set ${builtins.toString toBeTproxiedByMihomoMark} accept
           }
       '';
     };

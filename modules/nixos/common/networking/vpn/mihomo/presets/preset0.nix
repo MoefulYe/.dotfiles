@@ -159,7 +159,7 @@ let
       "DOMAIN-SUFFIX,claudeusercontent.com,AI"
       "GEOSITE,apple,universal"
       "GEOSITE,apple-cn,universal"
-      "GEOSITE,google,AI"
+      "GEOSITE,google,us"
       "GEOSITE,ehentai,universal"
       "GEOSITE,github,universal"
       "GEOSITE,twitter,universal"
@@ -174,7 +174,6 @@ let
       "GEOSITE,microsoft,universal"
       "GEOSITE,geolocation-!cn,universal"
       # quic "AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT"
-      "GEOIP,google,universal"
       "GEOIP,telegram,universal"
       "GEOIP,twitter,universal"
       "GEOSITE,CN,DIRECT"
@@ -192,7 +191,7 @@ mkMihomo {
     external-controller
     external-controller-secret
     ;
-  ipv6 = false;
+  ipv6 = true;
   allow-lan = true;
   inherit proxies proxy-groups rules;
   proxy-providers = proxy-providers';

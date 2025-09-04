@@ -45,6 +45,9 @@ in
       MIHOMO_LINUXDO = {
         sopsFile = ../../../../secrets/mihomo.yaml;
       };
+      MIHOMO_POKEMON = {
+        sopsFile = ../../../../secrets/mihomo.yaml;
+      };
       MIHOMO_WEB_UI_PASSWD = {
         sopsFile = ../../../../secrets/per-host/desk00-u265kf-lan/default.yaml;
       };
@@ -58,7 +61,8 @@ in
         ikuuu = secrets.MIHOMO_IKUUU;
         leiting = secrets.MIHOMO_LEITING;
         mojie = secrets.MIHOMO_MOJIE;
-        linuxdo = secrets.MIHOMO_LINUXDO;
+        pokemon = secrets.MIHOMO_POKEMON;
+        # linuxdo = secrets.MIHOMO_LINUXDO;
       };
       inherit zju-connect-cfg;
     };
