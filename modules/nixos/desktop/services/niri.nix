@@ -6,6 +6,7 @@
   ];
   programs.niri.enable = true;
   programs.sway.enable = true;
+  # programs.hyprland.enable = true;
   programs.xwayland.enable = true;
   programs.nautilus-open-any-terminal = {
     enable = true;
