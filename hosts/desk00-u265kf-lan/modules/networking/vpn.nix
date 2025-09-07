@@ -23,7 +23,7 @@ in
   };
   config = {
     networking.vpn.zju-connect = {
-      enable = true;
+      enable = false;
       socks5Port = 31080;
     };
     services.mihomo = {
