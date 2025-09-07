@@ -45,4 +45,8 @@
   config.networking.firewall = {
     allowedTCPPorts = [ 22 ];
   };
+  config.users.users."lab-guest" = {
+    isNormalUser = true;
+    createHome = true;
+  };
 }
