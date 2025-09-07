@@ -29,4 +29,8 @@
       # OfferToSaveLogins = false;
     };
   };
+  home.sessionVariables = {
+    # FIXME just work around for rdd hardware acceleration issue, fix it later
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+  };
 }
