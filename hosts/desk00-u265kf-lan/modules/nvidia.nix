@@ -12,9 +12,9 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       nvidia-vaapi-driver
-      vaapiVdpau
+      # vaapiVdpau
       libvdpau-va-gl
-      mesa
+      # mesa
       egl-wayland
     ];
   };
@@ -29,8 +29,9 @@
   environment.variables = {
     # GBM_BACKEND = "nvidia-drm"; # If crash in firefox, remove this line
     LIBVA_DRIVER_NAME = "nvidia"; # hardware acceleration
-    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     NVD_BACKEND = "direct";
+    GBM_BACKEND = "nvidia-drm";
   };
   hardware.nvidia = {
 
