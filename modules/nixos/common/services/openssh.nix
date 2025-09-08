@@ -11,5 +11,6 @@ in
       PubkeyAuthentication = "yes"; # Enable public key authentication
       ChallengeResponseAuthentication = "no"; # Disable challenge-response authentication
     };
+    ports = [ 2222 ];
   };
 }

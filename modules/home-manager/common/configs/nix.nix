@@ -1,11 +1,11 @@
 {
   config,
-  rootPath,
+  secretsPath,
   ...
 }:
 {
   sops.secrets.GITHUB_ACCESS_TOKEN = {
-    sopsFile = "${rootPath}/secrets/api-tokens.yaml";
+    sopsFile = "${secretsPath}/api-tokens.yaml";
   };
   sops.templates."nix.conf".content = ''
     access-tokens = github.com=${config.sops.placeholder.GITHUB_ACCESS_TOKEN}

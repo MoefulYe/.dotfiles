@@ -2,6 +2,7 @@
   inputs,
   lib,
   config,
+  rootPath,
   pkgs,
   ...
 }:

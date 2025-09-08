@@ -62,6 +62,8 @@
     }@inputs:
     let
       outputs = self;
+      rootPath = "${self}";
+      secretsPath = "${rootPath}/secrets";
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -78,8 +80,12 @@
       nixosConfigurations =
         let
           specialArgs = {
-            inherit inputs outputs;
-            rootPath = "${self}";
+            inherit
+              inputs
+              outputs
+              rootPath
+              secretsPath
+              ;
           };
         in
         {

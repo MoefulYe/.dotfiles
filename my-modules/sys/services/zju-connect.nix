@@ -1,15 +1,7 @@
-{
-  lib,
-  pkgs,
-  config,
-  secretsPath,
-  ...
-}:
-let
-  cfg = config.networking.vpn.zju-connect;
-in
-{
-  options.networking.vpn.zju-connect = {
+{ pkgs, lib, config, ... }: let
+  cfg = config.services.zju-connect;
+in {
+  options.services.zju-connect = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -22,20 +14,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      STU_ID = {
-        sopsFile = "${secretsPath}/zju.yaml";
-      };
-      STU_PASSWD = {
-        sopsFile = "${secretsPath}/zju.yaml";
-      };
-    };
-    sops.templates."zju-connect.toml".content = ''
-      username = "${config.sops.placeholder.STU_ID}"
-      password = "${config.sops.placeholder.STU_PASSWD}"
-      http_bind = ""
-      socks_bind = ":${toString cfg.socks5Port}"
-    '';
     systemd.services.zju-connect = {
       enable = cfg.enable;
       description = "ZJU Connect VPN Client";

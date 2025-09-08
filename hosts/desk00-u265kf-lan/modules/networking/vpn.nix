@@ -2,7 +2,7 @@
   lib,
   config,
   pkgs,
-  rootPath,
+  secretsPath,
   ...
 }:
 let
@@ -43,7 +43,7 @@ in
     };
     sops.secrets = {
       MIHOMO_WEB_UI_PASSWD = {
-        sopsFile = "${rootPath}/secrets/per-host/desk00-u265kf-lan/default.yaml";
+        sopsFile = "${secretsPath}/per-host/desk00-u265kf-lan/default.yaml";
       };
     }
     // (
@@ -51,7 +51,7 @@ in
       |> builtins.map (name: {
         inherit name;
         value = {
-          sopsFile = "${rootPath}/secrets/mihomo.yaml";
+          sopsFile = "${secretsPath}/mihomo.yaml";
         };
       })
       |> builtins.listToAttrs
