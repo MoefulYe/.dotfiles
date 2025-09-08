@@ -1,10 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, rootPath, ... }:
 {
   config = lib.mkIf config.userProfiles.enableZjuLabSsh {
     sops.secrets = {
       LAB_SERV_JUMP_TO_W3090 = {
         mode = "0400";
-        sopsFile = ../../../../../secrets/zju.yaml;
+        sopsFile = "${rootPath}/secrets/zju.yaml";
       };
     };
 

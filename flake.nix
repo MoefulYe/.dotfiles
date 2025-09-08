@@ -79,9 +79,7 @@
         let
           specialArgs = {
             inherit inputs outputs;
-            rootPath = ./.;
-            secretsPath = ./secrets;
-            modulesPath = ./modules;
+            rootPath = "${self}";
           };
         in
         {

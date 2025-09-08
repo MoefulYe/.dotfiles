@@ -1,10 +1,10 @@
-{ inputs, config, ... }:
+{ inputs, config, rootPath, ... }:
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
   ];
   sops = {
-    defaultSopsFile = ../../../../secrets/default.yaml;
+    defaultSopsFile = "${rootPath}/secrets/default.yaml";
     age = {
       generateKey = true;
       keyFile = "${config.home.homeDirectory}/.config/sops/age/key.txt";

@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  rootPath,
   ...
 }:
 let
@@ -23,10 +24,10 @@ in
   config = lib.mkIf cfg.enable {
     sops.secrets = {
       STU_ID = {
-        sopsFile = ../../../../../../secrets/zju.yaml;
+        sopsFile = "${rootPath}/secrets/zju.yaml";
       };
       STU_PASSWD = {
-        sopsFile = ../../../../../../secrets/zju.yaml;
+        sopsFile = "${rootPath}/secrets/zju.yaml";
       };
     };
     sops.templates."zju-connect.toml".content = ''

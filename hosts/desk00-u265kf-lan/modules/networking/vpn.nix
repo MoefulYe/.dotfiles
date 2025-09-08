@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  rootPath,
   ...
 }:
 let
@@ -9,6 +10,14 @@ let
   preset = import ../../../../modules/nixos/common/networking/vpn/mihomo/presets/preset0.nix;
   secrets = config.sops.placeholder;
   zju-connect-cfg = config.networking.vpn.zju-connect;
+  #  providers map yaml key
+  providers = [
+    "ikuuu"
+    "leiting"
+    "mojie"
+    # "linuxdo"
+    "pokemon"
+  ];
 in
 {
   options.networking.vpn.mihomo = {
@@ -33,37 +42,32 @@ in
       webui = pkgs.metacubexd;
     };
     sops.secrets = {
-      MIHOMO_IKUUU = {
-        sopsFile = ../../../../secrets/mihomo.yaml;
-      };
-      MIHOMO_LEITING = {
-        sopsFile = ../../../../secrets/mihomo.yaml;
-      };
-      MIHOMO_MOJIE = {
-        sopsFile = ../../../../secrets/mihomo.yaml;
-      };
-      MIHOMO_LINUXDO = {
-        sopsFile = ../../../../secrets/mihomo.yaml;
-      };
-      MIHOMO_POKEMON = {
-        sopsFile = ../../../../secrets/mihomo.yaml;
-      };
       MIHOMO_WEB_UI_PASSWD = {
-        sopsFile = ../../../../secrets/per-host/desk00-u265kf-lan/default.yaml;
+        sopsFile = "${rootPath}/secrets/per-host/desk00-u265kf-lan/default.yaml";
       };
-    };
+    }
+    // (
+      providers
+      |> builtins.map (name: {
+        inherit name;
+        value = {
+          sopsFile = "${rootPath}/secrets/mihomo.yaml";
+        };
+      })
+      |> builtins.listToAttrs
+    );
     sops.templates."mihomo.yaml".content = preset {
       inherit lib;
       tproxy-port = cfg.tproxyPort;
       routing-mark = cfg.mihomoMark;
       external-controller-secret = secrets.MIHOMO_WEB_UI_PASSWD;
-      proxy-providers = {
-        ikuuu = secrets.MIHOMO_IKUUU;
-        leiting = secrets.MIHOMO_LEITING;
-        mojie = secrets.MIHOMO_MOJIE;
-        pokemon = secrets.MIHOMO_POKEMON;
-        # linuxdo = secrets.MIHOMO_LINUXDO;
-      };
+      proxy-providers =
+        providers
+        |> builtins.map (name: {
+          inherit name;
+          value = secrets.${name};
+        })
+        |> builtins.listToAttrs;
       inherit zju-connect-cfg;
     };
   };
