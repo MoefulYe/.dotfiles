@@ -1,7 +1,7 @@
 #
 # This file defines overlays/custom modifications to upstream packages
 #
-{ inputs, outputs, ... }:
+{ outputs, ... }:
 let
   electronArgs = [
     "--ozone-platform-hint=auto"
@@ -10,9 +10,6 @@ let
   ];
 in
 {
-  # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs { pkgs = final; };
-
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
@@ -41,14 +38,5 @@ in
   };
   add-my-pkgs = final: prev: {
     my-pkgs = outputs.packages."${final.system}";
-  };
-
-  # When applied, the unstable nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
-      config.allowUnfree = true;
-    };
   };
 }

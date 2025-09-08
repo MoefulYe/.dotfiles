@@ -32,9 +32,20 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+      "https://devenv.cachix.org"
+    ];
+
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+    ];
   };
 
-  # https://nixos.wiki/wiki/flakes#Flake_schema
   outputs =
     {
       self,
@@ -46,58 +57,41 @@
       nix-index-database,
       disko,
       nur,
+      flake-utils,
       ...
     }@inputs:
-    let
-      inherit (self) outputs;
-      forAllSystems = nixpkgs.lib.genAttrs [
-        #"aarch64-linux"
-        #"i686-linux"
-        "x86_64-linux"
-        #"aarch64-darwin"
-        #"x86_64-darwin"
-      ];
-    in
-    {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
-      packages = forAllSystems (system: import ./pkgs { pkgs = nixpkgs.legacyPackages.${system}; });
-      overlays = import ./overlays { inherit inputs outputs; };
-      nixosConfigurations = {
-        lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            nur.modules.nixos.default
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            ./hosts/lap00-xiaoxin-mei
-          ];
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages."${system}";
+        outputs = self;
+      in
+      {
+        formatter = pkgs.nixfmt-rfc-style;
+        packages = import ./packages { inherit pkgs; };
+        overlays = import ./overlays { inherit inputs outputs; };
+        nixosConfigurations = {
+          lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs outputs; };
+            modules = [
+              nur.modules.nixos.default
+              home-manager.nixosModules.home-manager
+              sops-nix.nixosModules.sops
+              ./hosts/lap00-xiaoxin-mei
+            ];
+          };
+          desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs outputs; };
+            modules = [
+              nur.modules.nixos.default
+              home-manager.nixosModules.home-manager
+              sops-nix.nixosModules.sops
+              ./hosts/desk00-u265kf-lan
+            ];
+          };
         };
-        desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            nur.modules.nixos.default
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            ./hosts/desk00-u265kf-lan
-          ];
-        };
-      };
-    };
-  nixConfig = {
-    # will be appended to the system-level substituters
-    extra-substituters = [
-      # nix community's cache server
-      "https://nix-community.cachix.org"
-      "https://devenv.cachix.org"
-    ];
-
-    # will be appended to the system-level trusted-public-keys
-    extra-trusted-public-keys = [
-      # nix community's cache server public key
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-    ];
-  };
+      }
+    );
 }
