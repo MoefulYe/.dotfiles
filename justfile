@@ -20,10 +20,15 @@ gc:
     sudo nix-collect-garbage --delete-old
 
 # generate a new age key
+
 # sops default lookup path $XDG_CONFIG_HOME/sops/age/key.txt
 gen-age-key path:
     mkdir -p $(dirname {{ path }})
     nix-shell -p age --run 'age-keygen -o {{ path }}'
 
+# print host age-key
+get-host-age-key:
+    @sudo grep '^AGE-SECRET-KEY' /var/lib/sops-nix/key.txt
+
 fmt:
-  nix fmt **/*.nix
+    nix fmt **/*.nix

@@ -60,20 +60,34 @@
       flake-utils,
       ...
     }@inputs:
-    flake-utils.lib.eachDefaultSystem (
+    let
+      outputs = self;
+    in
+    (flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages."${system}";
-        outputs = self;
       in
       {
         formatter = pkgs.nixfmt-rfc-style;
         packages = import ./packages { inherit pkgs; };
-        overlays = import ./overlays { inherit inputs outputs; };
-        nixosConfigurations = {
+      }
+    ))
+    // {
+      overlays = import ./overlays { inherit inputs outputs; };
+      nixosConfigurations =
+        let
+          specialArgs = {
+            inherit inputs outputs;
+            rootPath = ./.;
+            secretsPath = ./secrets;
+            modulesPath = ./modules;
+          };
+        in
+        {
           lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
+            inherit specialArgs;
             system = "x86_64-linux";
-            specialArgs = { inherit inputs outputs; };
             modules = [
               nur.modules.nixos.default
               home-manager.nixosModules.home-manager
@@ -83,7 +97,7 @@
           };
           desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            specialArgs = { inherit inputs outputs; };
+            inherit specialArgs;
             modules = [
               nur.modules.nixos.default
               home-manager.nixosModules.home-manager
@@ -92,6 +106,5 @@
             ];
           };
         };
-      }
-    );
+    };
 }
