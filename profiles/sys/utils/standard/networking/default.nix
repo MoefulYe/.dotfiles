@@ -1,11 +1,12 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
-    inetutils
+    wget
+    curl
     tcpdump
     iproute2
     dig
-    curl
     nmap
+    mtr
+    iperf3
   ];
 }
