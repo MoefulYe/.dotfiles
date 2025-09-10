@@ -37,6 +37,6 @@ in
     });
   };
   add-my-pkgs = final: prev: {
-    my-pkgs = outputs.packages."${final.system}";
+    my-pkgs = self.packages."${final.system}";
   };
 }

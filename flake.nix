@@ -61,9 +61,20 @@
       ...
     }@inputs:
     let
-      outputs = self;
-      rootPath = "${self}";
-      secretsPath = "${rootPath}/secrets";
+      specialArgs = {
+        inherit inputs;
+        paths = rec {
+          root = "${self}";
+          secrets = "${root}/secrets";
+          myOsModules = "${root}/modules/os";
+          myHmModules = "${root}/modules/hm";
+          myPackages = "${root}/packages";
+          osProfiles = "${root}/profiles/os";
+          hmProfiles = "${root}/profiles/hm";
+          myOverlays = "${root}/overlays";
+          roles = "${root}/roles";
+        };
+      };
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -78,20 +89,10 @@
     // {
       overlays = import ./overlays { inherit inputs outputs; };
       nixosConfigurations =
-        let
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              rootPath
-              secretsPath
-              ;
-          };
-        in
         {
           lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               nur.modules.nixos.default
               home-manager.nixosModules.home-manager

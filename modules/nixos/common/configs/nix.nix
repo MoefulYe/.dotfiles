@@ -15,13 +15,13 @@ in
       allowUnfree = true;
       allowBroken = true;
     };
-    overlays = (builtins.attrValues outputs.overlays);
+    overlays = (builtins.attrValues self.overlays);
   };
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     channel.enable = false;
     extraOptions = ''
-      warn-dirty = false
+      warn-dirty = true
     '';
     settings = {
       auto-optimise-store = true;
