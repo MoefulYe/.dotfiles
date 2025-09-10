@@ -6,7 +6,6 @@
   pkgs,
   ...
 }:
-with lib;
 {
   config = {
     home-manager = {
@@ -20,3 +19,4 @@ with lib;
     };
   };
 }
+

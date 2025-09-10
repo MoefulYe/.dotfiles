@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  # MOVE to host
   boot.loader.grub = {
     enable = true;
     device = "nodev";

@@ -1,4 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   options.hostInfo = with lib; {
     hostname = mkOption {
       type = types.str;
@@ -8,7 +14,7 @@
     };
     tags = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
     };
     description = mkOption {
       type = types.str;
@@ -16,3 +22,4 @@
     };
   };
 }
+

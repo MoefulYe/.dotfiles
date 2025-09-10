@@ -14,6 +14,7 @@ in
 {
   programs.zsh.enable = true;
   users = {
+    # MOVE to host
     inherit defaultUserShell;
     users = {
       ${myusername} = {
