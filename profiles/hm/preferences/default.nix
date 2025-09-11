@@ -1,7 +1,6 @@
 {
   imports = [
-    ./dconf.nix
-    ./wayland.nix
+    ./programs.nix
     ./theme.nix
   ];
 }
