@@ -1,15 +1,6 @@
 {
   lib,
-  ipv6 ? false,
-  allow-lan ? false,
-  tproxy-port ? null,
-  mixed-port ? null,
-  routing-mark ? null,
-  interface-name ? null,
-  log-level ? "info",
-  bind-address ? "*",
-  external-controller ? null,
-  external-controller-secret ? null,
+  basic-config,
   proxies ? [ ],
   rules ? [ ],
   proxy-groups ? [ ],
@@ -17,10 +8,7 @@
   rule-providers ? [ ], # List<Map<ProviderName, ProviderAttrs>>
 }:
 let
-  boolToString = v: if v then "true" else "false";
-  intToString = builtins.toString;
   concat = builtins.concatStringsSep "";
-  optionalString = lib.optionalString;
   toYAML = lib.generators.toYAML { };
 in
 concat [
@@ -39,63 +27,8 @@ concat [
     #######################
     # mihomo basic config #
     #######################
-    mode: rule
-    ipv6: ${boolToString ipv6}
-    allow-lan: ${boolToString allow-lan}
-    log-level: ${log-level}
-    bind-address: "${bind-address}"
-    unified-delay: true
-    tcp-concurrent: true
-    profile:
-      store-selected: true
-      store-fake-ip: true
-
-    global-client-fingerprint: random
+    ${basic-config}
   ''
-  ''
-    geodata-mode: true
-    geox-url:
-      geoip: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
-      geosite: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
-      mmdb: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
-  ''
-  ''
-    ################################################
-    # sniffer config                               #
-    # ref: https://wiki.metacubex.one/config/sniff #
-    ################################################
-    sniffer:
-      enable: true
-      force-dns-mapping: false
-      parse-pure-ip: true
-      override-destination: false
-      sniff:
-        HTTP:
-          ports: [80, 8080-8880]
-          override-destination: true
-        TLS:
-          ports: [443, 8443]
-        QUIC:
-          ports: [443, 8443]
-  ''
-  (optionalString (tproxy-port != null) ''
-    tproxy-port: ${intToString tproxy-port}
-  '')
-  (optionalString (mixed-port != null) ''
-    mixed-port: ${intToString mixed-port}
-  '')
-  (optionalString (routing-mark != null) ''
-    routing-mark: ${intToString routing-mark}
-  '')
-  (optionalString (interface-name != null) ''
-    interface-name: ${interface-name}
-  '')
-  (optionalString (external-controller != null) ''
-    external-controller: ${external-controller}
-  '')
-  (optionalString (external-controller-secret != null) ''
-    secret: ${external-controller-secret}
-  '')
   (
     let
       yamls = builtins.attrValues (

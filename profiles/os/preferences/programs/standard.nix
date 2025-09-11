@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   users.defaultUserShell = pkgs.zsh;
   environment.variables = {
     EDITOR = "vim";
@@ -6,3 +7,4 @@
     PAGER = "less";
   };
 }
+

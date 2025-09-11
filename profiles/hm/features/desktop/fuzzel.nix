@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  systemProfiles,
   ...
 }:
 let
@@ -21,7 +20,7 @@ in
         inner-pad = 5;
         horizontal-pad = 13;
         show-actions = true;
-        terminal = systemProfiles.defaultApps.terminal.binname;
+        terminal = "kitty",
       };
 
       colors = {

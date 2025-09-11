@@ -1,5 +1,6 @@
+{ pkgs, ... }:
 {
-  imports = [
-    ./hardware
+  environment.systemPackages = with pkgs; [
+    gparted
   ];
 }

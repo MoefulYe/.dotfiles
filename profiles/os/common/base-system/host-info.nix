@@ -25,4 +25,5 @@
       default = null;
     };
   };
+  config.networking.hostName = config.hostInfo.hostname;
 }

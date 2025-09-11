@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    file-roller
+    nur.repos.ccicnce113424.wpsoffice-365
   ];
 }

@@ -1,6 +1,14 @@
-{ pkgs, lib, config, ... }: let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
   cfg = config.services.zju-connect;
-in {
+in
+{
+  # TODO improve scureity
   options.services.zju-connect = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -12,6 +20,10 @@ in {
       default = 31080;
       description = "SOCKS5 proxy port for ZJU Connect VPN.";
     };
+    configPath = lib.mkOption {
+      type = lib.types.path;
+      description = "config file for ZJU Connect";
+    };
   };
   config = lib.mkIf cfg.enable {
     systemd.services.zju-connect = {
@@ -21,12 +33,11 @@ in {
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config ${
-          config.sops.templates."zju-connect.toml".path
-        }";
+        ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config ${cfg.configPath}";
         Restart = "on-failure";
         RestartSec = "5s";
       };
     };
   };
 }
+

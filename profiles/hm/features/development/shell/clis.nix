@@ -1,8 +1,11 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    lsd
-    cloc
+    yazi
     fzf
+    cloc
+    lazygit
+    devenv
+    direnv
   ];
 }

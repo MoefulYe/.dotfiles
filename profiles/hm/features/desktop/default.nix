@@ -5,9 +5,11 @@
     ./swww
     ./waybar
     ./wlogout
+    ./clipboard.nix
+    ./file-manager.nix
     ./fuzzel.nix
-    ./nm-applet.nix
-    ./swaync.nix
     ./input-method.nix
+    ./swaync.nix
+    ./xdg.nix
   ];
 }

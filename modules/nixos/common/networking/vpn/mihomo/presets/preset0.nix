@@ -67,16 +67,6 @@ let
       additional-prefix = "[${name}] ";
     };
   }) proxy-providers;
-  proxy-provider-names = builtins.attrNames proxy-providers;
-  rule-providers' = builtins.mapAttrs (
-    name: value: with value; {
-      type = "http";
-      format = "yaml";
-      inherit url behavior;
-      path = "./rule-providers/${name}.yaml";
-      interval = 3600;
-    }
-  ) rule-providers;
   proxies = builtins.concatLists [
     (lib.lists.optionals zju.enable zju.proxies)
   ];
