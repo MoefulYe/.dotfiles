@@ -1,10 +1,4 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
   services.keyd = {
     enable = true;
     keyboards = {
@@ -24,7 +18,6 @@
         ids = [ "256c:0064:22ace4d0" ];
         settings = {
           main = {
-            # 映射到ctrl+0
             "f13" = "C-0";
             "f14" = "C-minus";
             "f15" = "C-equal";

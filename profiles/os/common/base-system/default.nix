@@ -4,6 +4,5 @@
     ./sysctl.nix
     ./bootloader.nix
     ./host-info.nix
-    ./default.nix
   ];
 }

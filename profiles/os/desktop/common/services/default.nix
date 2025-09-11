@@ -2,10 +2,10 @@
   imports = [
     ./audio.nix
     ./bluetooth.nix
+    ./dbus.nix
+    ./gnome-keyring.nix
     ./greetd.nix
     ./keyd.nix
-    ./xserver.nix
-    ./dbus.nix
     ./niri.nix
     ./polkit.nix
   ];

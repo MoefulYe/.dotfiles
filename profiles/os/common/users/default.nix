@@ -33,9 +33,14 @@ in
       cfg
       |> (attrsets.filterAttrs (_: profile: profile.hmEntry != null))
       |> (attrsets.mapAttrs (
-        _: profile:
+        username: profile:
         { lib, config, ... }:
         {
+          home = {
+            inherit (config.system) stateVersion;
+            inherit username;
+            homeDirectory = config.users.users."${username}".home;
+          };
           imports = [
             profile.hmEntry
           ];

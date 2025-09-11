@@ -20,6 +20,9 @@
       type = types.str;
       default = "";
     };
+    priUser = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
   };
 }
-

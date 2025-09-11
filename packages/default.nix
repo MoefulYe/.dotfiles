@@ -13,4 +13,6 @@
     hash = "sha256-3hS/mgfKweSP66JycLoxsa5I9Iojrn5gZWFAlFXnWfo=";
   };
   zju-connect = pkgs.callPackage ./zju-connect.nix { };
+  gnome-terminal = pkgs.callPackage ./gnome-terminal.nix { };
+  retro-crt = pkgs.callPackage ./retro-crt.nix { };
 }

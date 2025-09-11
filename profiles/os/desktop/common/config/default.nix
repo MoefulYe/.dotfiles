@@ -1,6 +1,6 @@
 {
   imports = [
-    ./fonts.nix
     ./xdg.nix
+    ./fonts.nix
   ];
 }
