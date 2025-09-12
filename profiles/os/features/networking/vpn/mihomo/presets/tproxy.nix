@@ -249,7 +249,7 @@ with lib;
       type = types.int;
     };
     zjuConnect = {
-      enable = mkEnableOption "enable zju connect";
+      enable = mkEnableOption "enable zju connect proxy";
       socks5Port = mkOption {
         type = types.int;
       };
@@ -268,7 +268,7 @@ with lib;
     };
     sops.secrets = {
       MIHOMO_WEB_UI_PASSWD = {
-        sopsFile = "${paths.secret}/per-host/${config.hostInfo.hostname}/default.yaml";
+        sopsFile = "${paths.secret}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";
       };
     }
     // (
@@ -281,16 +281,16 @@ with lib;
       })
       |> builtins.listToAttrs
     );
-  };
-  sops.templates."mihomo.yaml".content = mkConfig {
-    inherit
-      lib
-      basic-config
-      proxies
-      rules
-      proxy-groups
-      ;
-    proxy-providers = proxy-providers';
-    rule-providers = rule-providers';
+    sops.templates."mihomo.yaml".content = mkConfig {
+      inherit
+        lib
+        basic-config
+        proxies
+        rules
+        proxy-groups
+        ;
+      proxy-providers = proxy-providers';
+      rule-providers = rule-providers';
+    };
   };
 }

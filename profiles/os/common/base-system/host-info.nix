@@ -1,11 +1,9 @@
 {
-  pkgs,
   lib,
-  config,
   ...
 }:
 {
-  options.hostInfo = with lib; {
+  options.osProfiles.common.hostInfo = with lib; {
     hostname = mkOption {
       type = types.str;
     };
@@ -25,5 +23,4 @@
       default = null;
     };
   };
-  config.networking.hostName = config.hostInfo.hostname;
 }

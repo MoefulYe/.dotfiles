@@ -10,11 +10,6 @@ in
 {
   # TODO improve scureity
   options.services.zju-connect = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Enable ZJU Connect VPN.";
-    };
     socks5Port = lib.mkOption {
       type = lib.types.int;
       default = 31080;
@@ -27,7 +22,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     systemd.services.zju-connect = {
-      enable = cfg.enable;
+      enable = true;
       description = "ZJU Connect VPN Client";
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
@@ -40,4 +35,3 @@ in
     };
   };
 }
-

@@ -49,6 +49,7 @@ in
     };
   };
   config = {
+    networking.firewall.enable = false;
     systemd.network.networks."${cfg.networkdUnitName}" = {
       name = "lo";
       routes = [

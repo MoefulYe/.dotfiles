@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  bootloader = config.osProfiles.common.baseSystem.bootloader;
+  bootloader = config.osProfiles.common.bootloader;
 in
 {
-  options.osProfiles.common.baseSystem.bootloader =
+  options.osProfiles.common.bootloader =
     with lib;
     mkOption {
       type = types.enum [
@@ -16,5 +16,6 @@ in
   config.boot.loader = {
     grub.enable = bootloader == "grub";
     systemd-boot.enable = bootloader == "systemd-boot";
+    efi.canTouchEfiVariables = true;
   };
 }

@@ -1,7 +1,7 @@
 { lib, config, ... }:
 with lib;
 let
-  cfg = config.osProfiles.users;
+  cfg = config.osProfiles.common.users;
 in
 {
 
@@ -20,7 +20,7 @@ in
     default = { };
     description = "User information";
   };
-  options.osProfiles.users = types.attrsOf (
+  options.osProfiles.common.users = types.attrsOf (
     type.submodule {
       options = {
         inherit osConfig hmEntry userInfo;

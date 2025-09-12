@@ -13,10 +13,9 @@
       useUserPackages = true;
       extraSpecialArgs = {
         inherit paths inputs;
-        inherit (config) hostInfo;
+        inherit (config.osProfiles.common) hostInfo;
       };
       backupFileExtension = "bak";
     };
   };
 }
-

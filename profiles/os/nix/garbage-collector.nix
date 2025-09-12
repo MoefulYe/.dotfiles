@@ -1,5 +1,4 @@
 {
-  # TODO improve
   nix.gc = {
     automatic = true;
     persistent = true;
@@ -8,3 +7,4 @@
     randomizedDelaySec = "1h";
   };
 }
+

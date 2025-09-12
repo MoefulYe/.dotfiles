@@ -61,8 +61,9 @@
       ...
     }@inputs:
     let
+      inventory = import ./inventory;
       specialArgs = {
-        inherit inputs;
+        inherit inputs inventory;
         paths = rec {
           root = "${self}";
           secrets = "${root}/secrets";
@@ -76,6 +77,8 @@
           hmRoles = "${root}/roles/hm";
         };
       };
+      inherit (inventory) nixosHosts;
+      mkNixosConfigs = import ./helpers/mkNixosConfigs.nix;
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -88,28 +91,9 @@
       }
     ))
     // {
-      overlays = import ./overlays { inherit inputs outputs; };
-      nixosConfigurations = {
-        lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          inherit specialArgs;
-          modules = [
-            nur.modules.nixos.default
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            ./hosts/lap00-xiaoxin-mei
-          ];
-        };
-        desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          inherit specialArgs;
-          modules = [
-            nur.modules.nixos.default
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            ./hosts/desk00-u265kf-lan
-          ];
-        };
+      overlays = import ./overlays { inherit inputs self; };
+      nixosConfigurations = mkNixosConfigs {
+        inherit nixosHosts nixpkgs specialArgs;
       };
     };
 }
