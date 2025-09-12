@@ -1,6 +1,6 @@
 { config, paths, ... }:
 let
-  inherit (paths) osProfiles myOsModules;
+  inherit (paths) osProfiles osModules;
   zjuConnectSock5Port = 31080;
   proxyFwMark = 666;
   outbounds = [
@@ -13,7 +13,7 @@ in
   imports = [
     "${osProfiles}/features/networking/vpn/mihomo/presets/tproxy.nix"
     "${osProfiles}/features/networking/nftables/presets/tproxy.nix"
-    "${myOsModules}/services/zju-connect"
+    "${osModules}/services/zju-connect"
   ];
   config = {
     sops.secrets = {

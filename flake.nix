@@ -68,8 +68,8 @@
         paths = rec {
           root = "${self}";
           secrets = "${root}/secrets";
-          myOsModules = "${root}/modules/os";
-          myHmModules = "${root}/modules/hm";
+          osModules = "${root}/modules/os";
+          hmModules = "${root}/modules/hm";
           myPackages = "${root}/packages";
           osProfiles = "${root}/profiles/os";
           hmProfiles = "${root}/profiles/hm";
