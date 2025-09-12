@@ -14,6 +14,5 @@ in
     "${osProfiles}/quirks/fix-fn-keys.nix"
     "${osProfiles}/quirks/unsafe-libxml2-2.13.8.nix"
     "${osProfiles}/quirks/unsafe-openssl.nix"
-    "${osProfiles}/quirks/tmp.nix"
   ];
 }
