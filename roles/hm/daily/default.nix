@@ -6,6 +6,7 @@ in
   imports = [
     "${hmProfiles}/quirks/github-access-limits.nix"
     "${hmProfiles}/preferences"
+    "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/desktop"
     "${hmProfiles}/features/browsers/zen"
     "${hmProfiles}/features/communicating/cn.nix"
