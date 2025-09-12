@@ -72,7 +72,8 @@
           osProfiles = "${root}/profiles/os";
           hmProfiles = "${root}/profiles/hm";
           myOverlays = "${root}/overlays";
-          roles = "${root}/roles";
+          osRoles = "${root}/roles/os";
+          hmRoles = "${root}/roles/hm";
         };
       };
     in
@@ -88,28 +89,27 @@
     ))
     // {
       overlays = import ./overlays { inherit inputs outputs; };
-      nixosConfigurations =
-        {
-          lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            inherit specialArgs;
-            modules = [
-              nur.modules.nixos.default
-              home-manager.nixosModules.home-manager
-              sops-nix.nixosModules.sops
-              ./hosts/lap00-xiaoxin-mei
-            ];
-          };
-          desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            inherit specialArgs;
-            modules = [
-              nur.modules.nixos.default
-              home-manager.nixosModules.home-manager
-              sops-nix.nixosModules.sops
-              ./hosts/desk00-u265kf-lan
-            ];
-          };
+      nixosConfigurations = {
+        lap00-xiaoxin-mei = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          inherit specialArgs;
+          modules = [
+            nur.modules.nixos.default
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            ./hosts/lap00-xiaoxin-mei
+          ];
         };
+        desk00-u265kf-lan = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          inherit specialArgs;
+          modules = [
+            nur.modules.nixos.default
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            ./hosts/desk00-u265kf-lan
+          ];
+        };
+      };
     };
 }
