@@ -8,11 +8,11 @@
     };
   };
   lap00-xiaoxin-mei = {
-    nixosModuleEntry = ../../hosts/lap00-xiaoxin-mei;
+    nixosModuleEntry = ./nixos-module-entries/lap00-xiaoxin-mei;
     hostInfo = {
       system = "x86_64-linux";
       tags = [ "daily" ];
-      description = ./nixos-module-entries/lap00-xiaoxin-mei;
+      description = "daily used laptop";
     };
   };
 }
