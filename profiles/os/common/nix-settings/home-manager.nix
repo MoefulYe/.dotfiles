@@ -1,21 +1,21 @@
 {
   inputs,
-  lib,
   config,
   paths,
-  pkgs,
+  inventory,
   ...
 }:
 {
-  config = {
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      extraSpecialArgs = {
-        inherit paths inputs;
-        inherit (config.osProfiles.common) hostInfo;
-      };
-      backupFileExtension = "bak";
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+  ];
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = {
+      inherit paths inputs inventory;
+      inherit (config.osProfiles.common) hostInfo;
     };
+    backupFileExtension = "bak";
   };
 }

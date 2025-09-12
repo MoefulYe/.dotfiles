@@ -29,4 +29,5 @@
       };
     };
   };
+  osProfiles.common.hostInfo.priUser = "ashenye";
 }

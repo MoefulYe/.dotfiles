@@ -64,6 +64,7 @@
       inventory = import ./inventory;
       specialArgs = {
         inherit inputs inventory;
+        outputs = self;
         paths = rec {
           root = "${self}";
           secrets = "${root}/secrets";

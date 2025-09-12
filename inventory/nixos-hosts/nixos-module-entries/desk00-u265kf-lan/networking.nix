@@ -10,8 +10,8 @@ let
 in
 {
   imports = [
-    "${osProfiles}/features/networking/vpn/mihomo/presets/tproxy"
-    "${osProfiles}/features/networking/nftables/presets/tproxy"
+    "${osProfiles}/features/networking/vpn/mihomo/presets/tproxy.nix"
+    "${osProfiles}/features/networking/nftables/presets/tproxy.nix"
   ];
   config = {
     sops.secrets = {

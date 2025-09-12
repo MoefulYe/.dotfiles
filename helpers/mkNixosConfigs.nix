@@ -11,12 +11,14 @@ nixosHosts
   nixpkgs.lib.nixosSystem {
     system = hostInfo.system;
     inherit specialArgs;
-    modules = {
-      imports = [
-        nixosModuleEntry
-      ];
-      config.osProfiles.common.hostInfo.hostname = hostname;
-      config.networking.hostName = hostname;
-    };
+    modules = [
+      {
+        imports = [
+          nixosModuleEntry
+        ];
+        config.osProfiles.common.hostInfo.hostname = hostname;
+        config.networking.hostName = hostname;
+      }
+    ];
   }
 )

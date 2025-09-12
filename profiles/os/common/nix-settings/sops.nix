@@ -1,10 +1,12 @@
 {
-  pkgs,
   inputs,
   paths,
   ...
 }:
 {
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
   sops = {
     defaultSopsFile = "${paths.secrets}/default.yaml";
     age = {
@@ -13,4 +15,3 @@
     };
   };
 }
-

@@ -2,9 +2,6 @@
 with lib;
 let
   cfg = config.osProfiles.common.users;
-in
-{
-
   osConfig = mkOption {
     type = types.attrs;
     default = { };
@@ -20,13 +17,18 @@ in
     default = { };
     description = "User information";
   };
-  options.osProfiles.common.users = types.attrsOf (
-    type.submodule {
-      options = {
-        inherit osConfig hmEntry userInfo;
-      };
-    }
-  );
+in
+{
+
+  options.osProfiles.common.users = mkOption {
+    type = types.attrsOf (
+      types.submodule {
+        options = {
+          inherit osConfig hmEntry userInfo;
+        };
+      }
+    );
+  };
   config = {
     users.users = cfg |> (attrsets.mapAttrs (_: profile: profile.osConfig));
     home-manager.users =
@@ -36,11 +38,6 @@ in
         username: profile:
         { lib, config, ... }:
         {
-          home = {
-            inherit (config.system) stateVersion;
-            inherit username;
-            homeDirectory = config.users.users."${username}".home;
-          };
           imports = [
             profile.hmEntry
           ];
@@ -49,6 +46,11 @@ in
           };
           config = {
             inherit (profile) userInfo;
+            home = {
+              inherit (config.system) stateVersion;
+              inherit username;
+              homeDirectory = config.users.users."${username}".home;
+            };
           };
         }
       ));

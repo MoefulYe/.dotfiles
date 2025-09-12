@@ -1,14 +1,10 @@
 {
-  self,
-  pkgs,
-  config,
-  inputs,
   outputs,
   ...
 }:
 let
   stateVersion = "24.11";
-  overlays = (builtins.attrValues self.overlays);
+  overlays = (builtins.attrValues outputs.overlays);
 in
 {
   nixpkgs = {

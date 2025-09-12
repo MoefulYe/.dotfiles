@@ -20,7 +20,7 @@ in
         inner-pad = 5;
         horizontal-pad = 13;
         show-actions = true;
-        terminal = "kitty",
+        terminal = "kitty";
       };
 
       colors = {
