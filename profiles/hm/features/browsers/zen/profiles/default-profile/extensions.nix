@@ -52,6 +52,16 @@ let
       meta = { };
     }
   );
+  ublock-origin' = (
+    buildFirefoxXpiAddon {
+      pname = "video-speed-controller";
+      addonId = "{2f0b0183-07ed-4feb-8ac8-ce0538c6d6af}";
+      version = "2025-07-25";
+      url = "https://github.com/gorhill/uBlock/releases/download/1.65.1b8/uBlock0_1.65.1b8.firefox.signed.xpi";
+      sha256 = "GftZH4USfvEmkUUBgy1Tzv4l0MCNWBi023Jb68v/WIU=";
+      meta = { };
+    }
+  );
 in
 {
   packages = with pkgs.nur.repos.rycee.firefox-addons; [
@@ -70,8 +80,9 @@ in
     search-bookmark-history-tabs
     # ai
     chatgptbox
-    # 去广告
-    ublock-origin
+    # 去广告 FIXME 当前地区不可用？？？？
+    # ublock-origin
+    ublock-origin'
     # 隔离
     containerise
     user-agent-string-switcher
