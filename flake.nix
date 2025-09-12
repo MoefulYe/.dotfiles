@@ -76,6 +76,8 @@
           myOverlays = "${root}/overlays";
           osRoles = "${root}/roles/os";
           hmRoles = "${root}/roles/hm";
+          osQuirks = "${root}/quirks/os";
+          hmQuirks = "${root}/quirks/hm";
         };
       };
       inherit (inventory) nixosHosts;

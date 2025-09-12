@@ -7,15 +7,17 @@
 nixosHosts
 |> builtins.mapAttrs (
   hostname:
-  { nixosModuleEntry, hostInfo }:
+  {
+    mainModule,
+    extraModules ? [ ],
+    hostInfo,
+  }:
   nixpkgs.lib.nixosSystem {
     system = hostInfo.system;
     inherit specialArgs;
     modules = [
       {
-        imports = [
-          nixosModuleEntry
-        ];
+        imports = extraModules ++ [ mainModule ];
         config.osProfiles.common.hostInfo.hostname = hostname;
         config.networking.hostName = hostname;
       }
