@@ -11,7 +11,7 @@ in
 {
   imports = [
     "${osProfiles}/features/networking/vpn/mihomo/presets/tproxy.nix"
-    "${osProfiles}/features/networking/nftables/presets/tproxy.nix"
+    "${osProfiles}/features/networking/nftables/presets/tproxy-zju.nix"
     "${osModules}/services/zju-connect.nix"
   ];
   config = {
