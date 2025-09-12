@@ -10,9 +10,6 @@ let
   regionMatchRegs = keywordFilters.regionMatchRegs;
   otherRegionMatchReg = keywordFilters.otherRegionMatchReg;
   regions = keywordFilters.regions;
-  concat = builtins.concatStringsSep "";
-  toYAML = lib.generators.toYAML { };
-  intToString = builtins.toString;
   cfg = config.services.mihomo.presets.tproxy;
 
   basic-config = ''
@@ -21,8 +18,8 @@ let
         #######################
         mode: rule
         ipv6: false
-        tproxy-port: ${intToString cfg.tproxyPort}
-        routing-mark: ${intToString cfg.routingMark}
+        tproxy-port: ${builtins.toString cfg.tproxyPort}
+        routing-mark: ${builtins.toString cfg.routingMark}
         allow-lan: true
         log-level: ${cfg.logLevel}
         bind-address: "*"
@@ -136,12 +133,15 @@ let
   proxy-groups = builtins.concatLists [
     (lib.lists.optionals zju.enable zju.proxy-groups)
     # 按照区域匹配的代理组
-    (regionMatchRegs 
-      |> (builtins.mapAttrs (name: filter: {
-      inherit name filter;
-      type = "url-test";
-      use = proxy-providers;
-      }) 
+    (
+      regionMatchRegs
+      |> (builtins.mapAttrs (
+        name: filter: {
+          inherit name filter;
+          type = "url-test";
+          use = proxy-providers;
+        }
+      ))
       |> builtins.attrValues
     )
     # 其他地区的代理组
@@ -283,29 +283,14 @@ with lib;
     );
   };
   sops.templates."mihomo.yaml".content = mkConfig {
-    inherit basic-config;
-    proxy-providers =
-      providers
-      |> (name: {
-        inherit name;
-        value = {
-          type = "http";
-          interval = 3600;
-          health-check = {
-            enable = true;
-            url = "https://cp.cloudflare.com";
-            interval = 300;
-            timeout = 1000;
-            tolerance = 100;
-          };
-          path = "./proxy-providers/${name}.yaml";
-          url = config.sops.placeholder."${name}";
-          override = {
-            udp = true;
-            additional-prefix = "[${name}] ";
-          };
-        };
-      })
-      |> builtins.listToAttrs;
+    inherit
+      lib
+      basic-config
+      proxies
+      rules
+      proxy-groups
+      ;
+    proxy-providers = proxy-providers';
+    rule-providers = rule-providers';
   };
 }

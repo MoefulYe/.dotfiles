@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  imports = [
+    ./yazi.nix
+  ];
   home.packages = with pkgs; [
     yazi
     fzf
@@ -7,5 +10,6 @@
     lazygit
     devenv
     direnv
+    lsd
   ];
 }

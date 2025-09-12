@@ -1,4 +1,4 @@
-# 抄自: https://evine.win/p/%E6%88%91%E7%9A%84%E5%AE%B6%E5%BA%AD%E7%BD%91%E7%BB%9C%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF%E5%BC%80%E5%90%AFdebian%E7%9A%84%E6%97%81%E8%B7%AF%E7%94%B1%E4%B9%8B%E8%B7%AF%E5%9B%9B/#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99
+# 抄自: https://evine.win/p/我的家庭网络设计思路开启debian的旁路由之路四
 {
   pkgs,
   lib,

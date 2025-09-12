@@ -1,6 +1,0 @@
-{
-  imports = [
-    ./mihomo
-    ./zju-connect
-  ];
-}
