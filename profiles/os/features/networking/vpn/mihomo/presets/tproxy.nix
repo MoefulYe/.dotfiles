@@ -2,6 +2,7 @@
   lib,
   paths,
   config,
+  pkgs,
   ...
 }:
 let
@@ -26,7 +27,7 @@ let
         unified-delay: true
         tcp-concurrent: true
         external-controller: ":9090"
-        secret: ${config.sops.placeholder.secret}
+        secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
         profile:
           store-selected: true
           store-fake-ip: true
@@ -60,29 +61,26 @@ let
     "mojie"
     "pokemon"
   ];
-  proxy-providers' =
-    proxy-providers
-    |> (name: {
-      inherit name;
-      value = {
-        type = "http";
-        interval = 3600;
-        health-check = {
-          enable = true;
-          url = "https://cp.cloudflare.com";
-          interval = 300;
-          timeout = 1000;
-          tolerance = 100;
-        };
-        path = "./proxy-providers/${name}.yaml";
-        url = config.sops.placeholder."${name}";
-        override = {
-          udp = true;
-          additional-prefix = "[${name}] ";
-        };
+  proxy-providers' = lib.attrsets.genAttrs proxy-providers (name: {
+    inherit name;
+    value = {
+      type = "http";
+      interval = 3600;
+      health-check = {
+        enable = true;
+        url = "https://cp.cloudflare.com";
+        interval = 300;
+        timeout = 1000;
+        tolerance = 100;
       };
-    })
-    |> builtins.listToAttrs;
+      path = "./proxy-providers/${name}.yaml";
+      url = config.sops.placeholder."${name}";
+      override = {
+        udp = true;
+        additional-prefix = "[${name}] ";
+      };
+    };
+  });
   zju = {
     enable = cfg.zjuConnect.enable;
     proxies = [
@@ -268,7 +266,7 @@ with lib;
     };
     sops.secrets = {
       MIHOMO_WEB_UI_PASSWD = {
-        sopsFile = "${paths.secret}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";
+        sopsFile = "${paths.secrets}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";
       };
     }
     // (
@@ -276,7 +274,7 @@ with lib;
       |> builtins.map (name: {
         inherit name;
         value = {
-          sopsFile = "${paths.secret}/mihomo.yaml";
+          sopsFile = "${paths.secrets}/mihomo.yaml";
         };
       })
       |> builtins.listToAttrs

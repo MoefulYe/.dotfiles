@@ -1,10 +1,10 @@
 { paths, ... }:
 let
-  inherit (paths) hmProfiles;
+  inherit (paths) hmProfiles hmQuirks;
 in
 {
   imports = [
-    "${hmProfiles}/quirks/github-access-limits.nix"
+    "${hmQuirks}/github-access-limits.nix"
     "${hmProfiles}/preferences"
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/desktop"

@@ -1,11 +1,9 @@
 {
   pkgs,
   config,
-  systemProfiles,
   lib,
   ...
 }:
-with systemProfiles.defaultApps;
 {
   xdg.configFile."niri/config.kdl".text = ''
     // This config is in the KDL format: https://kdl.dev
@@ -360,14 +358,14 @@ with systemProfiles.defaultApps;
         Mod+Shift+Slash { show-hotkey-overlay; }
 
         // Suggested binds for running programs: terminal, app launcher, screen locker.
-        Mod+Return { spawn "${terminal.binname}"; }
-        Mod+E { spawn "${terminal.binname}" "${file-manager.binname}"; }
+        Mod+Return { spawn "kitty"; }
+        Mod+E { spawn "kitty" "yazi"; }
         Mod+Space { spawn "fuzzel"; }
         Mod+Backspace { spawn "sh" "-c" "swaylock && niri msg action power-off-monitors"; }
         Mod+Delete { spawn "wlogout"; }
-        Mod+F1 { spawn "${browser.binname}"; }
-        Mod+F2 { spawn "${lib.getExe pkgs.nautilus}"; }
-        Mod+F3 { spawn "${terminal.binname}" "${editor.binname}"; }
+        Mod+F1 { spawn "zen"; }
+        Mod+F2 { spawn "nautilus"; }
+        Mod+F3 { spawn "kitty" "nvim"; }
         Mod+F11 { spawn "bash" "-c" "bash ~/.config/niri/scripts/toggle_swayidle.sh"; }
         Mod+F12 { spawn "bash" "-c" "bash ~/.config/niri/scripts/change_wallpaper.sh"; }
         Mod+Escape { toggle-overview; }

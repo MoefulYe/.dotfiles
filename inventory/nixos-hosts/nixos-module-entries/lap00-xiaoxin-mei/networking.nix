@@ -21,7 +21,7 @@ in
         mode = "0400";
         sopsFile = "${paths.secrets}/zju.yaml";
       };
-      STD_PASSWD = {
+      STU_PASSWD = {
         mode = "0400";
         sopsFile = "${paths.secrets}/zju.yaml";
       };

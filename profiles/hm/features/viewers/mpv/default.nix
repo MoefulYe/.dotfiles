@@ -37,10 +37,10 @@
       recursive = true;
     };
     "mpv/input.conf".source = ./input.conf;
-    "mpv/shaders/retro-crt.conf".text = import ./shaders/retro-crt/profiles.nix {
+    "mpv/shaders/retro-crt.conf".text = import ./shaders/retro-crt.nix {
       inherit (pkgs.my-pkgs) retro-crt;
     };
-    "mpv/shaders/anime4k.conf".text = import ./shaders/anime4k/profiles.nix {
+    "mpv/shaders/anime4k.conf".text = import ./shaders/anime4k.nix {
       inherit (pkgs) anime4k;
     };
   };
