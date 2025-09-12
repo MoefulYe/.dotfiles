@@ -24,9 +24,6 @@ concat [
     #  - https://clash-meta.gitbook.io/clash.meta-wiki-older
   ''
   ''
-    #######################
-    # mihomo basic config #
-    #######################
     ${basic-config}
   ''
   (

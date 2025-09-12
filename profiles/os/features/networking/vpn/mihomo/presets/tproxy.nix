@@ -14,46 +14,39 @@ let
   cfg = config.services.mihomo.presets.tproxy;
 
   basic-config = ''
-        #######################
-        # mihomo basic config #
-        #######################
-        mode: rule
-        ipv6: false
-        tproxy-port: ${builtins.toString cfg.tproxyPort}
-        routing-mark: ${builtins.toString cfg.routingMark}
-        allow-lan: true
-        log-level: ${cfg.logLevel}
-        bind-address: "*"
-        unified-delay: true
-        tcp-concurrent: true
-        external-controller: ":9090"
-        secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
-        profile:
-          store-selected: true
-          store-fake-ip: true
-        global-client-fingerprint: random
-        geodata-mode: true
-        geox-url:
-          geoip: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
-          geosite: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
-          mmdb: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
-        ################################################
-        # sniffer config                               #
-        # ref: https://wiki.metacubex.one/config/sniff #
-        ################################################
-        sniffer:
-          enable: true
-          force-dns-mapping: false
-          parse-pure-ip: true
-          override-destination: false
-          sniff:
-            HTTP:
-    ports: [80, 8080-8880]
-              override-destination: true
-            TLS:
-              ports: [443, 8443]
-            QUIC:
-              ports: [443, 8443]
+    mode: rule
+    ipv6: false
+    tproxy-port: ${builtins.toString cfg.tproxyPort}
+    routing-mark: ${builtins.toString cfg.routingMark}
+    allow-lan: true
+    log-level: ${cfg.logLevel}
+    bind-address: "*"
+    unified-delay: true
+    tcp-concurrent: true
+    external-controller: ":9090"
+    secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
+    profile:
+      store-selected: true
+      store-fake-ip: true
+    global-client-fingerprint: random
+    geodata-mode: true
+    geox-url:
+      geoip: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+      geosite: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+      mmdb: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
+    sniffer:
+      enable: true
+      force-dns-mapping: false
+      parse-pure-ip: true
+      override-destination: false
+      sniff:
+        HTTP:
+          ports: [80, 8080-8880]
+          override-destination: true
+        TLS:
+          ports: [443, 8443]
+        QUIC:
+          ports: [443, 8443]
   '';
   proxy-providers = [
     "ikuuu"
@@ -62,23 +55,20 @@ let
     "pokemon"
   ];
   proxy-providers' = lib.attrsets.genAttrs proxy-providers (name: {
-    inherit name;
-    value = {
-      type = "http";
-      interval = 3600;
-      health-check = {
-        enable = true;
-        url = "https://cp.cloudflare.com";
-        interval = 300;
-        timeout = 1000;
-        tolerance = 100;
-      };
-      path = "./proxy-providers/${name}.yaml";
-      url = config.sops.placeholder."${name}";
-      override = {
-        udp = true;
-        additional-prefix = "[${name}] ";
-      };
+    type = "http";
+    interval = 3600;
+    health-check = {
+      enable = true;
+      url = "https://cp.cloudflare.com";
+      interval = 300;
+      timeout = 1000;
+      tolerance = 100;
+    };
+    path = "./proxy-providers/${name}.yaml";
+    url = config.sops.placeholder."${name}";
+    override = {
+      udp = true;
+      additional-prefix = "[${name}] ";
     };
   });
   zju = {

@@ -1,6 +1,6 @@
 { config, paths, ... }:
 let
-  inherit (paths) osProfiles myOsModules;
+  inherit (paths) osProfiles;
   proxyFwMark = 666;
   outbounds = [
     "enp131s0"
@@ -14,6 +14,8 @@ in
     "${osProfiles}/features/networking/nftables/presets/tproxy.nix"
   ];
   config = {
+    networking.interfaces.wlp128s20f3.useDHCP = false;
+    networking.interfaces.enp131s0.useDHCP = true;
     networking.nftables.presets.tproxy = {
       inherit tproxyPort proxyFwMark outbounds;
     };
