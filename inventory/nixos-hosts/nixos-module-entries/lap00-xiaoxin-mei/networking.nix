@@ -4,8 +4,7 @@ let
   zjuConnectSock5Port = 31080;
   proxyFwMark = 666;
   outbounds = [
-    # TODO change it
-    1
+    "wlp2s0"
   ];
   tproxyPort = 7895;
 in
@@ -13,7 +12,7 @@ in
   imports = [
     "${osProfiles}/features/networking/vpn/mihomo/presets/tproxy.nix"
     "${osProfiles}/features/networking/nftables/presets/tproxy.nix"
-    "${osModules}/services/zju-connect"
+    "${osModules}/services/zju-connect.nix"
   ];
   config = {
     sops.secrets = {
@@ -34,7 +33,7 @@ in
     '';
     services.zju-connect = {
       socks5Port = zjuConnectSock5Port;
-      configPath = config.templates."zju-connect.toml".path;
+      configPath = config.sops.templates."zju-connect.toml".path;
     };
     networking.nftables.presets.tproxy = {
       inherit tproxyPort proxyFwMark outbounds;

@@ -2,6 +2,7 @@ default:
     just --list
 
 deploy:
+    export BAKUP_EXT=backup-$(date +%Y%m%d-%H%M%S)
     sudo nixos-rebuild switch
 
 update-flake:

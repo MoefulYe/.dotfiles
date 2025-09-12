@@ -16,6 +16,6 @@
       inherit paths inputs inventory;
       inherit (config.osProfiles.common) hostInfo;
     };
-    backupFileExtension = "bak";
+    backupFileExtension = builtins.getEnv "BAKUP_EXT";
   };
 }

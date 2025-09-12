@@ -20,7 +20,7 @@ in
       description = "config file for ZJU Connect";
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = {
     systemd.services.zju-connect = {
       enable = true;
       description = "ZJU Connect VPN Client";
