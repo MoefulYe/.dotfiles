@@ -3,6 +3,7 @@
   config,
   paths,
   inventory,
+  pkgs,
   ...
 }:
 {
@@ -16,6 +17,8 @@
       inherit paths inputs inventory;
       inherit (config.osProfiles.common) hostInfo;
     };
-    backupFileExtension = builtins.getEnv "BAKUP_EXT";
-  };
+    backupFileExtension = "bakup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {
+          env.when = inputs.self.sourceInfo.lastModified;
+        } "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+};
 }

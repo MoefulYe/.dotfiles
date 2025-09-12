@@ -14,9 +14,4 @@ in
     ./users
     ./networking.nix
   ];
-  # FIXME
-  nixpkgs.config.permittedInsecurePackages = [
-    "openssl-1.1.1w"
-    "libxml2-2.13.8"
-  ];
 }

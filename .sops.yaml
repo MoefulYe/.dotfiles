@@ -3,7 +3,7 @@ keys:
       - &lap00-xiaoxin-mei age1jycrhjpfpw2n9rszq6056zqt3552pr38d3vz2mk8udetglrk0pfqhfhtnx
       - &desk00-u265kf-lan age1xdlmmj7gvvmvpl7n28yv6l9zsrrlazyunesyrzhzy37n59zexepsp4gpxn
   - users:
-      - &ashenye-lap00-xiaoxin-mei age1tq709kc2hfq7l6g36gc95lzrl0qlhr90rpu8gyllu2k6mmldcvtq6x7xmq
+      - &ashenye-lap00-xiaoxin-mei age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc
       - &ashenye-desk00-u265kf-lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
