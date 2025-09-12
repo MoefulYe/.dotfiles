@@ -272,7 +272,7 @@ with lib;
       };
     }
     // (
-      providers
+      proxy-providers
       |> builtins.map (name: {
         inherit name;
         value = {

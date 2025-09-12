@@ -58,7 +58,7 @@ in
   };
   xdg.mimeApps = rec {
     enable = true;
-    addedAssociations = defaultApplications;
+    associations.added = defaultApplications;
     defaultApplications = {
       "inode/directory" = preferences.file-manager.desktopEntry;
       "x-scheme-handler/http" = preferences.browser.desktopEntry;

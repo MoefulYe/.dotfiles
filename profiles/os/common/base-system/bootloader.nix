@@ -16,6 +16,6 @@ in
   config.boot.loader = {
     grub.enable = bootloader == "grub";
     systemd-boot.enable = bootloader == "systemd-boot";
-    efi.canTouchEfiVariables = true;
+    #efi.canTouchEfiVariables = true;
   };
 }

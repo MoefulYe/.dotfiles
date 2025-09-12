@@ -32,6 +32,9 @@ in
   config = {
     users.users = cfg |> (attrsets.mapAttrs (_: profile: profile.osConfig));
     home-manager.users =
+      let
+        sysCfg = config;
+      in
       cfg
       |> (attrsets.filterAttrs (_: profile: profile.hmEntry != null))
       |> (attrsets.mapAttrs (
@@ -47,9 +50,9 @@ in
           config = {
             inherit (profile) userInfo;
             home = {
-              inherit (config.system) stateVersion;
+              inherit (sysCfg.system) stateVersion;
               inherit username;
-              homeDirectory = config.users.users."${username}".home;
+              homeDirectory = sysCfg.users.users."${username}".home;
             };
           };
         }

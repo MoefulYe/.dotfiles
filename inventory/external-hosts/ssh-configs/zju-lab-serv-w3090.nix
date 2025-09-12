@@ -23,6 +23,6 @@
       ProxyJump jump-to-lab-serv-w3090
   '';
   programs.ssh.includes = [
-    config.sops.templates."zju-lab.conf".path
+    config.sops.templates."zju-lab-serv-w3090.conf".path
   ];
 }
