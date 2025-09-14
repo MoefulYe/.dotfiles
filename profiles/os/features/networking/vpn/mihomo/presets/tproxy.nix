@@ -49,10 +49,11 @@ let
           ports: [443, 8443]
   '';
   proxy-providers = [
-    "ikuuu"
+    # "ikuuu"
     "leiting"
     "mojie"
-    "pokemon"
+    "av1"
+    # "pokemon"
   ];
   proxy-providers' = lib.attrsets.genAttrs proxy-providers (name: {
     type = "http";
@@ -203,7 +204,7 @@ let
       "DOMAIN-SUFFIX,claudeusercontent.com,AI"
       "GEOSITE,apple,universal"
       "GEOSITE,apple-cn,universal"
-      "GEOSITE,google,us"
+      "GEOSITE,google,universal"
       "GEOSITE,ehentai,universal"
       "GEOSITE,github,universal"
       "GEOSITE,twitter,universal"
