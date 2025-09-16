@@ -4,9 +4,9 @@
   services.printing.drivers = [
     pkgs.hplip
   ];
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
+  # services.avahi = {
+  #   enable = true;
+  #   nssmdns4 = true;
+  #   openFirewall = true;
+  # };
 }
