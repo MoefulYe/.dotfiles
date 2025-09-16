@@ -179,6 +179,18 @@ let
         ]
         ++ regions;
       }
+      {
+        name = "AI";
+        type = "select";
+        proxies = [
+          "auto-fast"
+          "manual"
+          "all"
+          "other-region"
+          "DIRECT"
+        ]
+        ++ regions;
+      }
     ]
     [
       {
