@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    wechat
     qq
-    # wechat
     wemeet
     nur.repos.xddxdd.dingtalk
   ];

@@ -1,7 +1,7 @@
 #
 # This file defines overlays/custom modifications to upstream packages
 #
-{ self, ... }:
+{ self, inputs, ... }:
 {
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
@@ -44,5 +44,6 @@
     );
   add-my-pkgs = final: prev: {
     my-pkgs = self.packages."${final.system}";
+    pkgs-25-05 = inputs.nixpkgs-25-05.legacyPackages."${final.system}";
   };
 }

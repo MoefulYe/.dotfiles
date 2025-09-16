@@ -2,6 +2,7 @@
   description = "just dotfiles";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.05";
@@ -50,13 +51,6 @@
     {
       self,
       nixpkgs,
-      home-manager,
-      nixos-hardware,
-      sops-nix,
-      stylix,
-      nix-index-database,
-      disko,
-      nur,
       flake-utils,
       ...
     }@inputs:
