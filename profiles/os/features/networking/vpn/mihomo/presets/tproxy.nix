@@ -158,6 +158,7 @@ let
       {
         name = "GOOGLE";
         type = "select";
+        use = proxy-providers;
         proxies = [
           "auto-fast"
           "manual"
@@ -166,10 +167,12 @@ let
           "DIRECT"
         ]
         ++ regions;
+
       }
       {
         name = "GITHUB";
         type = "select";
+        use = proxy-providers;
         proxies = [
           "auto-fast"
           "manual"
@@ -182,6 +185,7 @@ let
       {
         name = "AI";
         type = "select";
+        use = proxy-providers;
         proxies = [
           "auto-fast"
           "manual"
