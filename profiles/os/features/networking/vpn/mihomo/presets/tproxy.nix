@@ -123,25 +123,64 @@ let
     (lib.lists.optionals zju.enable zju.proxy-groups)
     # 按照区域匹配的代理组
     (
-      regionMatchRegs
-      |> (builtins.mapAttrs (
-        name: filter: {
-          inherit name filter;
+      (
+        regionMatchRegs
+        |> (builtins.mapAttrs (
+          name: filter: {
+            inherit name filter;
+            type = "url-test";
+            use = proxy-providers;
+          }
+        ))
+        |> builtins.attrValues
+      )
+      ++ [
+        # 其他地区的代理组
+        {
+          name = "other-region";
           type = "url-test";
           use = proxy-providers;
+          filter = otherRegionMatchReg;
         }
-      ))
-      |> builtins.attrValues
+      ]
     )
-    # 其他地区的代理组
+    # 规则特定的代理组
     [
-      # 其他地区的代理组
       {
-        name = "other-region";
-        type = "url-test";
-        use = proxy-providers;
-        filter = otherRegionMatchReg;
+        name = "ad-block";
+        type = "select";
+        proxies = [
+          "REJECT"
+          "DIRECT"
+          "manual"
+        ];
       }
+      {
+        name = "GOOGLE";
+        type = "select";
+        proxies = [
+          "auto-fast"
+          "manual"
+          "all"
+          "other-region"
+          "DIRECT"
+        ]
+        ++ regions;
+      }
+      {
+        name = "GITHUB";
+        type = "select";
+        proxies = [
+          "auto-fast"
+          "manual"
+          "all"
+          "other-region"
+          "DIRECT"
+        ]
+        ++ regions;
+      }
+    ]
+    [
       {
         name = "all";
         type = "url-test";
@@ -161,20 +200,6 @@ let
           "auto-fast"
           "DIRECT"
         ];
-      }
-      {
-        name = "ad-block";
-        type = "select";
-        proxies = [
-          "REJECT"
-          "DIRECT"
-          "manual"
-        ];
-      }
-      {
-        name = "AI";
-        type = "url-test";
-        proxies = builtins.filter (region: region != "hk") regions;
       }
       {
         name = "universal";
@@ -204,9 +229,9 @@ let
       "DOMAIN-SUFFIX,claudeusercontent.com,AI"
       "GEOSITE,apple,universal"
       "GEOSITE,apple-cn,universal"
-      "GEOSITE,google,universal"
+      "GEOSITE,google,GOOGLE"
       "GEOSITE,ehentai,universal"
-      "GEOSITE,github,universal"
+      "GEOSITE,github,GITHUB"
       "GEOSITE,twitter,universal"
       "GEOSITE,youtube,universal"
       "GEOSITE,telegram,universal"
