@@ -9,7 +9,7 @@ in
     "${osProfiles}/features/development/wireshark.nix"
     "${osProfiles}/features/virtualisation/podman.nix"
     "${osProfiles}/hardware/gaomon.nix"
-    "${osProfiles}/features/printing.nix"
+    "${osProfiles}/hardware/network-printers.nix"
     "${osProfiles}/nix/nix-index.nix"
   ];
 }
