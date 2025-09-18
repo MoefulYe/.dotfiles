@@ -260,10 +260,12 @@
     // Note that running niri as a session supports xdg-desktop-autostart,
     // which may be more convenient to use.
     // See the binds section below for more spawn examples.
-    spawn-at-startup "${pkgs.waybar}/bin/waybar"
-    spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
+    // FIXME 解决waybar启动的竞争问题?
+    // spawn-at-startup "${pkgs.waybar}/bin/waybar"
+    // FIXME 移除了xwayland-satellite有影响吗?
+    // spawn-at-startup "${pkgs.xwayland-satellite}/bin/xwayland-satellite"
     environment {
-    DISPLAY ":0"
+      DISPLAY ":0"
     }
     // Uncomment this line to ask the clients to omit their client-side decorations if possible.
     // If the client will specifically ask for CSD, the request will be honored.

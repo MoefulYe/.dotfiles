@@ -6,6 +6,9 @@
   programs.waybar = {
     enable = true;
     style = lib.mkForce ./waybar.css;
+    systemd = {
+      enable = true;
+    };
     settings = {
       mainbar = {
         layer = "top";

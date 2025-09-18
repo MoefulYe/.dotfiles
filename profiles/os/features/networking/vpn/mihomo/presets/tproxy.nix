@@ -37,7 +37,7 @@ let
     sniffer:
       enable: true
       force-dns-mapping: false
-      parse-pure-ip: true
+      parse-pure-ip: false
       override-destination: false
       sniff:
         HTTP:
@@ -259,6 +259,9 @@ let
       "GEOSITE,onedrive,universal"
       "GEOSITE,microsoft,universal"
       "GEOSITE,geolocation-!cn,universal"
+      # "DOMAIN-SUFFIX,bing.com,DIRECT"
+      "DOMAIN-SUFFIX,gstatic.com,GOOGLE"
+      "DOMAIN-SUFFIX,googleapis.com,GOOGLE"
       # quic "AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT"
       "GEOIP,telegram,universal"
       "GEOIP,twitter,universal"
