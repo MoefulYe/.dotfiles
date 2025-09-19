@@ -3,7 +3,7 @@
   ...
 }:
 let
-  stateVersion = "24.11";
+  stateVersion = "25.05";
   overlays = (builtins.attrValues outputs.overlays);
 in
 {
