@@ -17,10 +17,10 @@ in
         timeout = 300;
         command = "${lib.getExe pkgs.swaylock} -fF";
       }
-      {
-        timeout = 360;
-        command = "${pkgs.systemd}/bin/systemctl suspend";
-      }
+      # {
+      #   timeout = 360;
+      #   command = "${pkgs.systemd}/bin/systemctl suspend";
+      # }
     ];
 
     events = [
