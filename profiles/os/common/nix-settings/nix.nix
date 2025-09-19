@@ -15,11 +15,7 @@ in
     inherit overlays;
   };
   nix = {
-    # nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     channel.enable = false;
-    # extraOptions = ''
-    #   warn-dirty = true
-    # '';
     settings = {
       auto-optimise-store = true;
       experimental-features = [
