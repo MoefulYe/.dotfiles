@@ -12,7 +12,6 @@ let
   otherRegionMatchReg = keywordFilters.otherRegionMatchReg;
   regions = keywordFilters.regions;
   cfg = config.services.mihomo.presets.tproxy;
-
   basic-config = ''
     mode: rule
     ipv6: false
@@ -35,21 +34,22 @@ let
       geosite: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
       mmdb: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
     tun:
-      enable: true
-      stack: system
-      auto-route: true
-      auto-detect-interface: true
+      enable: true  # enable 'true'
+      stack: system  # 'gvisor' 'system' 'mixed'
       dns-hijack:
-        - any:53
-        - tcp://any:53
-
+        - "any:53"
+        - "tcp://any:53"
+      auto-route: true
+      auto-redirect: true
+      auto-detect-interface: true
+      strict-route: true
     #------------------------DNS 配置------------------------#
     dns:
       enable: true              # 启用DNS服务器
       prefer-h3: true          # 优先使用HTTP/3查询
       ipv6: false              # DNS解析IPv6
       listen: 0.0.0.0:53       # DNS监听地址
-      enhanced-mode: redir-host   # DNS模式: fake-ip或redir-host
+      enhanced-mode: fake-ip   # DNS模式: fake-ip或redir-host
       use-hosts: true          # 使用hosts文件
 
       # 默认DNS服务器(用于解析其他DNS服务器的域名)
@@ -271,8 +271,8 @@ let
     ]
   ];
   rules = builtins.concatLists [
-    (lib.lists.optionals zju.enable zju.rules)
     [
+      "IP-CIDR,10.0.0.0/8,DIRECT"
       "GEOSITE,private,DIRECT,no-resolve"
       "GEOIP,private,DIRECT,no-resolve"
       "AND,((RULE-SET,anti-AD),(NOT,((RULE-SET,anti-AD-white)))),ad-block"

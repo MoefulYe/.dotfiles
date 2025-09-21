@@ -34,19 +34,37 @@ let
       geoip: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
       geosite: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
       mmdb: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
-    sniffer:
+    dns:
       enable: true
-      force-dns-mapping: false
-      parse-pure-ip: false
-      override-destination: false
-      sniff:
-        HTTP:
-          ports: [80, 8080-8880]
-          override-destination: true
-        TLS:
-          ports: [443, 8443]
-        QUIC:
-          ports: [443, 8443]
+      cache-algorithm: arc
+      prefer-h3: false
+      use-hosts: true
+      use-system-hosts: true
+      respect-rules: true
+      listen: 127.0.0.1:53
+      ipv6: false
+      enhanced-mode: fake-ip
+      fake-ip-range: 198.18.0.1/16
+      fake-ip-filter-mode: blacklist
+      fake-ip-filter:
+        - '*.lan'
+      default-nameserver:
+        - 127.0.0.53
+      nameserver-policy:
+        'geosite:cn':
+          - https://1.12.12.12/dns-query
+          - https://223.5.5.5/dns-query
+      nameserver:
+        - https://8.8.8.8/dns-query#disable-ipv6=true
+        - https://1.1.1.1/dns-query#disable-ipv6=true
+      fallback:
+        - tls://8.8.4.4
+        - tls://1.1.1.1
+        - 127.0.0.53
+      proxy-server-nameserver:
+        - https://1.12.12.12/dns-query
+        - https://223.5.5.5/dns-query
+      direct-nameserver-follow-policy: false
   '';
   proxy-providers = [
     # "ikuuu"
@@ -234,6 +252,9 @@ let
   rules = builtins.concatLists [
     (lib.lists.optionals zju.enable zju.rules)
     [
+      "IP-CIDR,10.0.0.0/8,DIRECT"
+      "IP-CIDR,172.16.0.0/12,DIRECT"
+      "IP-CIDR,192.168.0.0/16,DIRECT"
       "GEOSITE,private,DIRECT,no-resolve"
       "GEOIP,private,DIRECT,no-resolve"
       "AND,((RULE-SET,anti-AD),(NOT,((RULE-SET,anti-AD-white)))),ad-block"
@@ -324,6 +345,13 @@ with lib;
         ;
       proxy-providers = proxy-providers';
       rule-providers = rule-providers';
+    };
+    environment.etc."resolv.conf".text = lib.mkForce ''
+      nameserver 127.0.0.1
+    '';
+    systemd.services."mihomo".serviceConfig = {
+      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
     };
   };
 }
