@@ -15,21 +15,4 @@ in
     ./bootloader.nix
     ./users
   ];
-  systemd.network = {
-    netdevs = {
-      "20-vbr0".netdevConfig = {
-        Name = "vbr0";
-        Kind = "bridge";
-      };
-      "30-veth" = {
-        netdevConfig = {
-          Kind = "veth";
-          Name = "veth0";
-        };
-        peerConfig = {
-          Name = "veth1";
-        };
-      };
-    };
-  };
 }
