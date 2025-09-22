@@ -206,6 +206,7 @@ let
         use = proxy-providers;
         proxies = [
           "auto-fast"
+          "us"
           "manual"
           "all"
           "other-region"

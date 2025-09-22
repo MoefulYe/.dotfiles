@@ -28,5 +28,7 @@ in
     "${hmProfiles}/features/viewers/mpv"
     "${hmProfiles}/features/viewers/imv.nix"
     "${hmProfiles}/features/viewers/zathura.nix"
+    "${hmProfiles}/features/llms/codex.nix"
+    "${hmProfiles}/features/llms/cherry-studio.nix"
   ];
 }
