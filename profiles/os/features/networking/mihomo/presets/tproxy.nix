@@ -75,7 +75,7 @@ let
   proxy-providers = [
     # "ikuuu"
     "leiting"
-    "mojie"
+    # "mojie"
     "av1"
     # "pokemon"
   ];
