@@ -15,8 +15,5 @@ in
     ./bootloader.nix
     ./users
   ];
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    "riscv64-linux"
-  ];
+  services.openssh.settings.PasswordAuthentication = true;
 }

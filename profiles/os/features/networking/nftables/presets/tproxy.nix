@@ -69,7 +69,11 @@ in
       ];
     };
     networking = {
-      nftables.enable = true;
+      nftables = {
+        enable = true;
+        checkRuleset = false;
+        flushRuleset = true;
+      };
       nftables.tables."sys-fw" = {
         enable = true;
         family = "inet";
@@ -86,6 +90,12 @@ in
           	  flags interval
               elements = { ${exposed.udp} }
             }
+
+            set outbounds {
+              type iface_index
+              elements = { ${builtins.concatStringsSep "," cfg.outbounds} }
+            }
+
 
             set private_addrs {
               type ipv4_addr
@@ -148,7 +158,7 @@ in
 
             chain output {
               type route hook output priority filter; policy accept;
-              oifname != {${builtins.concatStringsSep "," cfg.outbounds}} accept                                   # 绕过本机内部通信的流量（接口lo）
+              oif != @outbounds accept                                   # 绕过本机内部通信的流量（接口lo）
               meta mark ${builtins.toString cfg.proxyFwMark} accept                                   # 绕过本机clash发出的流量
               fib daddr type { local, broadcast, anycast, multicast } accept # 绕过本地、单播、组播、多播地址
               udp dport { 53, 123 } accept                                   # 绕过本机dns查询、NTP流量
@@ -164,7 +174,6 @@ in
             }
         '';
       };
-      nftables.flushRuleset = true;
     };
   };
 }

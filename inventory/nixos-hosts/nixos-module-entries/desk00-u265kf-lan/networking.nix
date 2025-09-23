@@ -3,8 +3,8 @@ let
   inherit (paths) osProfiles;
   proxyFwMark = 666;
   outbounds = [
-    "enp131s0"
     "wlp128s20f3"
+    "enp131s0"
   ];
   tproxyPort = 7895;
 in
