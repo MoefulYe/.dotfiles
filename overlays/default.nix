@@ -44,6 +44,12 @@
     );
   add-my-pkgs = final: prev: {
     my-pkgs = self.packages."${final.system}";
-    pkgs-25-05 = inputs.nixpkgs-25-05.legacyPackages."${final.system}";
+    pkgs-25-05 = import inputs.nixpkgs-25-05 {
+      system = final.system;
+      config = {
+        allowUnfree = true;
+        allowBroken = true;
+      };
+    };
   };
 }

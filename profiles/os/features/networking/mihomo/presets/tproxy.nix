@@ -28,7 +28,7 @@ let
     profile:
       store-selected: true
       store-fake-ip: true
-    global-client-fingerprint: random
+    global-client-fingerprint: firefox
     geodata-mode: true
     geox-url:
       geoip: "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
@@ -48,6 +48,11 @@ let
       fake-ip-filter-mode: blacklist
       fake-ip-filter:
         - '*.lan'
+        - '+.zju.edu.cn'
+        - '+.nixos.org'
+        - '+.docker.io'
+        - '+.metacubex.one'
+        - '+.cachix.org' 
       default-nameserver:
         - 127.0.0.53
       nameserver-policy:
@@ -57,6 +62,7 @@ let
       nameserver:
         - https://8.8.8.8/dns-query#disable-ipv6=true
         - https://1.1.1.1/dns-query#disable-ipv6=true
+        - 127.0.0.53
       fallback:
         - tls://8.8.4.4
         - tls://1.1.1.1

@@ -2,7 +2,7 @@
 {
   home.packages = with pkgs; [
     wechat
-    qq
+    pkgs.pkgs-25-05.qq
     wemeet
     nur.repos.xddxdd.dingtalk
   ];

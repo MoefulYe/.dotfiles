@@ -20,7 +20,7 @@
     Host zju-lab-serv-w3090
       HostName 172.16.0.109
       User zhao
-      ProxyJump jump-to-lab-serv-w3090
+      ProxyJump jump-to-zju-lab-serv-w3090
   '';
   programs.ssh.includes = [
     config.sops.templates."zju-lab-serv-w3090.conf".path
