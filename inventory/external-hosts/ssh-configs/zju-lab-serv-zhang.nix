@@ -17,7 +17,6 @@
       mode = "0400";
       sopsFile = "${paths.secrets}/zju.yaml";
     };
-
   };
 
   sops.templates."zju-lab-serv-zhang.conf".content = ''
