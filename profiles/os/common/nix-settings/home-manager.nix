@@ -17,8 +17,8 @@
       inherit paths inputs inventory;
       inherit (config.osProfiles.common) hostInfo;
     };
-    backupFileExtension = "bakup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {
-          env.when = inputs.self.sourceInfo.lastModified;
-        } "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-};
+    # backupFileExtension = "bakup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {
+    #       env.when = inputs.self.sourceInfo.lastModified;
+    #     } "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+  };
 }

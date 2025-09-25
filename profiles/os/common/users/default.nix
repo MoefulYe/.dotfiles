@@ -54,6 +54,13 @@ in
               inherit username;
               homeDirectory = sysCfg.users.users."${username}".home;
             };
+            home.file =
+              config.home.file
+              |> (lib.mapAttrs (
+                _: _: {
+                  force = true;
+                }
+              ));
           };
         }
       ));

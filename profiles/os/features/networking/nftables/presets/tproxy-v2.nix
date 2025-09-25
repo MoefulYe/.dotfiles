@@ -1,5 +1,5 @@
-{ config, lib, ... }: 
-let 
+{ config, lib, ... }:
+let
   cfg = config.networking.nftables.presets.tproxy-v2;
 in
 {
@@ -32,7 +32,7 @@ in
           Destination = "0.0.0.0/0";
         }
       ];
-      routingPolicyRules = [ 
+      routingPolicyRules = [
         {
           Family = "both";
           FirewallMark = builtins.toString cfg.tproxyMark;
@@ -101,20 +101,23 @@ in
             socket transparent 0 socket wildcard 0 return comment "bypass non-transparent sockets"
             ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
             ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
-            fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
             tcp dport @bypass-tcp-ports return comment "bypass special ports"
             udp dport @bypass-udp-ports return comment "bypass special ports"
+            fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
             meta l4proto { tcp, udp } tproxy to :$MIHOMO_TPROXY_PORT meta mark set $TPROXY_MARK return comment "redirect to tproxy port"
           }            
           chain mark-output {
             type route hook output priority mangle; policy accept;
             oif != @outbounds return comment "bypass internal traffic"
             meta skuid @bypass-users return comment "bypass mihomo and resolved traffic to prevent loops"
-            tcp sport @bypass-tcp-ports return comment "bypass special ports"
-            udp sport @bypass-udp-ports return comment "bypass special ports"
+            ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
+            ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
+            tcp dport @bypass-tcp-ports return comment "bypass special ports"
+            udp dport @bypass-udp-ports return comment "bypass special ports"
+            fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
             meta l4proto { tcp, udp } meta mark set $TPROXY_MARK return comment "mark traffic for routing to prerouting chain"
           }
-          
+
           chain redirect-dns {
             type nat hook output priority dstnat; policy accept;
             meta skuid @bypass-users return comment "bypass mihomo and resolved dns request to prevent loops"
