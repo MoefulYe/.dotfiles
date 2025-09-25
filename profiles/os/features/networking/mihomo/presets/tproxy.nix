@@ -314,6 +314,7 @@ with lib;
       enable = mkEnableOption "enable zju connect proxy";
       socks5Port = mkOption {
         type = types.int;
+        default = 0;
       };
     };
     logLevel = mkOption {
@@ -377,7 +378,7 @@ with lib;
         inherit (cfg.mihomoUser) gid;
       };
     };
-    systemd.services."my-mihomo" = {
+    systemd.services."mihomo" = {
       enable = true;
       description = "Mihomo daemon, A rule-based proxy in Go.";
       documentation = [ "https://wiki.metacubex.one/" ];

@@ -6,5 +6,8 @@
     VISUAL = "vim";
     PAGER = "less";
   };
+  programs.bash.shellInit = ''
+    set -o emacs 
+  '';
 }
 
