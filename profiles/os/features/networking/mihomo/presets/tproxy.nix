@@ -318,7 +318,17 @@ with lib;
     };
     logLevel = mkOption {
       type = types.str;
-      default = "info";
+      default = "warning";
+    };
+    mihomoUser = {
+      uid = mkOption {
+        type = types.int;
+        default = 61382;
+      };
+      gid = mkOption {
+        type = types.int;
+        default = 61382;
+      };
     };
   };
   config = {
@@ -362,12 +372,12 @@ with lib;
         isSystemUser = true;
         group = "mihomo";
         home = "/var/lib/mihomo";
-        createHome = true;
+        createHome = false;
         shell = "/bin/false";
-        uid = 61382;
+        inherit (cfg.mihomoUser) uid;
       };
       groups.mihomo = {
-        gid = 61382;
+        inherit (cfg.mihomoUser) gid;
       };
     };
     systemd.services."my-mihomo" = {
@@ -381,13 +391,14 @@ with lib;
         ExecStart = lib.concatStringsSep " " [
           "${pkgs.mihomo}/bin/mihomo"
           "-d /var/lib/mihomo"
-          "-f \${CREDENTIALS_DIRECTORY}/config.yaml"
+          "-f \${CREDENTIALS_DIRECTORY}/mihomo.yaml"
           "-ext-ui ${pkgs.metacubexd}"
         ];
 
-        DynamicUser = true;
         StateDirectory = "mihomo";
-        LoadCredential = "config.yaml:${config.sops.templates."mihomo.yaml".path}";
+        User = "mihomo";
+        Group = "mihomo";
+        LoadCredential = "mihomo.yaml:${config.sops.templates."mihomo.yaml".path}";
 
         ### Hardening
         DeviceAllow = "";

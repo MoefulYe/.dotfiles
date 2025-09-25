@@ -5,4 +5,7 @@
   zju-lab-serv-zhang = {
     sshConfig = ./ssh-configs/zju-lab-serv-zhang.nix;
   };
+  zju-lab-serv-yu-sg = {
+    sshConfig = ./ssh-configs/zju-lab-serv-yu-sg.nix;
+  };
 }
