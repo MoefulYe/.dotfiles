@@ -17,7 +17,6 @@ let
     mode: rule
     ipv6: false
     tproxy-port: ${builtins.toString cfg.tproxyPort}
-    routing-mark: ${builtins.toString cfg.routingMark}
     allow-lan: true
     log-level: ${cfg.logLevel}
     bind-address: "*"
@@ -306,9 +305,6 @@ with lib;
     tproxyPort = mkOption {
       type = types.int;
       default = 7895;
-    };
-    routingMark = mkOption {
-      type = types.int;
     };
     zjuConnect = {
       enable = mkEnableOption "enable zju connect proxy";

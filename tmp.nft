@@ -1,0 +1,50 @@
+define TPROXY_MARK=0x1
+define HYSTERIA_USER=mihomo
+define HYSTERIA_TPROXY_PORT=7895
+
+# 需要代理的协议类型
+define TPROXY_L4PROTO={ tcp, udp }
+
+# 需要绕过的地址
+define BYPASS_IPV4={
+    0.0.0.0/8, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16,
+    172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/3
+}
+define BYPASS_IPV6={ ::/128 }
+
+table inet hysteria_tproxy {
+  chain prerouting {
+    type filter hook prerouting priority mangle; policy accept;
+
+    # 跳过已经由 TProxy 接管的流量
+    meta l4proto $TPROXY_L4PROTO socket transparent 1 counter mark set $TPROXY_MARK
+    socket transparent 0 socket wildcard 0 counter return
+
+    # 绕过私有和特殊 IP 地址
+    ip daddr $BYPASS_IPV4 counter return
+    ip6 daddr $BYPASS_IPV6 counter return
+
+    # 仅对公网 IPv6 地址启用代理
+    ip6 daddr != 2000::/3 counter return
+
+    # 重定向流量到 TProxy 端口
+    meta l4proto $TPROXY_L4PROTO counter tproxy to :$HYSTERIA_TPROXY_PORT meta mark set $TPROXY_MARK accept
+  }
+
+  chain output {
+    type route hook output priority mangle; policy accept;
+
+    # 通过匹配用户来避免环路
+    meta skuid $HYSTERIA_USER counter return
+
+    # 绕过私有和特殊 IP 地址
+    ip daddr $BYPASS_IPV4 counter return
+    ip6 daddr $BYPASS_IPV6 counter return
+
+    # 仅对公网 IPv6 地址启用代理
+    ip6 daddr != 2000::/3 counter return
+
+    # 重路由 OUTPUT 链流量到 PREROUTING 链
+    meta l4proto $TPROXY_L4PROTO counter meta mark set $TPROXY_MARK
+  }
+}
