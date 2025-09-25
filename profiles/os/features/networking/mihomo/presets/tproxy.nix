@@ -53,6 +53,7 @@ let
         - '+.docker.io'
         - '+.metacubex.one'
         - '+.cachix.org' 
+        - 'developer.download.nvidia.com'
       default-nameserver:
         - 127.0.0.53
       nameserver-policy:
