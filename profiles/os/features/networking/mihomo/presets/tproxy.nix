@@ -357,9 +357,67 @@ with lib;
     environment.etc."resolv.conf".text = lib.mkForce ''
       nameserver 127.0.0.1
     '';
-    systemd.services."mihomo".serviceConfig = {
-      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
-      CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+    users = {
+      users.mihomo = {
+        isSystemUser = true;
+        group = "mihomo";
+        home = "/var/lib/mihomo";
+        createHome = true;
+        shell = "/bin/false";
+        uid = 61382;
+      };
+      groups.mihomo = {
+        gid = 61382;
+      };
+    };
+    systemd.services."my-mihomo" = {
+      enable = true;
+      description = "Mihomo daemon, A rule-based proxy in Go.";
+      documentation = [ "https://wiki.metacubex.one/" ];
+      requires = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        ExecStart = lib.concatStringsSep " " [
+          "${pkgs.mihomo}/bin/mihomo"
+          "-d /var/lib/mihomo"
+          "-f \${CREDENTIALS_DIRECTORY}/config.yaml"
+          "-ext-ui ${pkgs.metacubexd}"
+        ];
+
+        DynamicUser = true;
+        StateDirectory = "mihomo";
+        LoadCredential = "config.yaml:${config.sops.templates."mihomo.yaml".path}";
+
+        ### Hardening
+        DeviceAllow = "";
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
+        NoNewPrivileges = true;
+        PrivateMounts = true;
+        PrivateTmp = true;
+        ProcSubset = "pid";
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = "strict";
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        RestrictNamespaces = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = "@system-service bpf";
+        UMask = "0077";
+        AmbientCapabilities = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+        CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
+        PrivateDevices = false;
+        PrivateUsers = false;
+        RestrictAddressFamilies = "AF_INET AF_INET6 AF_NETLINK";
+      };
     };
   };
 }

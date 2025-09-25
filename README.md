@@ -5,3 +5,6 @@ wen https://github.com/wenjinnn/.dotfiles
 ##
 zju-connect
 nftables improve
+ - [ ] alloc user for mihomo
+ - [ ] ...
+
