@@ -1,8 +1,8 @@
-let 
+{ lib, ... }: let 
   scripts = {
     switch-to-airpods = ./switch-to-airpods.sh;
     cleanup-bakup-files = ./cleanup-bakup-files.sh;
   };
 in {
- home.file = scripts |> (mapAttrs (name: path: { source = path; executable = true; }));
+ home.file = scripts |> (lib.mapAttrs' (name: path: lib.nameValuePair ".local/bin/${name}" { source = path; executable = true; }));
 }
