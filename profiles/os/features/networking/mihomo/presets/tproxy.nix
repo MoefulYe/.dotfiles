@@ -333,12 +333,6 @@ with lib;
     };
   };
   config = {
-    services.mihomo = {
-      enable = true;
-      tunMode = true;
-      configFile = config.sops.templates."mihomo.yaml".path;
-      webui = pkgs.metacubexd;
-    };
     sops.secrets = {
       MIHOMO_WEB_UI_PASSWD = {
         sopsFile = "${paths.secrets}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";
@@ -378,7 +372,7 @@ with lib;
         inherit (cfg.mihomoUser) gid;
       };
     };
-    systemd.services."mihomo" = {
+    systemd.services."my-mihomo" = {
       enable = true;
       description = "Mihomo daemon, A rule-based proxy in Go.";
       documentation = [ "https://wiki.metacubex.one/" ];

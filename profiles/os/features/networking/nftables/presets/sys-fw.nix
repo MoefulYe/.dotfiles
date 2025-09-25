@@ -1,4 +1,4 @@
-{ config, lib, ... }: 
+{ config, lib, ... }:
 let
   exposed =
     let
@@ -47,15 +47,15 @@ in
                 elements = { ${exposed.udp} }
         }
 
-        chain rpfilter {
-                type filter hook prerouting priority mangle + 10; policy drop;
-                meta nfproto ipv4 udp sport . udp dport { 68 . 67, 67 . 68 } accept comment "DHCPv4 client/server"
-                fib saddr . mark . iif check exists accept
-                jump rpfilter-allow
-        }
+        # chain rpfilter {
+        #         type filter hook prerouting priority mangle + 10; policy drop;
+        #         meta nfproto ipv4 udp sport . udp dport { 68 . 67, 67 . 68 } accept comment "DHCPv4 client/server"
+        #         fib saddr . mark . iif check exists accept
+        #         jump rpfilter-allow
+        # }
 
-        chain rpfilter-allow {
-        }
+        # chain rpfilter-allow {
+        # }
 
         chain input {
                 type filter hook input priority filter; policy drop;
@@ -76,3 +76,4 @@ in
     };
   };
 }
+

@@ -35,7 +35,7 @@ in
       routingPolicyRules = [ 
         {
           Family = "both";
-          FirewallMark = builtins.toString cfg.proxyFwMark;
+          FirewallMark = builtins.toString cfg.tproxyMark;
           Priority = 10;
           Table = 100;
         }
