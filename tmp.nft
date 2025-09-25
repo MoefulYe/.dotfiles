@@ -1,50 +1,63 @@
 define TPROXY_MARK=0x1
-define HYSTERIA_USER=mihomo
-define HYSTERIA_TPROXY_PORT=7895
-
-# 需要代理的协议类型
-define TPROXY_L4PROTO={ tcp, udp }
-
-# 需要绕过的地址
+define MIHOMO_USER=mihomo
+define MIHOMO_TPROXY_PORT=7895
+define MIHOMO_DNS_PORT=7853
 define BYPASS_IPV4={
-    0.0.0.0/8, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16,
-    172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/3
+    0.0.0.0/8,           # 本网络地址
+    10.0.0.0/8,          # RFC 1918 私有地址
+    100.64.0.0/10,       # RFC 6598 共享地址空间
+    127.0.0.0/8,         # 回环地址
+    169.254.0.0/16,      # RFC 3927 链路本地地址
+    172.16.0.0/12,       # RFC 1918 私有地址
+    192.168.0.0/16,      # RFC 1918 私有地址
+    224.0.0.0/4,         # 组播地址
+    240.0.0.0/4          # 保留地址
 }
-define BYPASS_IPV6={ ::/128 }
+define BYPASS_IPV6={
+    ::/128,              # 未指定地址
+    ::1/128,             # 回环地址
+    fc00::/7,            # RFC 4193 唯一本地地址
+    fe80::/10,           # RFC 4291 链路本地地址
+    ff00::/8             # 组播地址
+}
+define BYPASS_TCP_PORTS={ 53, 67, 68, 123 }
+define BYPASS_UDP_PORTS={ 53, 67, 68, 123 }
+define OUTBOUNDS={ wlp128s20f3, enp131s0 }
+define DNS_BYPASS_USER={ mihomo, systemd-resolve };
 
-table inet hysteria_tproxy {
-  chain prerouting {
+table inet mihomo-tproxy {
+  # 给所有需要代理的流量打标记
+  chain mark-prerouting {
     type filter hook prerouting priority mangle; policy accept;
-
-    # 跳过已经由 TProxy 接管的流量
-    meta l4proto $TPROXY_L4PROTO socket transparent 1 counter mark set $TPROXY_MARK
-    socket transparent 0 socket wildcard 0 counter return
-
-    # 绕过私有和特殊 IP 地址
-    ip daddr $BYPASS_IPV4 counter return
-    ip6 daddr $BYPASS_IPV6 counter return
-
-    # 仅对公网 IPv6 地址启用代理
-    ip6 daddr != 2000::/3 counter return
-
-    # 重定向流量到 TProxy 端口
-    meta l4proto $TPROXY_L4PROTO counter tproxy to :$HYSTERIA_TPROXY_PORT meta mark set $TPROXY_MARK accept
+    meta l4proto { tcp, udp } socket transparent 1 mark set $TPROXY_MARK return comment "mark already proxied traffic"
+    socket transparent 0 socket wildcard 0 return comment "bypass non-transparent sockets"
+    ip daddr $BYPASS_IPV4 return comment "bypass special IPv4 addresses"
+    ip6 daddr $BYPASS_IPV6 return comment "bypass special IPv6 addresses"
+    fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
+    tcp dport $BYPASS_TCP_PORTS return comment "bypass special ports"
+    udp dport $BYPASS_UDP_PORTS return comment "bypass special ports"
+    tcp sport $BYPASS_TCP_PORTS return comment "bypass special ports"
+    udp sport $BYPASS_UDP_PORTS return comment "bypass special ports"
+    meta l4proto { tcp, udp } tproxy to :$MIHOMO_TPROXY_PORT meta mark set $TPROXY_MARK return comment "redirect to tproxy port"
   }
 
-  chain output {
+  # 给所有需要代理的流量打标记
+  chain mark-output {
     type route hook output priority mangle; policy accept;
+    oif != $OUTBOUNDS return comment "bypass internal traffic"
+    meta skuid $MIHOMO_USER return comment "bypass mihomo traffic to prevent loops"
+    tcp sport $BYPASS_TCP_PORTS return comment "bypass special ports"
+    udp sport $BYPASS_UDP_PORTS return comment "bypass special ports"
+    tcp dport $BYPASS_TCP_PORTS return comment "bypass special ports"
+    udp dport $BYPASS_UDP_PORTS return comment "bypass special ports"
+    meta l4proto { tcp, udp } meta mark set $TPROXY_MARK return comment "mark traffic for routing to prerouting chain"
+  }
 
-    # 通过匹配用户来避免环路
-    meta skuid $HYSTERIA_USER counter return
-
-    # 绕过私有和特殊 IP 地址
-    ip daddr $BYPASS_IPV4 counter return
-    ip6 daddr $BYPASS_IPV6 counter return
-
-    # 仅对公网 IPv6 地址启用代理
-    ip6 daddr != 2000::/3 counter return
-
-    # 重路由 OUTPUT 链流量到 PREROUTING 链
-    meta l4proto $TPROXY_L4PROTO counter meta mark set $TPROXY_MARK
+  # 重定向所有本机的dns请求到mihomo
+  chain redirect-dns {
+    type nat hook output priority dstnat; policy accept;
+    meta skuid $DNS_BYPASS_USER return comment "bypass mihomo dns request to prevent loops"
+    tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
+    udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
   }
 }

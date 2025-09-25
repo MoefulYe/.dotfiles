@@ -40,7 +40,7 @@ let
       use-hosts: true
       use-system-hosts: true
       respect-rules: true
-      listen: 127.0.0.1:53
+      listen: 127.0.0.1:${builtins.toString cfg.dnsPort}
       ipv6: false
       enhanced-mode: fake-ip
       fake-ip-range: 198.18.0.1/16
@@ -306,6 +306,10 @@ with lib;
       type = types.int;
       default = 7895;
     };
+    dnsPort = mkOption {
+      type = types.int;
+      default = 7853;
+    };
     zjuConnect = {
       enable = mkEnableOption "enable zju connect proxy";
       socks5Port = mkOption {
@@ -360,9 +364,6 @@ with lib;
       proxy-providers = proxy-providers';
       rule-providers = rule-providers';
     };
-    environment.etc."resolv.conf".text = lib.mkForce ''
-      nameserver 127.0.0.1
-    '';
     users = {
       users.mihomo = {
         isSystemUser = true;

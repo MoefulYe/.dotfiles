@@ -22,7 +22,7 @@ in
   };
   services.mihomo.presets.tproxy = {
     inherit tproxyPort;
-    routingMark = proxyFwMark;
+    # routingMark = proxyFwMark;
     zjuConnect = {
       enable = false;
       socks5Port = 0;

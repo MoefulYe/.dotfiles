@@ -125,7 +125,7 @@ in
 
               chain rpfilter-allow {}
               chain mihomo-prerouting {
-                meta l4proto { tcp, udp } socket transparent 1 meta mark set ${builtins.toString cfg.routeToProxyMark} accept # 绕过已经建立的连接
+                meta l4proto { tcp, udp } socket transparent 1 meta mark set ${builtins.toString 666} accept # 绕过已经建立的连接
                 meta mark ${builtins.toString cfg.routeToProxyMark} goto mihomo-tproxy                               # 已经打上default_mark标记的属于本机流量转过来的，直接进入透明代理
                 tcp dport @exposed-tcp-ports accept
                 udp dport @exposed-udp-ports accept
