@@ -54,13 +54,7 @@ in
               inherit username;
               homeDirectory = sysCfg.users.users."${username}".home;
             };
-            home.file =
-              config.home.file
-              |> (lib.mapAttrs (
-                _: _: {
-                  force = true;
-                }
-              ));
+            # 备份文件行为现在通过 home-manager.backupFileExtension = null 全局控制
           };
         }
       ));

@@ -55,6 +55,12 @@ in
     VISUAL = preferences.editor.binname;
     BROWSER = preferences.browser.binname;
     TERMINAL = preferences.terminal.binname;
+    # XDG Base Directory Specification
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_STATE_HOME = "$HOME/.local/state";
   };
   xdg.mimeApps = rec {
     enable = true;
