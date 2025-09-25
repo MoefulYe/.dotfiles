@@ -76,10 +76,6 @@ in
         flushRuleset = true;
       };
       nftables.tables = {
-        "tproxy" = {
-          enable = true;
-          family = "inet";
-        };
         "sys-fw" = {
           enable = true;
           family = "inet";
