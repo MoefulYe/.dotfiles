@@ -15,6 +15,7 @@
           "libvirt"
           "wireshark"
           "ubridge"
+          "podman"
         ];
       };
       hmEntry = ./ashenye.nix;
