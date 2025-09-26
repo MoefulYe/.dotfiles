@@ -368,9 +368,9 @@
         Mod+F1 { spawn "zen"; }
         Mod+F2 { spawn "nautilus"; }
         Mod+F3 { spawn "kitty" "nvim"; }
-        Mod+F10 { spawn "~/.config/niri/scripts/toggle_swayidle.sh"; }
-        Mod+F11 { spawn "~/.config/niri/scripts/toggle_waybar.sh"; }
-        Mod+F12 { spawn " ~/.config/niri/scripts/change_wallpaper.sh"; }
+        Mod+F10 { spawn "bash" "-c" "~/.config/niri/scripts/toggle_swayidle.sh"; }
+        Mod+F11 { spawn "bash" "-c" "~/.config/niri/scripts/toggle_waybar.sh"; }
+        Mod+F12 { spawn "bash" "-c" "~/.config/niri/scripts/change_wallpaper.sh"; }
         Mod+Escape { toggle-overview; }
 
         // You can also use a shell. Do this if you need pipes, multiple commands, etc.
