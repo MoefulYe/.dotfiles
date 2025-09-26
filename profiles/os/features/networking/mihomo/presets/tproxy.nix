@@ -39,44 +39,40 @@ let
       prefer-h3: false
       use-hosts: true
       use-system-hosts: true
-      respect-rules: true
+      # respect-rules: true
       listen: 127.0.0.1:${builtins.toString cfg.dnsPort}
       ipv6: false
       enhanced-mode: fake-ip
       fake-ip-range: 198.18.0.1/16
       fake-ip-filter-mode: blacklist
-      fake-ip-filter:
-        - '*.lan'
-        - '+.zju.edu.cn'
-        - '+.nixos.org'
-        - '+.docker.io'
-        - '+.metacubex.one'
-        - '+.cachix.org' 
-        - 'developer.download.nvidia.com'
-      default-nameserver:
-        - 127.0.0.53
+      # fake-ip-filter:
+      #   - '*.lan'
+      #   - '+.zju.edu.cn'
+      #   - '+.nixos.org'
+      #   - '+.docker.io'
+      #   - '+.metacubex.one'
+      #   - '+.cachix.org' 
+      #   - 'developer.download.nvidia.com'
+      nameserver:
+        - tls://1.1.1.1
+        - tls://8.8.8.8
+        - https://dns.cloudflare.com/dns-query
+        - https://dns.google/dns-query
       nameserver-policy:
         'geosite:cn':
-          - https://1.12.12.12/dns-query
-          - https://223.5.5.5/dns-query
-      nameserver:
-        - https://8.8.8.8/dns-query#disable-ipv6=true
-        - https://1.1.1.1/dns-query#disable-ipv6=true
+          - 127.0.0.53
+      direct-nameserver:
         - 127.0.0.53
-      fallback:
-        - tls://8.8.4.4
-        - tls://1.1.1.1
-        - 127.0.0.53
-      proxy-server-nameserver:
-        - https://1.12.12.12/dns-query
-        - https://223.5.5.5/dns-query
-      direct-nameserver-follow-policy: false
+      fake-ip-filter:
+        - '+.lan'
+        - '+.local'
+        - '+.example.com'
   '';
   proxy-providers = [
     # "ikuuu"
-    # "leiting"
-    # "mojie"
-    "av1"
+    "leiting"
+    "mojie"
+    # "av1"
     # "pokemon"
   ];
   proxy-providers' = lib.attrsets.genAttrs proxy-providers (name: {
