@@ -2,7 +2,7 @@
 let
   inherit (paths) osProfiles osRoles;
   kubeMasterIP = "127.0.0.1";
-  kubeMasterHostname = "localhost";
+  kubeMasterHostname = "api.kube";
   kubeMasterAPIServerPort = 6443;
 in
 {
@@ -19,6 +19,7 @@ in
     ./users
   ];
   services.openssh.settings.PasswordAuthentication = true;
+  networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
 
   # packages for administration tasks
   environment.systemPackages = with pkgs; [
@@ -39,7 +40,6 @@ in
       securePort = kubeMasterAPIServerPort;
       advertiseAddress = kubeMasterIP;
     };
-
     # use coredns
     addons.dns.enable = true;
 
