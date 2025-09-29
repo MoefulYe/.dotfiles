@@ -3,7 +3,7 @@ let
   cfg = config.networking.nftables.presets.tproxy-v2;
 in
 {
-  options.networking.nftables.presets.tproxy-v2 = with lib; {
+  options.networking.nftables.presets.tproxy-v2-zju = with lib; {
     tproxyPort = mkOption {
       type = types.int;
     };
