@@ -216,6 +216,20 @@ let
         ]
         ++ regions;
       }
+      {
+        name = "AISTUDIO";
+        type = "select";
+        use = proxy-providers;
+        proxies = [
+          "auto-fast"
+          "us"
+          "manual"
+          "all"
+          "other-region"
+          "DIRECT"
+        ]
+        ++ regions;
+      }
     ]
     [
       {
@@ -265,6 +279,7 @@ let
       "GEOSITE,anthropic,AI"
       "GEOSITE,x,AI"
       "GEOSITE,xai,AI"
+      "DOMAIN-SUFFIX,aistudio.google.com,AISTUDIO"
       "DOMAIN-SUFFIX,claude.ai,AI"
       "DOMAIN-SUFFIX,claudeusercontent.com,AI"
       "GEOSITE,apple,universal"
