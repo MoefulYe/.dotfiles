@@ -6,10 +6,14 @@
 }:
 let
   cfg = config.services.zju-connect.presets.default;
+  inherit (paths) osModules;
 in
 {
+  imports = [
+    "${osModules}/services/zju-connect.nix"
+  ];
   options.services.zju-connect.presets.default = {
-    sock5Port = lib.mkOption {
+    socks5Port = lib.mkOption {
       type = lib.types.int;
       default = 31085;
     };
@@ -29,7 +33,7 @@ in
     sops.templates."zju-connect.toml".content = ''
       username = ${config.sops.placeholder.STU_ID}
       password = ${config.sops.placeholder.STU_PASSWD}
-      socks-bind = :${cfg.sock5Port}
+      socks-bind = :${cfg.socks5Port}
       http-bind = ""
     '';
     services.zju-connect = {
