@@ -332,15 +332,9 @@ with lib;
       type = types.str;
       default = "warning";
     };
-    mihomoUser = {
-      uid = mkOption {
-        type = types.int;
-        default = 61382;
-      };
-      gid = mkOption {
-        type = types.int;
-        default = 61382;
-      };
+    uid = mkOption {
+      type = types.int;
+      default = 61382;
     };
   };
   config = {
@@ -372,16 +366,11 @@ with lib;
     };
     users = {
       users.mihomo = {
-        isSystemUser = true;
         group = "mihomo";
-        home = "/var/lib/mihomo";
-        createHome = false;
-        shell = "/bin/false";
-        inherit (cfg.mihomoUser) uid;
+        isNormalUser = true;
+        inherit (cfg) uid;
       };
-      groups.mihomo = {
-        inherit (cfg.mihomoUser) gid;
-      };
+      groups.mihomo = { };
     };
     systemd.services."my-mihomo" = {
       enable = true;
