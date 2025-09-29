@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.networking.nftables.presets.tproxy-v2;
+  cfg = config.networking.nftables.presets.tproxy-v2-zju;
 in
 {
   options.networking.nftables.presets.tproxy-v2-zju = with lib; {

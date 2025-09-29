@@ -19,15 +19,15 @@ in
       default = 61385;
     };
   };
-  users = {
-    users.zju-connect = {
-      group = "zju-connect";
-      isNormalUser = true;
-      inherit (cfg) uid;
-    };
-    groups.zju-connect = { };
-  };
   config = {
+    users = {
+      users.zju-connect = {
+        group = "zju-connect";
+        isNormalUser = true;
+        inherit (cfg) uid;
+      };
+      groups.zju-connect = { };
+    };
     systemd.services.zju-connect = {
       enable = true;
       description = "ZJU Connect VPN Client";

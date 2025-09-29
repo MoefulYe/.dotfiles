@@ -31,9 +31,9 @@ in
       };
     };
     sops.templates."zju-connect.toml".content = ''
-      username = ${config.sops.placeholder.STU_ID}
-      password = ${config.sops.placeholder.STU_PASSWD}
-      socks-bind = :${cfg.socks5Port}
+      username = "${config.sops.placeholder.STU_ID}"
+      password = "${config.sops.placeholder.STU_PASSWD}"
+      socks-bind = ":${builtins.toString cfg.socks5Port}"
       http-bind = ""
     '';
     services.zju-connect = {
