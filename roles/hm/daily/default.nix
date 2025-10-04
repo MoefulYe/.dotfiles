@@ -16,7 +16,7 @@ in
     "${hmProfiles}/features/development/kitty.nix"
     "${hmProfiles}/features/development/ssh.nix"
     "${hmProfiles}/features/development/shell"
-    "${hmProfiles}/features/development/neovim"
+    # "${hmProfiles}/features/development/neovim"
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/editors/gimp.nix"
     "${hmProfiles}/features/knowledge/obsidian.nix"
