@@ -17,12 +17,19 @@ let
     mode: rule
     ipv6: false
     tproxy-port: ${builtins.toString cfg.tproxyPort}
+    listeners:
+      - name: for-smartdns-resolve
+        type: socks
+        port: 7894
+        listen: 127.0.0.1
+        udp: true
+        proxy: SmartDnsResolve
     allow-lan: true
     log-level: ${cfg.logLevel}
     bind-address: "*"
     unified-delay: true
     tcp-concurrent: true
-    external-controller: ":9090"
+    external-controller: "127.0.0.1:9090"
     secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
     profile:
       store-selected: true
@@ -263,6 +270,18 @@ let
           "DIRECT"
         ]
         ++ regions;
+      }
+    ]
+    [
+      {
+        name = "SmartDnsResolve";
+	type = "fallback";
+	proxies = [
+	  "universal"
+	  "DIRECT"
+	];
+	url = "https://www.gstatic.com/generate_204";
+	interval = 300;
       }
     ]
   ];
