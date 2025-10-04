@@ -65,9 +65,6 @@
         };
       };
     };
-    # extraPlugins = with pkgs.vimPlugins; [
-    #   ansible-vim
-    # ];
 
     extraConfigLua = ''
             local _border = "rounded"
