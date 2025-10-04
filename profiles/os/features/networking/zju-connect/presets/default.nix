@@ -33,8 +33,8 @@ in
     sops.templates."zju-connect.toml".content = ''
       username = "${config.sops.placeholder.STU_ID}"
       password = "${config.sops.placeholder.STU_PASSWD}"
-      socks-bind = ":${builtins.toString cfg.socks5Port}"
-      http-bind = ""
+      socks_bind = ":${builtins.toString cfg.socks5Port}"
+      http_bind = ""
     '';
     services.zju-connect = {
       configFile = config.sops.templates."zju-connect.toml".path;

@@ -38,7 +38,7 @@ in
         ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config \${CREDENTIALS_DIRECTORY}/zju-connect.toml";
         Restart = "on-failure";
         RestartSec = "5s";
-        LoadCredential = "${cfg.configFile}:${config.sops.templates."zju-connect.toml".path}";
+        LoadCredential = "zju-connect.toml:${config.sops.templates."zju-connect.toml".path}";
 
         PrivateMounts = true; # 为服务创建独立的挂载命名空间
         PrivateTmp = true; # 使用私有的 /tmp 目录
