@@ -19,8 +19,8 @@ let
   regions = keywordFilters.regions ++ "other-region";
 
   geoip-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat";
-  geosite = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat";
-  mmdb = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb";
+  geosite-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat";
+  mmdb-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb";
   bypass-fake-ip-url = "https://cdn.jsdelivr.net/gh/juewuy/ShellCrash@dev/public/fake_ip_filter.list";
 
   basic-config = ''
@@ -237,7 +237,9 @@ let
     ]
   ];
   rules = builtins.concatLists [
-    (lib.lists.optionals zju.enable zju.rules)
+    (lib.lists.optionals zjuCfg.enable [
+      "RULE-SET,zju-intranet,ZJU"
+    ])
     [
       "GEOSITE,private,DIRECT,no-resolve"
       "GEOIP,private,DIRECT,no-resolve"
@@ -249,6 +251,9 @@ let
   ];
 in
 {
+  imports = [
+    ./nftables
+  ];
   sops.secrets = {
     MIHOMO_WEB_UI_PASSWD = {
       sopsFile = "${paths.secrets}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";

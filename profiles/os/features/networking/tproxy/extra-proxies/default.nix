@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./zju-connect.nix
+  ];
+}

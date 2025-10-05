@@ -1,9 +1,4 @@
-{ writeText, cfg, mihomoCfg, ... }: let 
-  cfg = config.osProfiles.features.tproxy.nftables;
-  mihomoCfg = config.osProfiles.features.tproxy.mihomo.tproxyPort;
-  tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
-in
-writeText "mihomo-tproxy.nft" ''
+{ writeText, cfg, mihomoCfg, tproxyBypassUser, ... }: writeText "mihomo-tproxy.nft" ''
   table inet mihomo-tproxy {
     define TPROXY_MARK=${builtins.toString cfg.tproxyMark}
     define MIHOMO_TPROXY_PORT=${builtins.toString mihomoCfg.tproxyPort}
@@ -48,7 +43,7 @@ writeText "mihomo-tproxy.nft" ''
       elements = { ${builtins.concatStringsSep "," cfg.outbounds} }
     }
 
-    include /var/lib/${chinaIpListDirname}/${chinaIPListBasename}
+    include /var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}
     
     chain mark-prerouting {
       type filter hook prerouting priority mangle; policy accept;

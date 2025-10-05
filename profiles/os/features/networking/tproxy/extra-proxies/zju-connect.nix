@@ -5,21 +5,14 @@
   ...
 }:
 let
-  cfg = config.services.zju-connect.presets.default;
+  cfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
   inherit (paths) osModules;
 in
 {
   imports = [
     "${osModules}/services/zju-connect.nix"
   ];
-  options.services.zju-connect.presets.default = {
-    socks5Port = lib.mkOption {
-      type = lib.types.int;
-      default = 31085;
-    };
-  };
-
-  config = {
+  config = lib.mkIf cfg.enable {
     sops.secrets = {
       STU_ID = {
         mode = "0400";

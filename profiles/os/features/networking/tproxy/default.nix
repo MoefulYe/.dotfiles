@@ -64,19 +64,19 @@
       # prefixed by /var/lib
       chinaIpListDirname = mkOption {
         type = types.str;
-        default = "nftables-china-ips"
+        default = "nftables-china-ips";
       };
       chinaIPListBasename = mkOption {
         type = types.str;
-        default = "china-ips.nft"
+        default = "china-ips.nft";
       };
       chinaIpV4Set = mkOption {
         type = types.str;
-        default = "china-ip-list-v4"
+        default = "china-ip-list-v4";
       };
       chinaIpV6Set = mkOption {
         type = types.str;
-        default = "china-ip-list-v6"
+        default = "china-ip-list-v6";
       };
     };
     smartdns = {
@@ -104,4 +104,10 @@
       };
     };
   };
+  imports = [
+    ./tproxy-bypass-user.nix
+    ./smartdns.nix
+    ./mihomo
+    ./extra-proxies
+  ];
 }

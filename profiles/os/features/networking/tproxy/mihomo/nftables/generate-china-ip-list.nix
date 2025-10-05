@@ -97,4 +97,4 @@ in pkgs.writeShellScript "generate-china-ip-list" ''
   mv "$TEMP_OUTPUT_FILE" "$DIR/$OUTPUT_NFT_FILE"
   
   echo -e "\n[+] Success! Nftables set definitions written to '$DIR/$OUTPUT_NFT_FILE'" >&2
-'';
+''
