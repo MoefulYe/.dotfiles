@@ -5,6 +5,7 @@
   pkgs,
   ...
 }:
+# 分流: https://www.aloxaf.com/2025/04/how_to_use_geosite/
 let
   mkConfig = import ../helpers/mkConfig.nix;
   keywordFilters = import ../helpers/regionKeywords.nix;
@@ -23,17 +24,15 @@ let
         port: 7894
         listen: 127.0.0.1
         udp: true
-        proxy: SmartDnsResolve
+        proxy: DNS
     allow-lan: true
-    log-level: ${cfg.logLevel}
+    # log-level: ${cfg.logLevel}
+    log-level: debug
     bind-address: "*"
     unified-delay: true
     tcp-concurrent: true
     external-controller: "127.0.0.1:9090"
     secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
-    profile:
-      store-selected: true
-      store-fake-ip: true
     global-client-fingerprint: firefox
     geodata-mode: true
     geox-url:
@@ -46,34 +45,28 @@ let
       prefer-h3: false
       use-hosts: true
       use-system-hosts: true
-      # respect-rules: true
       listen: 127.0.0.1:${builtins.toString cfg.dnsPort}
       ipv6: false
       enhanced-mode: fake-ip
       fake-ip-range: 198.18.0.1/16
-      fake-ip-filter-mode: blacklist
-      # fake-ip-filter:
-      #   - '*.lan'
-      #   - '+.zju.edu.cn'
-      #   - '+.nixos.org'
-      #   - '+.docker.io'
-      #   - '+.metacubex.one'
-      #   - '+.cachix.org' 
-      #   - 'developer.download.nvidia.com'
       nameserver:
-        - tls://1.1.1.1
-        - tls://8.8.8.8
-        - https://dns.cloudflare.com/dns-query
-        - https://dns.google/dns-query
+        - 127.0.0.1:30054
       nameserver-policy:
         'geosite:cn':
-          - 127.0.0.53
-      direct-nameserver:
-        - 127.0.0.53
+          - 127.0.0.1:30053
+        'geosite:private':
+          - 127.0.0.1:30053
+        'rule-set:zju-intranet-domain':
+          - 127.0.0.1:30053
+        'rule-set:bypass-fake-ip':
+          - 127.0.0.1:30053
+      proxy-server-nameserver:
+        - 127.0.0.1:30053
       fake-ip-filter:
-        - '+.lan'
-        - '+.local'
-        - '+.example.com'
+        - 'geosite:cn'
+        - 'geosite:private'
+        - 'rule-set:zju-intranet-domain'
+        - 'rule-set:bypass-fake-ip'
   '';
   proxy-providers = [
     # "ikuuu"
@@ -125,25 +118,38 @@ let
     (lib.lists.optionals zju.enable zju.proxies)
   ];
   rule-providers = {
-    anti-AD = {
-      url = "https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-clash.yaml";
-      behavior = "domain";
+    bypass-fake-ip = {
+      type = "http";
+      format = "text";
+      url = "https://cdn.jsdelivr.net/gh/juewuy/ShellCrash@dev/public/fake_ip_filter.list";
     };
-    anti-AD-white = {
-      url = "https://raw.githubusercontent.com/privacy-protection-tools/dead-horse/master/anti-ad-white-for-clash.yaml";
+    zju-intranet-domain = {
       behavior = "domain";
+      type = "inline";
+      payload = [
+        "www.cc98.org"
+      ];
+    };
+    zju-intranet = {
+      behavior = "ipcidr";
+      type = "inline";
+      payload = [
+        "10.0.0.0/8"
+      ];
     };
   };
   rule-providers' =
     rule-providers
     |> builtins.mapAttrs (
-      name: value: with value; {
-        type = "http";
-        format = "yaml";
-        inherit url behavior;
-        path = "./rule-providers/${name}.yaml";
-        interval = 3600;
-      }
+      name: value: (
+        if value.type == "http" 
+        then {
+          behavior = "domain";
+          path = "./rule-providers/${name}";
+          interval = 86400;
+        } // value 
+        else value
+      )
     );
 
   proxy-groups = builtins.concatLists [
@@ -172,72 +178,72 @@ let
       ]
     )
     # 规则特定的代理组
-    [
-      {
-        name = "ad-block";
-        type = "select";
-        proxies = [
-          "REJECT"
-          "DIRECT"
-          "manual"
-        ];
-      }
-      {
-        name = "GOOGLE";
-        type = "select";
-        use = proxy-providers;
-        proxies = [
-          "auto-fast"
-          "manual"
-          "all"
-          "other-region"
-          "DIRECT"
-        ]
-        ++ regions;
+    # [
+    #   {
+    #     name = "ad-block";
+    #     type = "select";
+    #     proxies = [
+    #       "REJECT"
+    #       "DIRECT"
+    #       "manual"
+    #     ];
+    #   }
+    #   {
+    #     name = "GOOGLE";
+    #     type = "select";
+    #     use = proxy-providers;
+    #     proxies = [
+    #       "auto-fast"
+    #       "manual"
+    #       "all"
+    #       "other-region"
+    #       "DIRECT"
+    #     ]
+    #     ++ regions;
 
-      }
-      {
-        name = "GITHUB";
-        type = "select";
-        use = proxy-providers;
-        proxies = [
-          "auto-fast"
-          "manual"
-          "all"
-          "other-region"
-          "DIRECT"
-        ]
-        ++ regions;
-      }
-      {
-        name = "AI";
-        type = "select";
-        use = proxy-providers;
-        proxies = [
-          "auto-fast"
-          "us"
-          "manual"
-          "all"
-          "other-region"
-          "DIRECT"
-        ]
-        ++ regions;
-      }
-      {
-        name = "AISTUDIO";
-        type = "select";
-        use = proxy-providers;
-        proxies = [
-          "auto-fast"
-          "us"
-          "manual"
-          "all"
-          "other-region"
-          "DIRECT"
-        ]
-        ++ regions;
-      }
-    ]
+    #   }
+    #   {
+    #     name = "GITHUB";
+    #     type = "select";
+    #     use = proxy-providers;
+    #     proxies = [
+    #       "auto-fast"
+    #       "manual"
+    #       "all"
+    #       "other-region"
+    #       "DIRECT"
+    #     ]
+    #     ++ regions;
+    #   }
+    #   {
+    #     name = "AI";
+    #     type = "select";
+    #     use = proxy-providers;
+    #     proxies = [
+    #       "auto-fast"
+    #       "us"
+    #       "manual"
+    #       "all"
+    #       "other-region"
+    #       "DIRECT"
+    #     ]
+    #     ++ regions;
+    #   }
+    #   {
+    #     name = "AISTUDIO";
+    #     type = "select";
+    #     use = proxy-providers;
+    #     proxies = [
+    #       "auto-fast"
+    #       "us"
+    #       "manual"
+    #       "all"
+    #       "other-region"
+    #       "DIRECT"
+    #     ]
+    #     ++ regions;
+    #   }
+    # ]
     [
       {
         name = "all";
@@ -274,55 +280,55 @@ let
     ]
     [
       {
-        name = "SmartDnsResolve";
-	type = "fallback";
-	proxies = [
-	  "universal"
-	  "DIRECT"
-	];
-	url = "https://www.gstatic.com/generate_204";
-	interval = 300;
+        name = "DNS";
+	      type = "fallback";
+	      proxies = [
+	        "universal"
+	        "DIRECT"
+	      ];
+	      url = "https://www.gstatic.com/generate_204";
+	      interval = 300;
       }
     ]
   ];
   rules = builtins.concatLists [
     (lib.lists.optionals zju.enable zju.rules)
     [
-      "IP-CIDR,10.0.0.0/8,DIRECT"
-      "IP-CIDR,172.16.0.0/12,DIRECT"
-      "IP-CIDR,192.168.0.0/16,DIRECT"
+      # "IP-CIDR,10.0.0.0/8,DIRECT"
+      # "IP-CIDR,172.16.0.0/12,DIRECT"
+      # "IP-CIDR,192.168.0.0/16,DIRECT"
       "GEOSITE,private,DIRECT,no-resolve"
       "GEOIP,private,DIRECT,no-resolve"
-      "AND,((RULE-SET,anti-AD),(NOT,((RULE-SET,anti-AD-white)))),ad-block"
-      "GEOSITE,openai,AI"
-      "GEOSITE,anthropic,AI"
-      "GEOSITE,x,AI"
-      "GEOSITE,xai,AI"
-      "DOMAIN-SUFFIX,aistudio.google.com,AISTUDIO"
-      "DOMAIN-SUFFIX,claude.ai,AI"
-      "DOMAIN-SUFFIX,claudeusercontent.com,AI"
-      "GEOSITE,apple,universal"
-      "GEOSITE,apple-cn,universal"
-      "GEOSITE,google,GOOGLE"
-      "GEOSITE,ehentai,universal"
-      "GEOSITE,github,GITHUB"
-      "GEOSITE,twitter,universal"
-      "GEOSITE,youtube,universal"
-      "GEOSITE,telegram,universal"
-      "GEOSITE,bahamut,universal"
-      "GEOSITE,spotify,universal"
-      "GEOSITE,pixiv,universal"
+      # "AND,((RULE-SET,anti-AD),(NOT,((RULE-SET,anti-AD-white)))),ad-block"
+      # "GEOSITE,openai,AI"
+      # "GEOSITE,anthropic,AI"
+      # "GEOSITE,x,AI"
+      # "GEOSITE,xai,AI"
+      # "DOMAIN-SUFFIX,aistudio.google.com,AISTUDIO"
+      # "DOMAIN-SUFFIX,claude.ai,AI"
+      # "DOMAIN-SUFFIX,claudeusercontent.com,AI"
+      # "GEOSITE,apple,universal"
+      # "GEOSITE,apple-cn,universal"
+      # "GEOSITE,google,GOOGLE"
+      # "GEOSITE,ehentai,universal"
+      # "GEOSITE,github,GITHUB"
+      # "GEOSITE,twitter,universal"
+      # "GEOSITE,youtube,universal"
+      # "GEOSITE,telegram,universal"
+      # "GEOSITE,bahamut,universal"
+      # "GEOSITE,spotify,universal"
+      # "GEOSITE,pixiv,universal"
       "GEOSITE,steam@cn,DIRECT"
-      "GEOSITE,steam,universal"
-      "GEOSITE,onedrive,universal"
-      "GEOSITE,microsoft,universal"
-      "GEOSITE,geolocation-!cn,universal"
+      # "GEOSITE,steam,universal"
+      # "GEOSITE,onedrive,universal"
+      # "GEOSITE,microsoft,universal"
+      # "GEOSITE,geolocation-!cn,universal"
       # "DOMAIN-SUFFIX,bing.com,DIRECT"
-      "DOMAIN-SUFFIX,gstatic.com,GOOGLE"
-      "DOMAIN-SUFFIX,googleapis.com,GOOGLE"
+      # "DOMAIN-SUFFIX,gstatic.com,GOOGLE"
+      # "DOMAIN-SUFFIX,googleapis.com,GOOGLE"
       # quic "AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT"
-      "GEOIP,telegram,universal"
-      "GEOIP,twitter,universal"
+      # "GEOIP,telegram,universal"
+      # "GEOIP,twitter,universal"
       "GEOSITE,CN,DIRECT"
       "GEOIP,CN,DIRECT"
       "MATCH,universal"
