@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, cfg, ... }: 
 let 
   chinaIpSources = {
     v4 = "https://hub.gitmirror.com/https://raw.githubusercontent.com/mayaxcn/china-ip-list/master/chnroute.txt";
@@ -16,14 +16,14 @@ in pkgs.writeShellScript "generate-china-ip-list" ''
   # 当前直接使用社区镜像是为了部署便利，但存在单点故障风险。
   URL_IPV4="${chinaIpSources.v4}"
   URL_IPV6="${chinaIpSources.v6}"
-  DIR=/var/lib/nftables-china-ips
+  DIR=/var/lib/${cfg.chinaIpListDirname}
 
   # nftables 集合的名称，这些名称必须与 nftables 规则中引用的名称一致
-  NFT_SET_NAME_V4="china_ip_list_v4"
-  NFT_SET_NAME_V6="china_ip_list_v6"
+  NFT_SET_NAME_V4="${cfg.chinaIpV4Set}"
+  NFT_SET_NAME_V6="${cfg.chinaIpV6Set}"
 
   # 最终生成的文件名 (这个文件会被 systemd 写入到 /var/lib/nftables-china-ips/)
-  OUTPUT_NFT_FILE="china-ips.nft"
+  OUTPUT_NFT_FILE="${cfg.chinaIPListBasename}"
 
   # --- 辅助函数：获取 URL 内容并格式化为 nftables set 元素 ---
   # 使用 curl 下载内容，并通过 sed 在流中进行处理

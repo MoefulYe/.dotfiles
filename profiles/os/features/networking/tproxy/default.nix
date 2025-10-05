@@ -61,12 +61,46 @@
         type = types.str;
         default = "50-tproxy";
       };
+      # prefixed by /var/lib
+      chinaIpListDirname = mkOption {
+        type = types.str;
+        default = "nftables-china-ips"
+      };
+      chinaIPListBasename = mkOption {
+        type = types.str;
+        default = "china-ips.nft"
+      };
+      chinaIpV4Set = mkOption {
+        type = types.str;
+        default = "china-ip-list-v4"
+      };
+      chinaIpV6Set = mkOption {
+        type = types.str;
+        default = "china-ip-list-v6"
+      };
     };
-    zju-connect = {
-      enable = mkEnableOption "enable zju connect proxy";
-      socks5Port =  mkOption {
+    smartdns = {
+      enableAntiAD = mkEnableOption "enable anti ad";
+      extraSettings = mkOption {
+        type = types.str;
+        default = "";
+      };
+      domesticDnsPort = mkOption {
         type = types.int;
-        default = 7897;
+        default = 53;
+      };
+      foreignDnsPort = mkOption {
+        type = types.int;
+        default = 7898;
+      };
+    };
+    extraProxies = {
+      zju-connect = {
+        enable = mkEnableOption "enable zju connect proxy";
+        socks5Port =  mkOption {
+          type = types.int;
+          default = 7899;
+        };
       };
     };
   };
