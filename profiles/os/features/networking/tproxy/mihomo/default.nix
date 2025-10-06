@@ -293,40 +293,10 @@ in
         "-f \${CREDENTIALS_DIRECTORY}/mihomo.yaml"
         "-ext-ui ${pkgs.metacubexd}"
       ];
-
       StateDirectory = [ "mihomo" ];
       User = tproxyBypassUserCfg.name;
       Group = tproxyBypassUserCfg.name;
       LoadCredential = "mihomo.yaml:${config.sops.templates."mihomo.yaml".path}";
-
-      ### Hardening
-      #  DeviceAllow = "";
-      #  LockPersonality = true;
-      #  MemoryDenyWriteExecute = true;
-      #  NoNewPrivileges = true;
-      #  PrivateMounts = true;
-      #  PrivateTmp = true;
-      #  ProcSubset = "pid";
-      #  ProtectClock = true;
-      #  ProtectControlGroups = true;
-      #  ProtectHome = true;
-      #  ProtectHostname = true;
-      #  ProtectKernelLogs = true;
-      #  ProtectKernelModules = true;
-      #  ProtectKernelTunables = true;
-      #  ProtectProc = "invisible";
-      #  ProtectSystem = "strict";
-      #  RestrictRealtime = true;
-      #  RestrictSUIDSGID = true;
-      #  RestrictNamespaces = true;
-      #  SystemCallArchitectures = "native";
-      #  SystemCallFilter = "@system-service bpf";
-      #  UMask = "0077";
-      #  AmbientCapabilities = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
-      #  CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_BIND_SERVICE";
-      #  PrivateDevices = false;
-      #  PrivateUsers = false;
-      #  RestrictAddressFamilies = "AF_INET AF_INET6 AF_NETLINK";
     };
   };
 }

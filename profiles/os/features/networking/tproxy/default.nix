@@ -77,6 +77,10 @@
       chinaIpV6Set = mkOption {
         type = types.str;
         default = "china-ip-list-v6";
+      };    
+      updateSchedule = mkOption { 
+        type = types.str; 
+        default = "*-*-* 04:00:00"; 
       };
     };
     smartdns = {
