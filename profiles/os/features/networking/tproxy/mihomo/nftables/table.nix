@@ -43,7 +43,7 @@
       elements = { ${builtins.concatStringsSep "," cfg.outbounds} }
     }
 
-    include /var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}
+    include "/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"
     
     chain mark-prerouting {
       type filter hook prerouting priority mangle; policy accept;

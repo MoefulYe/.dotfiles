@@ -6,7 +6,7 @@
 
   configFile = pkgs.writeText "smartdns.conf" ''
     # optional use this conf file
-    conf-file /var/lib/smartdns/anti-ad-smartdns.conf
+    # conf-file /var/lib/smartdns/anti-ad-smartdns.conf
     force-AAAA-SOA yes
     proxy-server socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -name socks5
     
@@ -54,6 +54,11 @@ in {
       StateDirectory = "smartdns";
       LogsDirectory= "smartdns";
       CacheDirectory = "smartdns";
+      AmbientCapabilities="CAP_NET_BIND_SERVICE";
+      CapabilityBoundingSet="CAP_NET_BIND_SERVICE";
     };
   };
+  environment.etc."resolv.conf".text = ''
+    nameserver 119.29.29.29
+  '';
 }

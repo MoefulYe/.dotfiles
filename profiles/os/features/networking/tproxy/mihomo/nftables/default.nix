@@ -6,7 +6,7 @@
     inherit cfg;
   };
   table = pkgs.callPackage ./table.nix { 
-    inherit config mihomoCfg tproxyBypassUser;
+    inherit config mihomoCfg tproxyBypassUser cfg;
   };
   mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix { 
     inherit generateChinaIPList table cfg;

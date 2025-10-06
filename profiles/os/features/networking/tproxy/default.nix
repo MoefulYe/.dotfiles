@@ -91,7 +91,7 @@
       };
       domesticDnsPort = mkOption {
         type = types.int;
-        default = 53;
+        default = 7897;
       };
       foreignDnsPort = mkOption {
         type = types.int;

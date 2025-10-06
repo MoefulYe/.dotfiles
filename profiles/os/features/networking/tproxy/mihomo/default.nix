@@ -16,7 +16,7 @@ let
   keywordFilters = import ./regionKeywords.nix;
   regionMatchRegs = keywordFilters.regionMatchRegs;
   otherRegionMatchReg = keywordFilters.otherRegionMatchReg;
-  regions = keywordFilters.regions ++ "other-region";
+  regions = keywordFilters.regions ++ [ "other-region" ];
 
   geoip-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat";
   geosite-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat";
@@ -31,7 +31,7 @@ let
     listeners:
       - name: for-smartdns-resolve
         type: socks
-        port: ${cfg.socks5PortForSmartDnsResolving}
+        port: ${builtins.toString cfg.socks5PortForSmartDnsResolving}
         listen: 127.0.0.1
         udp: true
         proxy: DNS
@@ -40,7 +40,7 @@ let
     bind-address: "*"
     unified-delay: true
     tcp-concurrent: true
-    external-controller: ":${cfg.externalController}"
+    external-controller: ":${builtins.toString cfg.externalController}"
     secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
     global-client-fingerprint: firefox
     geodata-mode: true
@@ -242,7 +242,11 @@ let
     ])
     [
       "GEOSITE,private,DIRECT,no-resolve"
-      "GEOIP,private,DIRECT,no-resolve"
+      # TODO
+      # "GEOIP,private,DIRECT,no-resolve"
+      "IP-CIDR,10.0.0.0/8,DIRECT"
+      "IP-CIDR,172.16.0.0/12,DIRECT"
+      "IP-CIDR,192.168.0.0/16,DIRECT"
       "GEOSITE,steam@cn,DIRECT"
       "GEOSITE,CN,DIRECT"
       "GEOIP,CN,DIRECT"
@@ -297,6 +301,35 @@ in
       User = tproxyBypassUserCfg.name;
       Group = tproxyBypassUserCfg.name;
       LoadCredential = "mihomo.yaml:${config.sops.templates."mihomo.yaml".path}";
+
+      DeviceAllow = "";
+      LockPersonality = true;
+      MemoryDenyWriteExecute = true;
+      NoNewPrivileges = true;
+      PrivateMounts = true;
+      PrivateTmp = true;
+      ProcSubset = "pid";
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      RestrictNamespaces = true;
+      SystemCallArchitectures = "native";
+      SystemCallFilter = "@system-service bpf";
+      UMask = "0077";
+      AmbientCapabilities = "CAP_NET_ADMIN";
+      CapabilityBoundingSet = "CAP_NET_ADMIN";
+      PrivateDevices = false;
+      PrivateUsers = false;
+      RestrictAddressFamilies = "AF_INET AF_INET6 AF_NETLINK";
     };
   };
 }
+

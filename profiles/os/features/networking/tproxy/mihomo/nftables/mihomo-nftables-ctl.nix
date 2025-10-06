@@ -5,7 +5,7 @@
   # --- Injected Nix Variables ---
   # Nix 会自动将这些变量的值替换进来，生成一个静态的脚本
   readonly NFT_CMD="${nftables}/sbin/nft"
-  readonly CHINA_IP_LIST_FILE="${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"
+  readonly CHINA_IP_LIST_FILE="/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"
 
   # --- Main Logic ---
   case "''${1:-}" in
@@ -16,13 +16,12 @@
         echo "NOTICE: China IP list file not found. Triggering initial download..." >&2
         
         if ! ${generateChinaIPList}; then
-          echo "ERROR: The initial download service ('$UPDATE_SERVICE') failed to run." >&2
+          echo "ERROR: The initial download service failed to run." >&2
           exit 1
         fi
         
         if [ ! -f "$CHINA_IP_LIST_FILE" ]; then
           echo "ERROR: Initial download service ran, but the IP list file is still missing." >&2
-          echo "       Check the logs of '$UPDATE_SERVICE' with 'journalctl -u $UPDATE_SERVICE'." >&2
           exit 1
         fi
         echo "INFO: Initial download complete."
