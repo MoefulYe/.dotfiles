@@ -2,17 +2,14 @@
   config,
   lib,
   paths,
+  pkgs,
   ...
 }:
 let
   cfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
   user = config.osProfiles.features.tproxy.tproxyBypassUser.name;
-  inherit (paths) osModules;
 in
 {
-  imports = [
-    "${osModules}/services/zju-connect.nix"
-  ];
   config = lib.mkIf cfg.enable {
     sops.secrets = {
       STU_ID = {
@@ -30,9 +27,19 @@ in
       socks_bind = ":${builtins.toString cfg.socks5Port}"
       http_bind = ""
     '';
-    services.zju-connect = {
-      configFile = config.sops.templates."zju-connect.toml".path;
-      inherit user;
+    systemd.services.zju-connect = {
+      enable = true;
+      description = "ZJU Connect VPN Client";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config ${config.sops.templates."zju-connect.toml".path}";
+        Restart = "on-failure";
+        RestartSec = "5s";
+        User = user;
+        Group = user;
+      };
     };
   };
 }
