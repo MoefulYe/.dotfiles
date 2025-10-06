@@ -111,6 +111,7 @@
   imports = [
     ./tproxy-bypass-user.nix
     ./smartdns.nix
+    ./sys-fw.nix
     ./mihomo
     ./extra-proxies
   ];

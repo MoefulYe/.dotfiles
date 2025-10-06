@@ -1,9 +1,6 @@
 { paths, pkgs, ... }:
 let
   inherit (paths) osProfiles osRoles;
-  kubeMasterIP = "127.0.0.1";
-  kubeMasterHostname = "api.kube";
-  kubeMasterAPIServerPort = 6443;
 in
 {
   imports = [

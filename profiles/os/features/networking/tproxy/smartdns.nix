@@ -42,6 +42,8 @@
   '';
 in {
   services.resolved.enable = false;
+  services.nscd.enable = false;
+  system.nssModules = lib.mkForce [];
   systemd.services."my-smartdns" = {
     enable = true; 
     requires = [ "network-online.target" ];

@@ -26,8 +26,8 @@ let
   basic-config = ''
     mode: rule
     ipv6: false
-    tproxy-port: ${builtins.toString cfg.tproxyPort}
     socks-port: ${builtins.toString cfg.socks5Port}
+    tproxy-port: ${builtins.toString cfg.tproxyPort}
     listeners:
       - name: for-smartdns-resolve
         type: socks
@@ -79,6 +79,9 @@ let
         - 'geosite:private'
         - 'rule-set:zju-intranet-domain'
         - 'rule-set:bypass-fake-ip'
+      fallback:
+        - tls://8.8.4.4
+        - tls://1.1.1.1
   '';
 
   proxy-providers = [
@@ -243,7 +246,7 @@ let
     [
       "GEOSITE,private,DIRECT,no-resolve"
       # TODO
-      # "GEOIP,private,DIRECT,no-resolve"
+      "GEOIP,private,DIRECT,no-resolve"
       "IP-CIDR,10.0.0.0/8,DIRECT"
       "IP-CIDR,172.16.0.0/12,DIRECT"
       "IP-CIDR,192.168.0.0/16,DIRECT"
