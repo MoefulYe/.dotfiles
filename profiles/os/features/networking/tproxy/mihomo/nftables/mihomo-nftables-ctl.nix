@@ -15,7 +15,7 @@
       if [ ! -f "$CHINA_IP_LIST_FILE" ]; then
         echo "NOTICE: China IP list file not found. Triggering initial download..." >&2
         
-        if ! ${generateChinaIPList}; then
+        if ! ${generateChinaIPList} ; then
           echo "ERROR: The initial download service failed to run." >&2
           exit 1
         fi
@@ -29,6 +29,7 @@
         echo "INFO: China IP list file already exists. Skipping download."
       fi
       
+      $NFT_CMD delete table inet mihomo-tproxy || true
       if ! $NFT_CMD -f ${table}; then
         echo "ERROR: Failed to apply nftables ruleset." >&2
         exit 1

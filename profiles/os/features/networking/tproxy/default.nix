@@ -85,13 +85,18 @@
     };
     smartdns = {
       enableAntiAD = mkEnableOption "enable anti ad";
+      antiAdUpdateSchedule = mkOption { 
+        type = types.str; 
+        default = "*-*-* 04:00:00"; 
+      };
       extraSettings = mkOption {
         type = types.str;
         default = "";
       };
+      # 在代理未运行的情况下也是默认的系统dns
       domesticDnsPort = mkOption {
         type = types.int;
-        default = 7897;
+        default = 53;
       };
       foreignDnsPort = mkOption {
         type = types.int;
@@ -110,8 +115,8 @@
   };
   imports = [
     ./tproxy-bypass-user.nix
-    ./smartdns.nix
     ./sys-fw.nix
+    ./smartdns
     ./mihomo
     ./extra-proxies
   ];

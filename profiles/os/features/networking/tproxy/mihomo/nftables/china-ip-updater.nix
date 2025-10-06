@@ -2,7 +2,7 @@
   #!${pkgs.bash}/bin/bash
   set -euo pipefail
   INPUT_FILE="/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"
-  ${generateChinaIPList}
+  ${generateChinaIPList} --try-proxy
   if [ ! -f "$INPUT_FILE" ]; then
       echo "Error: Input file not found at '$INPUT_FILE'" >&2
       exit 1

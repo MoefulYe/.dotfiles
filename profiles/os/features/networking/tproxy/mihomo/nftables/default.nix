@@ -4,6 +4,7 @@
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
   generateChinaIPList = pkgs.callPackage ./generate-china-ip-list.nix { 
     inherit cfg;
+    mihomoSocks5Port = mihomoCfg.socks5Port;
   };
   table = pkgs.callPackage ./table.nix { 
     inherit config mihomoCfg tproxyBypassUser cfg;
@@ -33,6 +34,8 @@ in
       Group = tproxyBypassUser;
       StandardOutput = "journal";
       StandardError = "journal";
+      AmbientCapabilities = "CAP_NET_ADMIN";
+      CapabilityBoundingSet = "CAP_NET_ADMIN";
     };
   };
 
