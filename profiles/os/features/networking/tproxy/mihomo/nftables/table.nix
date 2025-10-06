@@ -54,8 +54,8 @@
       tcp dport @bypass-tcp-ports return comment "bypass special ports"
       udp dport @bypass-udp-ports return comment "bypass special ports"
       fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
-      ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
-      ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
+      # ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
+      # ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
       meta l4proto { tcp, udp } tproxy to :$MIHOMO_TPROXY_PORT meta mark set $TPROXY_MARK return comment "redirect to tproxy port"
     }            
     chain mark-output {
@@ -67,8 +67,8 @@
       tcp dport @bypass-tcp-ports return comment "bypass special ports"
       udp dport @bypass-udp-ports return comment "bypass special ports"
       fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
-      ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
-      ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
+      # ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
+      # ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
       meta l4proto { tcp, udp } meta mark set $TPROXY_MARK return comment "mark traffic for routing to prerouting chain"
     }
     
