@@ -47,35 +47,34 @@
     
     chain mark-prerouting {
       type filter hook prerouting priority mangle; policy accept;
-      meta l4proto { tcp, udp } socket transparent 1 mark set $TPROXY_MARK accept comment "mark already proxied traffic"
-      socket transparent 0 socket wildcard 0 accept comment "bypass non-transparent sockets"
-      ip daddr @bypass-ipv4 accept comment "bypass special IPv4 addresses"
-      ip6 daddr @bypass-ipv6 accept comment "bypass special IPv6 addresses"
-      tcp dport @bypass-tcp-ports accept comment "bypass special ports"
-      udp dport @bypass-udp-ports accept comment "bypass special ports"
-      fib daddr type { local, broadcast, anycast, multicast } accept comment "bypass local/broadcast/multicast addresses"
-      ip daddr @${cfg.chinaIpV4Set} accept comment "bypass China IPv4 addresses"
-      ip6 daddr @${cfg.chinaIpV6Set} accept comment "bypass China IPv6 addresses"
-      meta l4proto { tcp, udp } tproxy to :$MIHOMO_TPROXY_PORT meta mark set $TPROXY_MARK  log prefix "tproxy-debug: " accept comment "redirect to tproxy port" 
+      meta l4proto { tcp, udp } socket transparent 1 mark set $TPROXY_MARK return comment "mark already proxied traffic"
+      socket transparent 0 socket wildcard 0 return comment "bypass non-transparent sockets"
+      ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
+      ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
+      tcp dport @bypass-tcp-ports return comment "bypass special ports"
+      udp dport @bypass-udp-ports return comment "bypass special ports"
+      fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
+      # ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
+      # ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
+      meta l4proto { tcp, udp } tproxy to :$MIHOMO_TPROXY_PORT meta mark set $TPROXY_MARK return comment "redirect to tproxy port"
     }            
-
     chain mark-output {
       type route hook output priority mangle; policy accept;
-      oif != @outbounds accept comment "bypass internal traffic"
-      meta skuid $BYPASS_USER accept comment "bypass mihomo and resolved traffic to prevent loops"
-      ip daddr @bypass-ipv4 accept comment "bypass special IPv4 addresses"
-      ip6 daddr @bypass-ipv6 accept comment "bypass special IPv6 addresses"
-      tcp dport @bypass-tcp-ports accept comment "bypass special ports"
-      udp dport @bypass-udp-ports accept comment "bypass special ports"
-      fib daddr type { local, broadcast, anycast, multicast } accept comment "bypass local/broadcast/multicast addresses"
-      ip daddr @${cfg.chinaIpV4Set} accept comment "bypass China IPv4 addresses"
-      ip6 daddr @${cfg.chinaIpV6Set} accept comment "bypass China IPv6 addresses"
-      meta l4proto { tcp, udp } meta mark set $TPROXY_MARK accept comment "mark traffic for routing to prerouting chain"
+      oif != @outbounds return comment "bypass internal traffic"
+      meta skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
+      ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
+      ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
+      tcp dport @bypass-tcp-ports return comment "bypass special ports"
+      udp dport @bypass-udp-ports return comment "bypass special ports"
+      fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
+      # ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
+      # ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
+      meta l4proto { tcp, udp } meta mark set $TPROXY_MARK return comment "mark traffic for routing to prerouting chain"
     }
     
     chain redirect-dns {
       type nat hook output priority dstnat; policy accept;
-      meta skuid $BYPASS_USER accept comment "bypass mihomo and resolved dns request to prevent loops"
+      meta skuid $BYPASS_USER return comment "bypass mihomo and resolved dns request to prevent loops"
       tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
       udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
     }
