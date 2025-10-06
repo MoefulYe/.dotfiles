@@ -3,7 +3,7 @@ let
   url = "https://anti-ad.net/anti-ad-for-smartdns.conf";
 in
 pkgs.writeShellScript "anti-ad-downloader" ''
-  #!${pkgs.bash}/bi  #!${pkgs.bash}/bin/bash
+  #!${pkgs.bash}/bin/bash
   set -e
   set -o pipefail
 
@@ -67,7 +67,7 @@ pkgs.writeShellScript "anti-ad-downloader" ''
     fi
 
     # 旧逻辑/回退逻辑：直接连接
-    echo "[*] Fetching directly from $PRIMARY_URL..." >&2
+    echo "[*] Fetching directly" >&2
     downloaded_data=$("${pkgs.curl}/bin/curl" -sSL --fail --connect-timeout $CONNECT_TIMEOUT "${url}" || true)
 
     if [[ -n "$downloaded_data" ]]; then
@@ -82,11 +82,11 @@ pkgs.writeShellScript "anti-ad-downloader" ''
   echo "[+] Starting anti-AD list download process..."
   readonly file_content=$(fetch_file)
   # --- 原子化写入文件 ---
-  TEMP_OUTPUT_FILE=$(mktemp)
-  trap "rm -f \"$TEMP_OUTPUT_FILE\"" EXIT # 脚本退出时自动清理临时文件
+  TEMP_OUTPUT_FILE=$(${pkgs.mktemp}/bin/mktemp)
+  trap "${pkgs.coreutils}/bin/rm -f \"$TEMP_OUTPUT_FILE\"" EXIT # 脚本退出时自动清理临时文件
   echo "[*] Writing content to temporary file..." >&2
   echo "$file_content" > "$TEMP_OUTPUT_FILE"
   echo "[*] Atomically replacing old list file..." >&2
-  mv "$TEMP_OUTPUT_FILE" "$DEST_FILE"
+  ${pkgs.coreutils}/bin/mv "$TEMP_OUTPUT_FILE" "$DEST_FILE"
   echo "[+] Success! anti-AD list updated at $DEST_FILE" >&2
 ''

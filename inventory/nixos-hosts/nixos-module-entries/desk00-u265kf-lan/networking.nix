@@ -15,6 +15,9 @@ in
     nftables = {
       inherit outbounds;
     };
+    smartdns = {
+      enableAntiAD = true;
+    };
   };
   networking.interfaces.wlp128s20f3.useDHCP = true;
   networking.interfaces.enp131s0.useDHCP = true;

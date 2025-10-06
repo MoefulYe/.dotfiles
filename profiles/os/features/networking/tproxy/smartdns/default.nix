@@ -49,6 +49,12 @@
   ensureAntiAdExist = pkgs.callPackage ./ensure-anti-ad-exist.nix {
     inherit antiAdDownloader;
   };
+  smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
+    #!${pkgs.bash}/bin/bash
+    if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
+      ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
+    fi
+  '';
 in {
   services.resolved.enable = false;
   services.nscd.enable = false;
@@ -75,6 +81,7 @@ in {
   };
   environment.etc."resolv.conf".text = ''
     nameserver 127.0.0.1
+    nameserver 119.29.29.29
   '';
   systemd.services."anti-ad-updater" = {
     enable = cfg.enableAntiAD;
@@ -92,6 +99,7 @@ in {
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = cfg.antiAdUpdateSchedule;
+      RandomizedDelaySec = "15min";
       Persistent = false;
     };
   };
@@ -99,7 +107,7 @@ in {
     enable = cfg.enableAntiAD;
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.systemd}/bin/systemctl reload ${cfg.serviceToReload}";
+      ExecStart = "${smartdnsReloader}";
     };
   };
   systemd.paths."smartdns-reloader" = {
