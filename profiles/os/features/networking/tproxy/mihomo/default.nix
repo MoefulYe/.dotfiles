@@ -9,7 +9,7 @@
 let
   cfg = config.osProfiles.features.tproxy.mihomo;
   zjuCfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
-  tproxyBypassUserCfg = config.osProfiles.features.tproxy.tproxyBypassUserCfg;
+  tproxyBypassUserCfg = config.osProfiles.features.tproxy.tproxyBypassUser;
   smartdnsCfg = config.osProfiles.features.tproxy.smartdns;
 
   mkConfig = import ./mkConfig.nix;

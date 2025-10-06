@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
+  user = config.osProfiles.features.tproxy.tproxyBypassUser.name;
   inherit (paths) osModules;
 in
 {
@@ -31,6 +32,7 @@ in
     '';
     services.zju-connect = {
       configFile = config.sops.templates."zju-connect.toml".path;
+      inherit user;
     };
   };
 }
