@@ -2,10 +2,10 @@
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
-    ./settings.nix
-    ./autocmds.nix
-    ./keymaps.nix
-    ./plugins
+    # ./settings.nix
+    # ./autocmds.nix
+    # ./keymaps.nix
+    # ./plugins
   ];
-  programs.nixvim.enable = true;
+  # programs.nixvim.enable = true;
 }
