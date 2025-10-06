@@ -61,7 +61,7 @@
     chain mark-output {
       type route hook output priority mangle; policy accept;
       oif != @outbounds return comment "bypass internal traffic"
-      skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
+      meta skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
       ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
       ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
       tcp dport @bypass-tcp-ports return comment "bypass special ports"
@@ -74,7 +74,7 @@
     
     chain redirect-dns {
       type nat hook output priority dstnat; policy accept;
-      skuid $BYPASS_USER return comment "bypass mihomo and resolved dns request to prevent loops"
+      meta skuid $BYPASS_USER return comment "bypass mihomo and resolved dns request to prevent loops"
       tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
       udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
     }
