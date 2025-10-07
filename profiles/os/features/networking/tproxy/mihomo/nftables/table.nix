@@ -60,6 +60,8 @@
     }            
     chain mark-output {
       type route hook output priority mangle; policy accept;
+      ct mark 0x1 meta mark set 0x1 accept comment "fastpath for proxied connections"
+		  ct state established,related accept comment "fastpath for direct connections"
       oif != @outbounds return comment "bypass internal traffic"
       meta skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
       ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
@@ -69,7 +71,7 @@
       fib daddr type { local, broadcast, anycast, multicast } return comment "bypass local/broadcast/multicast addresses"
       ip daddr @${cfg.chinaIpV4Set} return comment "bypass China IPv4 addresses"
       ip6 daddr @${cfg.chinaIpV6Set} return comment "bypass China IPv6 addresses"
-      meta l4proto { tcp, udp } meta mark set $TPROXY_MARK return comment "mark traffic for routing to prerouting chain"
+      meta l4proto { tcp, udp } meta mark set $TPROXY_MARK ct mark set 0x1 return comment "mark traffic for routing to prerouting chain"
     }
     
     chain redirect-dns {
