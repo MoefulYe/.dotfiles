@@ -29,7 +29,7 @@ in
     "${hmProfiles}/features/viewers/imv.nix"
     "${hmProfiles}/features/viewers/zathura.nix"
     "${hmProfiles}/features/llms/codex.nix"
-    "${hmProfiles}/features/llms/gemini.nix"
+    "${hmProfiles}/features/llms/gemini"
     "${hmProfiles}/features/llms/cherry-studio.nix"
   ];
 }
