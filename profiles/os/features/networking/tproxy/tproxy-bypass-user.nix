@@ -1,7 +1,9 @@
-{ config, ... }: let 
+{ config, ... }:
+let
   cfg = config.osProfiles.features.tproxy.tproxyBypassUser;
   inherit (cfg) name uid;
-in {
+in
+{
   users = {
     users."${name}" = {
       group = name;

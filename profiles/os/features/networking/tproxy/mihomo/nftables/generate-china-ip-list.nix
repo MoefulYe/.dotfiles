@@ -1,5 +1,10 @@
-{ pkgs, cfg, mihomoSocks5Port, ... }: 
-let 
+{
+  pkgs,
+  cfg,
+  mihomoSocks5Port,
+  ...
+}:
+let
   chinaIpSources = rec {
     primary = {
       v4 = "https://raw.githubusercontent.com/mayaxcn/china-ip-list/master/chnroute.txt";
@@ -10,7 +15,8 @@ let
       v6 = "https://hub.gitmirror.com/${primary.v6}";
     };
   };
-in pkgs.writeShellScript "generate-china-ip-list" ''
+in
+pkgs.writeShellScript "generate-china-ip-list" ''
   #!${pkgs.bash}/bin/bash
   set -e
   set -o pipefail
@@ -92,7 +98,7 @@ in pkgs.writeShellScript "generate-china-ip-list" ''
 
   IPV6_CIDRS=$(fetch_and_format_cidrs "$URL_IPV6_PRIMARY" "$URL_IPV6_FALLBACK")
   IPV6_CIDRS=$(echo "$IPV6_CIDRS" | "${pkgs.gnused}/bin/sed" '$s/, *$//')
-  
+
   # --- 文件生成部分 (保持不变) ---
   TEMP_OUTPUT_FILE="$(mktemp "$DIR/temp-XXXXXX.nft")"
   trap "rm -f \"$TEMP_OUTPUT_FILE\"" EXIT
@@ -107,9 +113,9 @@ in pkgs.writeShellScript "generate-china-ip-list" ''
   $IPV6_CIDRS
   } }
   EOF
-  
+
   echo "[*] Atomically replacing old IP list file..." >&2
   mv "$TEMP_OUTPUT_FILE" "$DIR/$OUTPUT_NFT_FILE"
-  
+
   echo -e "\n[+] Success! Nftables set definitions written to '$DIR/$OUTPUT_NFT_FILE'" >&2
 ''

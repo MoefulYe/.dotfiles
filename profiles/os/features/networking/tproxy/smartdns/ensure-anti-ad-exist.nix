@@ -1,4 +1,5 @@
-{ antiAdDownloader, pkgs, ... }: pkgs.writeShellScript "ensure-anti-ad-exist" ''
+{ antiAdDownloader, pkgs, ... }:
+pkgs.writeShellScript "ensure-anti-ad-exist" ''
   ANTI_AD_FILE=/var/lib/smartdns/anti-ad-smartdns.conf
   if [ ! -f "$ANTI_AD_FILE" ]; then
     echo "NOTICE: file not found. Triggering initial download..." >&2

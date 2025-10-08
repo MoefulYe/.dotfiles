@@ -112,16 +112,14 @@ let
   });
 
   proxies = builtins.concatLists [
-    (
-      lib.lists.optionals zjuCfg.enable [
-        {
-          name = "zju-connect";
-          type = "socks5";
-          server = "localhost";
-          port = zjuCfg.socks5Port;
-        }
-      ]
-    )
+    (lib.lists.optionals zjuCfg.enable [
+      {
+        name = "zju-connect";
+        type = "socks5";
+        server = "localhost";
+        port = zjuCfg.socks5Port;
+      }
+    ])
   ];
 
   rule-providers = {
@@ -148,7 +146,7 @@ let
       behavior = "classical";
       type = "inline";
       payload = [
-      	"PROCESS-NAME,qbittorrent"
+        "PROCESS-NAME,qbittorrent"
       ];
     };
     # https://linux.do/t/topic/688182
@@ -314,18 +312,21 @@ let
   rule-providers' =
     rule-providers
     |> builtins.mapAttrs (
-      name: value: (
-        if value.type == "http" 
-        then {
-          behavior = "domain";
-          path = "./rule-providers/${name}";
-          interval = 86400;
-        } // value 
-        else value
+      name: value:
+      (
+        if value.type == "http" then
+          {
+            behavior = "domain";
+            path = "./rule-providers/${name}";
+            interval = 86400;
+          }
+          // value
+        else
+          value
       )
     );
 
-  proxy-groups-by-region = 
+  proxy-groups-by-region =
     (
       regionMatchRegs
       |> (builtins.mapAttrs (
@@ -374,14 +375,14 @@ let
         name = "all-exclude-hk";
         type = "url-test";
         use = proxy-providers;
-	exclude-filter = regionMatchRegs.hk;
+        exclude-filter = regionMatchRegs.hk;
       }
       {
         name = "auto-fast-exclude-hk";
         type = "url-test";
         use = proxy-providers;
         tolerance = 2;
-	exclude-filter = regionMatchRegs.hk;
+        exclude-filter = regionMatchRegs.hk;
       }
       {
         name = "manual";
@@ -410,13 +411,13 @@ let
       }
       {
         name = "DNS";
-	type = "fallback";
-	proxies = [
-	  "universal"
-	  "DIRECT"
-	];
-	url = "https://www.gstatic.com/generate_204";
-	interval = 300;
+        type = "fallback";
+        proxies = [
+          "universal"
+          "DIRECT"
+        ];
+        url = "https://www.gstatic.com/generate_204";
+        interval = 300;
       }
       {
         name = "AI";
@@ -530,4 +531,3 @@ in
     };
   };
 }
-

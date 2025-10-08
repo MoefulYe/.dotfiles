@@ -1,4 +1,14 @@
-{ generateChinaIPList, table, writeShellScript, nftables, bash, cfg, gnugrep, ... }: writeShellScript "mihomo-nftables-ctl" ''
+{
+  generateChinaIPList,
+  table,
+  writeShellScript,
+  nftables,
+  bash,
+  cfg,
+  gnugrep,
+  ...
+}:
+writeShellScript "mihomo-nftables-ctl" ''
   #!${bash}/bin/bash
   set -euo pipefail # 启用所有健壮性选项
 

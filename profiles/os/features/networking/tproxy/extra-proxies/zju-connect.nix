@@ -34,7 +34,9 @@ in
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config ${config.sops.templates."zju-connect.toml".path}";
+        ExecStart = "${pkgs.my-pkgs.zju-connect}/bin/zju-connect -config ${
+          config.sops.templates."zju-connect.toml".path
+        }";
         Restart = "on-failure";
         RestartSec = "5s";
         User = user;

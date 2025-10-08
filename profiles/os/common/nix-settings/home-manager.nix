@@ -17,6 +17,6 @@
       inherit paths inputs inventory;
       inherit (config.osProfiles.common) hostInfo;
     };
-    backupFileExtension = "bakup";  # 禁用备份文件
+    backupFileExtension = "bakup"; # 禁用备份文件
   };
 }

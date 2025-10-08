@@ -1,4 +1,4 @@
-{ mihomoSocks5Port, pkgs,  ... }:
+{ mihomoSocks5Port, pkgs, ... }:
 let
   url = "https://anti-ad.net/anti-ad-for-smartdns.conf";
 in

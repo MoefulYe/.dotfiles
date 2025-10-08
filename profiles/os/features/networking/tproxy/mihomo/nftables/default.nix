@@ -1,15 +1,21 @@
-{ config, pkgs, ... }: let 
+{ config, pkgs, ... }:
+let
   cfg = config.osProfiles.features.tproxy.nftables;
   mihomoCfg = config.osProfiles.features.tproxy.mihomo;
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
-  generateChinaIPList = pkgs.callPackage ./generate-china-ip-list.nix { 
+  generateChinaIPList = pkgs.callPackage ./generate-china-ip-list.nix {
     inherit cfg;
     mihomoSocks5Port = mihomoCfg.socks5Port;
   };
-  table = pkgs.callPackage ./table.nix { 
-    inherit config mihomoCfg tproxyBypassUser cfg;
+  table = pkgs.callPackage ./table.nix {
+    inherit
+      config
+      mihomoCfg
+      tproxyBypassUser
+      cfg
+      ;
   };
-  mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix { 
+  mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix {
     inherit generateChinaIPList table cfg;
   };
   chinaIpUpdater = pkgs.callPackage ./china-ip-updater.nix {

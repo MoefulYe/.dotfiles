@@ -1,4 +1,6 @@
-{ lib, ... }: with lib; {
+{ lib, ... }:
+with lib;
+{
   # 参考
   # https://wiki.metacubex.one/handbook/
   # https://clash.wiki/
@@ -77,17 +79,17 @@
       chinaIpV6Set = mkOption {
         type = types.str;
         default = "china-ip-list-v6";
-      };    
-      updateSchedule = mkOption { 
-        type = types.str; 
-        default = "*-*-* 04:00:00"; 
+      };
+      updateSchedule = mkOption {
+        type = types.str;
+        default = "*-*-* 04:00:00";
       };
     };
     smartdns = {
       enableAntiAD = mkEnableOption "enable anti ad";
-      antiAdUpdateSchedule = mkOption { 
-        type = types.str; 
-        default = "*-*-* 04:00:00"; 
+      antiAdUpdateSchedule = mkOption {
+        type = types.str;
+        default = "*-*-* 04:00:00";
       };
       extraSettings = mkOption {
         type = types.str;
@@ -106,7 +108,7 @@
     extraProxies = {
       zju-connect = {
         enable = mkEnableOption "enable zju connect proxy";
-        socks5Port =  mkOption {
+        socks5Port = mkOption {
           type = types.int;
           default = 7899;
         };

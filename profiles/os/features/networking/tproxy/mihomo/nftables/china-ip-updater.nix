@@ -1,4 +1,11 @@
-{ writeShellScript, generateChinaIPList, pkgs, cfg, ... }: writeShellScript "china-ip-updater" ''
+{
+  writeShellScript,
+  generateChinaIPList,
+  pkgs,
+  cfg,
+  ...
+}:
+writeShellScript "china-ip-updater" ''
   #!${pkgs.bash}/bin/bash
   set -euo pipefail
   INPUT_FILE="/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"

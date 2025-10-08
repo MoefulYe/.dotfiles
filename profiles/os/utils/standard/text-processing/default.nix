@@ -1,7 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     ripgrep
-    jq 
+    jq
     yq-go
   ];
 }

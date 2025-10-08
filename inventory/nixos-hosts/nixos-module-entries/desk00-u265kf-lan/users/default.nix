@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   osProfiles.common.users = {
     ashenye = {
       osConfig = {
@@ -17,7 +18,7 @@
           "ubridge"
           "podman"
         ];
-      	shell = pkgs.zsh;
+        shell = pkgs.zsh;
       };
       hmEntry = ./ashenye.nix;
       userInfo = {
