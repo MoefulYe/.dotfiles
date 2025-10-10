@@ -21,4 +21,7 @@ in
   };
   networking.interfaces.wlp128s20f3.useDHCP = true;
   networking.interfaces.enp131s0.useDHCP = true;
+
+  systemd.network.networks."40-enp131s0".dhcpV4Config.RouteMetric = 100;
+  systemd.network.networks."40-wlp128s20f3".dhcpV4Config.RouteMetric = 200;
 }
