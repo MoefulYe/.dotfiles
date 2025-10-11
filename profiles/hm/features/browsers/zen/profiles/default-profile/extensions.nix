@@ -81,8 +81,8 @@ in
     # ai
     chatgptbox
     # 去广告 FIXME 当前地区不可用？？？？
-    # ublock-origin
-    ublock-origin'
+    ublock-origin
+    # ublock-origin'
     # 隔离
     containerise
     user-agent-string-switcher
