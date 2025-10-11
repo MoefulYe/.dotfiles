@@ -13,6 +13,7 @@ in
     ./hardware-configuration.nix
     ./networking.nix
     ./bootloader.nix
+    ./libvirtd.nix
     ./users
   ];
 }

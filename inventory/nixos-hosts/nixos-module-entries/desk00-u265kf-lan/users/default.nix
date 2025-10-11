@@ -13,10 +13,12 @@
           "audio"
           "input"
           "docker"
-          "libvirt"
           "wireshark"
           "ubridge"
           "podman"
+          "libvirtd"
+          "libvirt"
+	  "kvm"
         ];
         shell = pkgs.zsh;
       };
