@@ -2,7 +2,8 @@
   users.groups.libvirt = {};
   users.groups.kvm = {};
   virtualisation.libvirtd = {
-    enable = true;
+    # enable = true;
+    enable = false;
     extraConfig = ''
       unix_sock_group = "libvirt"
     '';
