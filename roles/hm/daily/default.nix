@@ -9,7 +9,6 @@ in
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/desktop"
     "${hmProfiles}/features/browsers/zen"
-    "${hmProfiles}/features/communicating/cn.nix"
     "${hmProfiles}/features/development/code.nix"
     # "${hmProfiles}/features/development/cursor.nix"
     "${hmProfiles}/features/development/git.nix"
@@ -34,5 +33,6 @@ in
     "${hmProfiles}/features/llms/cherry-studio.nix"
     "${hmProfiles}/features/instant-messengers/discord.nix"
     "${hmProfiles}/features/instant-messengers/telegram.nix"
+    "${hmProfiles}/features/instant-messengers/cn.nix"
   ];
 }
