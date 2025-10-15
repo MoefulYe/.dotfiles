@@ -32,5 +32,7 @@ in
     "${hmProfiles}/features/llms/codex.nix"
     "${hmProfiles}/features/llms/gemini"
     "${hmProfiles}/features/llms/cherry-studio.nix"
+    "${hmProfiles}/features/instant-messengers/discord.nix"
+    "${hmProfiles}/features/instant-messengers/telegram.nix"
   ];
 }
