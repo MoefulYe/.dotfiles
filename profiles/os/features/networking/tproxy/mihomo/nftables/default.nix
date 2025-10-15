@@ -55,18 +55,24 @@ in
   };
   systemd.network.networks."${cfg.networkdUnitName}" = {
     name = "lo";
-    routes = [
-      {
-        Scope = "host";
-        Table = 100;
-        Destination = "0.0.0.0/0";
-      }
-    ];
     routingPolicyRules = [
       {
         Family = "both";
         FirewallMark = builtins.toString cfg.tproxyMark;
         Priority = 10;
+        Table = 100;
+      }
+    ];
+
+    routes = [
+      {
+        Destination = "0.0.0.0/0";
+        Type = "local";
+        Table = 100;
+      }
+      {
+        Destination = "::/0";
+        Type = "local";
         Table = 100;
       }
     ];

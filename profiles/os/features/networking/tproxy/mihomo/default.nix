@@ -57,7 +57,7 @@ let
       prefer-h3: false
       use-hosts: true
       use-system-hosts: true
-      listen: 127.0.0.1:${builtins.toString cfg.dnsPort}
+      listen: :${builtins.toString cfg.dnsPort}
       ipv6: false
       enhanced-mode: fake-ip
       fake-ip-range: 198.18.0.1/16

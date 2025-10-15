@@ -26,8 +26,6 @@ in
   networking.firewall.enable = false;
   networking.nftables = {
     enable = true;
-    checkRuleset = false;
-    flushRuleset = true;
     tables."sys-fw" = {
       enable = true;
       family = "inet";
@@ -65,7 +63,7 @@ in
 
         chain input {
                 type filter hook input priority filter; policy drop;
-                iif "lo" accept comment "trusted interfaces"
+                iifname != @outbounds accept comment "allow conn from internal network"
                 ct state vmap { invalid : drop, established : accept, related : accept, new : jump input-allow, untracked : jump input-allow }
                 tcp flags & (fin | syn | rst | ack) == syn log prefix "refused connection: " level info
         }
@@ -73,7 +71,6 @@ in
         chain input-allow {
                 tcp dport @exposed-tcp-ports accept
                 udp dport @exposed-udp-ports accept
-                iifname != @outbounds return comment "allow conn from internal network"
                 meta l4proto . th dport @temp-ports accept
                 icmp type echo-request accept comment "allow ping"
                 icmpv6 type != { nd-redirect, 139 } accept comment "Accept all ICMPv6 messages except redirects and node information queries (type 139).  See RFC 4890, section 4.4."
