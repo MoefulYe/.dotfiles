@@ -1,5 +1,6 @@
 { config, lib, ... }:
 let
+  cfg = config.osProfiles.features.tproxy.nftables;
   exposed =
     let
       cfg = config.networking.firewall;
@@ -47,6 +48,11 @@ in
                 elements = { ${exposed.udp} }
         }
 
+        set outbounds {
+          type ifname
+          elements = { ${builtins.concatStringsSep "," cfg.outbounds} }
+        }
+
         # chain rpfilter {
         #         type filter hook prerouting priority mangle + 10; policy drop;
         #         meta nfproto ipv4 udp sport . udp dport { 68 . 67, 67 . 68 } accept comment "DHCPv4 client/server"
@@ -67,6 +73,7 @@ in
         chain input-allow {
                 tcp dport @exposed-tcp-ports accept
                 udp dport @exposed-udp-ports accept
+                iifname != @outbounds return comment "allow conn from internal network"
                 meta l4proto . th dport @temp-ports accept
                 icmp type echo-request accept comment "allow ping"
                 icmpv6 type != { nd-redirect, 139 } accept comment "Accept all ICMPv6 messages except redirects and node information queries (type 139).  See RFC 4890, section 4.4."

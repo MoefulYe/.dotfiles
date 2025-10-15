@@ -15,7 +15,6 @@ in
     "${hmProfiles}/features/development/git.nix"
     "${hmProfiles}/features/development/kitty.nix"
     "${hmProfiles}/features/development/ssh"
-    "${hmProfiles}/features/development/ssh/github-avoid-port22.nix"
     "${hmProfiles}/features/development/shell"
     "${hmProfiles}/features/development/neovim"
     "${hmProfiles}/features/development/nix"

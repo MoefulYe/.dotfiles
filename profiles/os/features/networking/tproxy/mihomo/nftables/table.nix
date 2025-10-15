@@ -46,7 +46,7 @@ writeText "mihomo-tproxy.nft" ''
         elements = { 53, 67, 68, 123 }
       }
       set outbounds {
-        type iface_index
+        type ifname
         elements = { ${builtins.concatStringsSep "," cfg.outbounds} }
       }
 
@@ -69,7 +69,7 @@ writeText "mihomo-tproxy.nft" ''
         type route hook output priority mangle; policy accept;
         ct mark 0x1 meta mark set 0x1 accept comment "fastpath for proxied connections"
   		  ct state established,related accept comment "fastpath for direct connections"
-        oif != @outbounds return comment "bypass internal traffic"
+        oifname != @outbounds return comment "bypass internal traffic"
         meta skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
         ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
         ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
@@ -81,11 +81,17 @@ writeText "mihomo-tproxy.nft" ''
         meta l4proto { tcp, udp } meta mark set $TPROXY_MARK ct mark set 0x1 return comment "mark traffic for routing to prerouting chain"
       }
       
-      chain redirect-dns {
+      chain redirect-dns-output {
         type nat hook output priority dstnat; policy accept;
         meta skuid $BYPASS_USER return comment "bypass mihomo and resolved dns request to prevent loops"
         tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
         udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
+      }
+
+      chain redirect-dns-prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+        tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect incoming DNS to mihomo"
+        udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect incoming DNS to mihomo"
       }
     }
 ''
