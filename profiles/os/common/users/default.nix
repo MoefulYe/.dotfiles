@@ -54,7 +54,6 @@ in
               inherit username;
               homeDirectory = sysCfg.users.users."${username}".home;
             };
-            # 备份文件行为现在通过 home-manager.backupFileExtension = null 全局控制
           };
         }
       ));

@@ -1,9 +1,9 @@
-{ pkgs, ... }: { 
-  users.groups.libvirt = {};
-  users.groups.kvm = {};
+{ pkgs, ... }:
+{
+  users.groups.libvirt = { };
+  users.groups.kvm = { };
   virtualisation.libvirtd = {
-    # enable = true;
-    enable = false;
+    enable = true;
     extraConfig = ''
       unix_sock_group = "libvirt"
     '';
@@ -13,10 +13,12 @@
       swtpm.enable = true;
       # ovmf = {
       #   enable = true;
-      #   packages = [(pkgs.OVMF.override {
-      #     secureBoot = true;
-      #     tpmSupport = true;
-      #   }).fd];
+      #   packages = [
+      #     (pkgs.OVMF.override {
+      #       secureBoot = true;
+      #       tpmSupport = true;
+      #     }).fd
+      #   ];
       # };
     };
   };

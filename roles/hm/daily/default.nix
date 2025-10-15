@@ -11,7 +11,7 @@ in
     "${hmProfiles}/features/browsers/zen"
     "${hmProfiles}/features/communicating/cn.nix"
     "${hmProfiles}/features/development/code.nix"
-    "${hmProfiles}/features/development/cursor.nix"
+    # "${hmProfiles}/features/development/cursor.nix"
     "${hmProfiles}/features/development/git.nix"
     "${hmProfiles}/features/development/kitty.nix"
     "${hmProfiles}/features/development/ssh"

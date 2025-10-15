@@ -4,8 +4,8 @@
   # 不过幸运的是 GITHUB 提供了另外一种连接方式，可以走 443 端口
   programs.ssh.matchBlocks = {
     "github.com" = {
-      "Hostname" = "ssh.github.com";
-      "Port" = "443";
+      hostname = "ssh.github.com";
+      port = 443;
     };
   };
 }
