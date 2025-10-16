@@ -5,4 +5,6 @@
   nixosHosts = import ./nixos-hosts;
   # 内部的受自己管理的非nixos主机
   nonNixosHosts = import ./non-nixos-hosts;
+  # 使用home-manager管理的用户
+  hmUsers = import ./hm-users;
 }

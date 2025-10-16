@@ -1,6 +1,6 @@
 { inventory, paths, ... }:
 let
-  inherit (paths) hmRoles hmProfiles;
+  inherit (paths) hmRoles;
 in
 {
   imports = [
