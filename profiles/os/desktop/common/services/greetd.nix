@@ -9,7 +9,7 @@
     enable = true;
     settings =
       let
-        inherit (config.osProfiles.common.hostInfo) priUser;
+        inherit (config.osProfiles.hostInfo) priUser;
       in
       {
         default_session = {

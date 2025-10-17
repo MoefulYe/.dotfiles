@@ -1,24 +1,43 @@
 {
   hmUsers,
-  nixpkgs,
+  hosts,
   specialArgs,
+  home-manager,
+  nixpkgs,
   ...
 }:
 hmUsers
 |> builtins.mapAttrs (
-  hostname:
+  fullyQualifiedUserName:
   {
     mainModule,
     extraModules ? [ ],
-    hostInfo,
+    userInfo ? { },
   }:
-  nixpkgs.lib.nixosSystem {
-    inherit specialArgs;
+  let
+    splitFullyQualifiedUsername = import ./splitFullyQualifiedUsername.nix;
+    inherit (splitFullyQualifiedUsername fullyQualifiedUserName) username hostname;
+    hostInfo = hosts."${hostname}".hostInfo or { };
+  in
+  home-manager.lib.homeManagerConfiguration {
+    pkgs = nixpkgs.legacyPackages."${hostInfo.system or "x86_64-linux"}";
+    extraSpecialArgs = specialArgs // {
+      inherit
+        fullyQualifiedUserName
+        username
+        hostname
+        ;
+      hostInfo = hostInfo // {
+        inherit hostname;
+      };
+      userInfo = userInfo // {
+        inherit username;
+      };
+    };
     modules = [
       {
         imports = extraModules ++ [ mainModule ];
-        config.osProfiles.common.hostInfo.hostname = hostname;
-        config.networking.hostName = hostname;
+        home.username = username;
       }
     ];
   }

@@ -10,16 +10,19 @@ nixosHosts
   {
     mainModule,
     extraModules ? [ ],
-    hostInfo,
+    hostInfo ? { },
   }:
   nixpkgs.lib.nixosSystem {
     system = hostInfo.system;
-    inherit specialArgs;
+    specialArgs = specialArgs // {
+      hostInfo = hostInfo // {
+        inherit hostname;
+      };
+    };
     modules = [
       {
         imports = extraModules ++ [ mainModule ];
-        config.osProfiles.common.hostInfo.hostname = hostname;
-        config.networking.hostName = hostname;
+        config.networking.hostName = hostInfo.hostname;
       }
     ];
   }

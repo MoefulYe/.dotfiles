@@ -3,6 +3,7 @@
   paths,
   config,
   pkgs,
+  hostInfo,
   ...
 }:
 
@@ -506,7 +507,7 @@ in
   ];
   sops.secrets = {
     MIHOMO_WEB_UI_PASSWD = {
-      sopsFile = "${paths.secrets}/per-host/${config.osProfiles.common.hostInfo.hostname}/default.yaml";
+      sopsFile = "${paths.secrets}/per-host/${hostInfo.hostname}/default.yaml";
     };
   }
   // (

@@ -52,12 +52,14 @@
       self,
       nixpkgs,
       flake-utils,
+      home-manager,
       ...
     }@inputs:
     let
       inventory = import ./inventory;
+      me = import ./me.nix;
       specialArgs = {
-        inherit inputs inventory;
+        inherit inputs inventory me;
         outputs = self;
         paths = rec {
           root = "${self}";
@@ -67,6 +69,7 @@
           myPackages = "${root}/packages";
           osProfiles = "${root}/profiles/os";
           hmProfiles = "${root}/profiles/hm";
+          sharedProfiles = "${root}/profiles/shared";
           myOverlays = "${root}/overlays";
           osRoles = "${root}/roles/os";
           hmRoles = "${root}/roles/hm";
@@ -76,6 +79,7 @@
       };
       inherit (inventory) nixosHosts;
       mkNixosConfigs = import ./helpers/mkNixosConfigs.nix;
+      mkHmConfigs = import ./helpers/mkHmConfigs.nix;
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -91,6 +95,10 @@
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = mkNixosConfigs {
         inherit nixosHosts nixpkgs specialArgs;
+      };
+      homeManagerConfigurations = mkHmConfigs {
+        inherit (inventory) hmUsers hosts;
+        inherit nixpkgs specialArgs home-manager;
       };
     };
 }

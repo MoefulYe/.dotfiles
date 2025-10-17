@@ -1,12 +1,17 @@
 {
   outputs,
+  paths,
   ...
 }:
 let
-  stateVersion = "25.05";
+  inherit (paths) sharedProfiles;
   overlays = (builtins.attrValues outputs.overlays);
 in
 {
+  imports = [
+    "${sharedProfiles}/os/common/nix-settings/nix-conf-settings.nix"
+    "${sharedProfiles}/os/common/nix-settings/nixpkgs.nix"
+  ];
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -14,31 +19,9 @@ in
     };
     inherit overlays;
   };
-  nix = {
-    channel.enable = false;
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "pipe-operators"
-      ];
-      substituters = [
-        "https://mirrors.ustc.edu.cn/nix-channels/store"
-        "https://mirror.sjtu.edu.cn/nix-channels/store"
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-      trusted-users = [
-        "root"
-        "@wheel"
-      ];
-    };
-  };
-
-  system = {
-    inherit stateVersion;
-  };
+  nix.settings.trusted-users = [
+    "root"
+    "@wheel"
+  ];
+  system.stateVersion = import "${sharedProfiles}/common/nix-settings/state-version.nix";
 }

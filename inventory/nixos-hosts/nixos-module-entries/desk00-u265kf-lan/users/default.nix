@@ -1,38 +1,29 @@
 { pkgs, ... }:
 {
-  osProfiles.common.users = {
+  users.users = {
     ashenye = {
-      osConfig = {
-        isNormalUser = true;
-        # openssh.authorizedKeys.keys = [
-        # ];
-        createHome = true;
-        extraGroups = [
-          "wheel"
-          "video"
-          "audio"
-          "input"
-          "docker"
-          "wireshark"
-          "ubridge"
-          "podman"
-          "libvirtd"
-          "libvirt"
-	  "kvm"
-        ];
-        shell = pkgs.zsh;
-      };
-      hmEntry = ./ashenye.nix;
-      userInfo = {
-        email = "luren145@gmail.com";
-      };
+      isNormalUser = true;
+      # openssh.authorizedKeys.keys = [
+      # ];
+      createHome = true;
+      extraGroups = [
+        "wheel"
+        "video"
+        "audio"
+        "input"
+        "docker"
+        "wireshark"
+        "ubridge"
+        "podman"
+        "libvirtd"
+        "libvirt"
+        "kvm"
+      ];
+      shell = pkgs.zsh;
     };
     lab-guest = {
-      osConfig = {
-        isNormalUser = true;
-        createHome = true;
-      };
+      isNormalUser = true;
+      createHome = true;
     };
   };
-  osProfiles.common.hostInfo.priUser = "ashenye";
 }

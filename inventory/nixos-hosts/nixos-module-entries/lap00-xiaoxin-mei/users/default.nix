@@ -1,5 +1,5 @@
 {
-  osProfiles.common.users = {
+  users.users = {
     ashenye = {
       osConfig = {
         isNormalUser = true;
@@ -17,11 +17,7 @@
           "ubridge"
         ];
       };
-      hmEntry = ./ashenye.nix;
-      userInfo = {
-        email = "luren145@gmail.com";
-      };
     };
   };
-  osProfiles.common.hostInfo.priUser = "ashenye";
+  osProfiles.common.priUser = "ashenye";
 }
