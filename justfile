@@ -1,8 +1,11 @@
 default:
     just --list
 
-deploy:
+deploy-os:
     sudo nixos-rebuild switch
+deploy-user:
+    home-manager switch --flake "$(pwd)#$(id -un)@$(hostname)"
+deploy-all: deploy-os deploy-user 
 
 update-flake:
     nix flake update
@@ -32,3 +35,4 @@ get-host-age-key:
 
 fmt:
     nix fmt **/*.nix
+
