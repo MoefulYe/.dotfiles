@@ -96,7 +96,7 @@
       nixosConfigurations = mkNixosConfigs {
         inherit nixosHosts nixpkgs specialArgs;
       };
-      homeManagerConfigurations = mkHmConfigs {
+      homeConfigurations = mkHmConfigs {
         inherit (inventory) hmUsers hosts;
         inherit nixpkgs specialArgs home-manager;
       };

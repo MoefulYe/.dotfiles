@@ -15,9 +15,10 @@ hmUsers
     userInfo ? { },
   }:
   let
+    lib = nixpkgs.lib;
     splitFullyQualifiedUsername = import ./splitFullyQualifiedUsername.nix;
-    inherit (splitFullyQualifiedUsername fullyQualifiedUserName) username hostname;
-    hostInfo = hosts."${hostname}".hostInfo or { };
+    inherit (splitFullyQualifiedUsername { inherit lib fullyQualifiedUserName;  }) username hostname;
+    hostInfo = builtins.trace fullyQualifiedUserName hosts."${hostname}".hostInfo or { };
   in
   home-manager.lib.homeManagerConfiguration {
     pkgs = nixpkgs.legacyPackages."${hostInfo.system or "x86_64-linux"}";

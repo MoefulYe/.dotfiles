@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  hostInfo,
   ...
 }:
 {
@@ -9,7 +10,7 @@
     enable = true;
     settings =
       let
-        inherit (config.osProfiles.hostInfo) priUser;
+        priUser = hostInfo.priUser or null;
       in
       {
         default_session = {

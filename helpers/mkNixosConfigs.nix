@@ -20,10 +20,13 @@ nixosHosts
       };
     };
     modules = [
-      {
-        imports = extraModules ++ [ mainModule ];
-        config.networking.hostName = hostInfo.hostname;
-      }
+      (
+        { hostInfo, ... }:
+        {
+          imports = extraModules ++ [ mainModule ];
+          config.networking.hostName = hostInfo.hostname;
+        }
+      )
     ];
   }
 )

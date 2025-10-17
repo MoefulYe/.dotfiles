@@ -5,6 +5,7 @@ in
 {
   imports = [
     "${hmQuirks}/github-access-limits.nix"
+    "${hmProfiles}/common"
     "${hmProfiles}/preferences"
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/desktop"

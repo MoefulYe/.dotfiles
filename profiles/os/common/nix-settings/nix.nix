@@ -9,8 +9,8 @@ let
 in
 {
   imports = [
-    "${sharedProfiles}/common/nix-settings/nix-conf-settings.nix"
-    "${sharedProfiles}/common/nix-settings/nixpkgs.nix"
+    "${sharedProfiles}/nix-settings/nix-conf-settings.nix"
+    "${sharedProfiles}/nix-settings/nixpkgs.nix"
   ];
   nixpkgs = {
     config = {
@@ -23,5 +23,5 @@ in
     "root"
     "@wheel"
   ];
-  system.stateVersion = import "${sharedProfiles}/common/nix-settings/state-version.nix";
+  system.stateVersion = import "${sharedProfiles}/nix-settings/state-version.nix";
 }
