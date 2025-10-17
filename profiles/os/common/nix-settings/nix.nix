@@ -9,8 +9,8 @@ let
 in
 {
   imports = [
-    "${sharedProfiles}/os/common/nix-settings/nix-conf-settings.nix"
-    "${sharedProfiles}/os/common/nix-settings/nixpkgs.nix"
+    "${sharedProfiles}/common/nix-settings/nix-conf-settings.nix"
+    "${sharedProfiles}/common/nix-settings/nixpkgs.nix"
   ];
   nixpkgs = {
     config = {
