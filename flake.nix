@@ -57,7 +57,7 @@
     }@inputs:
     let
       inventory = import ./inventory;
-      me = import ./me.nix;
+      me = import ./me;
       specialArgs = {
         inherit inputs inventory me;
         outputs = self;
