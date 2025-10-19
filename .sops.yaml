@@ -1,42 +1,42 @@
 keys:
   - hosts:
-      - &"lap00-xiaoxin-mei" age1jycrhjpfpw2n9rszq6056zqt3552pr38d3vz2mk8udetglrk0pfqhfhtnx
-      - &"desk00-u265kf-lan" age1xdlmmj7gvvmvpl7n28yv6l9zsrrlazyunesyrzhzy37n59zexepsp4gpxn
+      - &lap00-xiaoxin-mei age1jycrhjpfpw2n9rszq6056zqt3552pr38d3vz2mk8udetglrk0pfqhfhtnx
+      - &desk00-u265kf-lan age1xdlmmj7gvvmvpl7n28yv6l9zsrrlazyunesyrzhzy37n59zexepsp4gpxn
   - users:
-      - &"ashenye@lap00-xiaoxin-mei" age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc
-      - &"ashenye@desk00-u265kf-lan" age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
+      - &ashenye-at-lap00-xiaoxin-mei age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc
+      - &ashenye-at-desk00-u265kf-lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
       - age:
-          - *"lap00-xiaoxin-mei"
-          - *"desk00-u265kf-lan"
-          - *"ashenye@lap00-xiaoxin-mei"
-          - *"ashenye@desk00-u265kf-lan"
+          - *lap00-xiaoxin-mei
+          - *desk00-u265kf-lan
+          - *ashenye-at-lap00-xiaoxin-mei
+          - *ashenye-at-desk00-u265kf-lan
   - path_regex: ^secrets/zju\.yaml$
     key_groups:
       - age:
-          - *"lap00-xiaoxin-mei"
-          - *"desk00-u265kf-lan"
-          - *"ashenye@lap00-xiaoxin-mei"
-          - *"ashenye@desk00-u265kf-lan"
+          - *lap00-xiaoxin-mei
+          - *desk00-u265kf-lan
+          - *ashenye-at-lap00-xiaoxin-mei
+          - *ashenye-at-desk00-u265kf-lan
   - path_regex: ^secrets/api-tokens\.yaml$
     key_groups:
       - age:
-          - *"lap00-xiaoxin-mei"
-          - *"desk00-u265kf-lan"
-          - *"ashenye@desk00-u265kf-lan"
-          - *"ashenye@lap00-xiaoxin-mei"
+          - *lap00-xiaoxin-mei
+          - *desk00-u265kf-lan
+          - *ashenye-at-desk00-u265kf-lan
+          - *ashenye-at-lap00-xiaoxin-mei
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
-          - *"lap00-xiaoxin-mei"
-          - *"desk00-u265kf-lan"
+          - *lap00-xiaoxin-mei
+          - *desk00-u265kf-lan
   - path_regex: ^secrets/per-host/lap00-xiaoxin-mei/.*\.yaml$
     key_groups:
       - age:
-          - *"lap00-xiaoxin-mei"
+          - *lap00-xiaoxin-mei
   - path_regex: ^secrets/per-host/desk00-u265kf-lan/.*\.yaml$
     key_groups:
       - age:
-          - *"desk00-u265kf-lan"
+          - *desk00-u265kf-lan
