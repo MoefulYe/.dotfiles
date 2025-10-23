@@ -20,7 +20,7 @@ let
       binname = "nvim";
     };
     browser = {
-      desktopEntry = "zen-browser.desktop";
+      desktopEntry = "zen-beta.desktop";
       binname = "zen";
     };
     file-manager = {
@@ -101,6 +101,7 @@ in
       "image/svg+xml-compressed" = preferences.img-viewer.desktopEntry;
       "image/vnd.wap.wbmp" = preferences.img-viewer.desktopEntry;
       "image/x-icns" = preferences.img-viewer.desktopEntry;
+      "x-scheme-handler/mailto" = preferences.browser.desktopEntry;
     };
   };
 }
