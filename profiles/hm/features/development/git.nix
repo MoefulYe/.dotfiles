@@ -2,7 +2,10 @@
 {
   programs.git = {
     enable = true;
-    userName = me.name;
-    userEmail = me.email;
+    settings = {
+      user = {
+        inherit (me) name email;
+      };
+    };
   };
 }
