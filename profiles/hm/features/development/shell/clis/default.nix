@@ -2,6 +2,8 @@
 {
   imports = [
     ./yazi.nix
+    ./direnv.nix
+    ./zoxide.nix
   ];
   home.packages = with pkgs; [
     yazi
@@ -9,7 +11,6 @@
     cloc
     lazygit
     devenv
-    direnv
     lsd
   ];
 }

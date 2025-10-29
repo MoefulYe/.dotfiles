@@ -41,10 +41,6 @@
     };
     initContent = builtins.readFile ./init_content.sh;
   };
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-  };
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -82,10 +78,5 @@
       fill.symbol = " ";
       format = "$os$all";
     };
-  };
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
   };
 }
