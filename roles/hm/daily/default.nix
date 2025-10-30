@@ -35,6 +35,6 @@ in
     "${hmProfiles}/features/instant-messengers/discord.nix"
     "${hmProfiles}/features/instant-messengers/telegram.nix"
     "${hmProfiles}/features/instant-messengers/cn.nix"
-    "${hmProfiles}/features/misc"
+    "${hmProfiles}/features/integration/kdeconnect"
   ];
 }

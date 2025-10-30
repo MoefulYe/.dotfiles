@@ -1,6 +1,6 @@
 { paths, ... }:
 let
-  inherit (paths) osProfiles;
+  inherit (paths) osProfiles hmProfiles;
 in
 {
   imports = [
@@ -8,5 +8,6 @@ in
     "${osProfiles}/preferences/standard"
     "${osProfiles}/utils/standard"
     "${osProfiles}/nix/garbage-collector.nix"
+    "${hmProfiles}/features/integration/kdeconnect/expose-ports.nix"
   ];
 }
