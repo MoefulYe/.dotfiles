@@ -56,7 +56,7 @@
       ...
     }@inputs:
     let
-      inventory = import ./inventory;
+      inventory = import ./inventory { inherit (nixpkgs) lib; };
       me = import ./me;
       helpers = import ./helpers;
       specialArgs = {

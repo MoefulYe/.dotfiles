@@ -23,8 +23,8 @@
     };
   };
 
-  sops.templates."zju-lab-serv-yu-sg.conf".content = ''
-    Host zju-lab-serv-yu-sg
+  sops.templates."zju-yu-sg.conf".content = ''
+    Host zju-yu-sg
       HostName ${config.sops.placeholder.YU_SG_IP}
       User ${config.sops.placeholder.YU_SG_USER}
       Port ${config.sops.placeholder.YU_SG_PORT}
@@ -35,6 +35,6 @@
       Compression yes
   '';
   programs.ssh.includes = [
-    config.sops.templates."zju-lab-serv-yu-sg.conf".path
+    config.sops.templates."zju-yu-sg.conf".path
   ];
 }

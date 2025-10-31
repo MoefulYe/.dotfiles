@@ -1,4 +1,4 @@
-{ paths, ... }:
+{ paths, inventory, ... }:
 let
   inherit (paths) hmProfiles hmQuirks;
 in
@@ -36,5 +36,6 @@ in
     "${hmProfiles}/features/instant-messengers/telegram.nix"
     "${hmProfiles}/features/instant-messengers/cn.nix"
     "${hmProfiles}/features/integration/kdeconnect"
+    inventory.hosts.zjuSshConfigs
   ];
 }

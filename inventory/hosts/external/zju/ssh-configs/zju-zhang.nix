@@ -19,13 +19,13 @@
     };
   };
 
-  sops.templates."zju-lab-serv-zhang.conf".content = ''
-    Host zju-lab-serv-zhang
+  sops.templates."zju-zhang.conf".content = ''
+    Host zju-zhang
       HostName ${config.sops.placeholder.ZHANG_IP}
       User ${config.sops.placeholder.ZHANG_USER}
       Port ${config.sops.placeholder.ZHANG_PORT}
   '';
   programs.ssh.includes = [
-    config.sops.templates."zju-lab-serv-zhang.conf".path
+    config.sops.templates."zju-zhang.conf".path
   ];
 }
