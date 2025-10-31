@@ -81,8 +81,8 @@ let
         - 'rule-set:zju-intranet-domain'
         - 'rule-set:bypass-fake-ip'
       fallback:
-        - tls://8.8.4.4
-        - tls://1.1.1.1
+        - https://doh.pub/dns-query
+        - https://dns.alidns.com/dns-query
   '';
 
   proxy-providers = [
