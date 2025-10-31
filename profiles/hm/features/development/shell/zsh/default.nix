@@ -38,6 +38,7 @@
       pde = "podman exec";
       pdc = "podman compose";
       pdv = "podman volume";
+      run = "systemd-run --user";
     };
     initContent = builtins.readFile ./init_content.sh;
   };
