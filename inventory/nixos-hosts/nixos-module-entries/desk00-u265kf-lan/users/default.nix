@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, helpers, ... }@inputs:
+let
+  mkCatAuthorizedKeys = helpers.mkCatAuthorizedKeys;
+in
 {
   users.users = {
     ashenye = {
       isNormalUser = true;
-      # openssh.authorizedKeys.keys = [
-      # ];
+      openssh.authorizedKeys.keys = mkCatAuthorizedKeys inputs;
       createHome = true;
       extraGroups = [
         "wheel"

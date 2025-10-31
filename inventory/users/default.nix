@@ -7,7 +7,11 @@
     ];
     userInfo = {
       description = "ashenye on desk00-u265kf-lan";
-      tags = [ ];
+      tags = [
+        "daily"
+        "cat"
+      ];
+      sshPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";
     };
   };
   "ashenye@lap00-xiaoxin-mei" = {
@@ -18,7 +22,11 @@
     ];
     userInfo = {
       description = "ashenye on lap00-xiaoxin-mei";
-      tags = [ ];
+      tags = [
+        "daily"
+        "cat"
+      ];
+      sshPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCHoR+QLELtWTjo8EWiat8FNcyiAEQniZ6kkaOFCIlV ashenye@lap00-xiaoxin-mei";
     };
   };
 }

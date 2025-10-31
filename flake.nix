@@ -58,8 +58,14 @@
     let
       inventory = import ./inventory;
       me = import ./me;
+      helpers = import ./helpers;
       specialArgs = {
-        inherit inputs inventory me;
+        inherit
+          inputs
+          inventory
+          me
+          helpers
+          ;
         outputs = self;
         paths = rec {
           root = "${self}";
@@ -78,8 +84,6 @@
         };
       };
       inherit (inventory) nixosHosts;
-      mkNixosConfigs = import ./helpers/mkNixosConfigs.nix;
-      mkHmConfigs = import ./helpers/mkHmConfigs.nix;
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -93,10 +97,10 @@
     ))
     // {
       overlays = import ./overlays { inherit inputs self; };
-      nixosConfigurations = mkNixosConfigs {
+      nixosConfigurations = helpers.mkNixosConfigs {
         inherit nixosHosts nixpkgs specialArgs;
       };
-      homeConfigurations = mkHmConfigs {
+      homeConfigurations = helpers.mkHmConfigs {
         inherit (inventory) hmUsers hosts;
         inherit nixpkgs specialArgs home-manager;
       };
