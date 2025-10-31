@@ -14,6 +14,6 @@ in
     ./networking.nix
     ./bootloader.nix
     ./libvirtd.nix
-    ./users
+    ./users.nix
   ];
 }

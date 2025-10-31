@@ -11,7 +11,7 @@ in
     "${osRoles}/daily"
     "${osProfiles}/hardware/wireless.nix"
     ./hardware-configuration.nix
-    ./users
+    ./users.nix
     ./networking.nix
   ];
 }

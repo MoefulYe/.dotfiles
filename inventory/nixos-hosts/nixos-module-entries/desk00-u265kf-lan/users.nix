@@ -1,4 +1,10 @@
-{ pkgs, helpers, ... }@inputs:
+{
+  pkgs,
+  helpers,
+  inventory,
+  lib,
+  ...
+}:
 let
   mkCatAuthorizedKeys = helpers.mkCatAuthorizedKeys;
 in
@@ -6,7 +12,9 @@ in
   users.users = {
     ashenye = {
       isNormalUser = true;
-      openssh.authorizedKeys.keys = mkCatAuthorizedKeys inputs;
+      openssh.authorizedKeys.keys = mkCatAuthorizedKeys {
+        inherit inventory lib;
+      };
       createHome = true;
       extraGroups = [
         "wheel"
