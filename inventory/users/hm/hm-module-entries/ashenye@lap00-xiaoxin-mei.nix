@@ -5,8 +5,8 @@ in
 {
   imports = [
     "${hmRoles}/daily"
-    inventory.externalHosts.zju-lab-serv-w3090.sshConfig
-    inventory.externalHosts.zju-lab-serv-zhang.sshConfig
-    inventory.externalHosts.zju-lab-serv-yu-sg.sshConfig
+    inventory.hosts.external.zju-lab-serv-w3090.sshConfig
+    inventory.hosts.external.zju-lab-serv-zhang.sshConfig
+    inventory.hosts.external.zju-lab-serv-yu-sg.sshConfig
   ];
 }

@@ -5,7 +5,7 @@
 let
   hasTag = import ./hasTag.nix;
 in
-inventory.users
+inventory.users.all
 |> lib.filterAttrs (
   name: props:
   hasTag {

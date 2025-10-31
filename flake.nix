@@ -83,7 +83,6 @@
           hmQuirks = "${root}/quirks/hm";
         };
       };
-      inherit (inventory) nixosHosts;
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -98,11 +97,13 @@
     // {
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
-        inherit nixosHosts nixpkgs specialArgs;
+        inherit nixpkgs specialArgs;
+        inherit (inventory.hosts) nixos;
       };
       homeConfigurations = helpers.mkHmConfigs {
-        inherit (inventory) hmUsers hosts;
         inherit nixpkgs specialArgs home-manager;
+        hosts = inventory.hosts.all;
+        hmUsers = inventory.users.hm;
       };
     };
 }
