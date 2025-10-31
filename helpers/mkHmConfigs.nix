@@ -1,12 +1,12 @@
 {
-  hmUsers,
+  users,
   hosts,
   specialArgs,
   home-manager,
   nixpkgs,
   ...
 }:
-hmUsers
+users
 |> builtins.mapAttrs (
   fullyQualifiedUserName:
   {

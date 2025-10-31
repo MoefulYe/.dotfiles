@@ -1,10 +1,10 @@
 {
-  nixosHosts,
+  hosts,
   nixpkgs,
   specialArgs,
   ...
 }:
-nixosHosts
+hosts
 |> builtins.mapAttrs (
   hostname:
   {
