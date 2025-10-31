@@ -36,6 +36,6 @@ in
     "${hmProfiles}/features/instant-messengers/telegram.nix"
     "${hmProfiles}/features/instant-messengers/cn.nix"
     "${hmProfiles}/features/integration/kdeconnect"
-    inventory.hosts.zjuSshConfigs
-  ];
+  ]
+  ++ inventory.hosts.zjuSshConfigs;
 }
