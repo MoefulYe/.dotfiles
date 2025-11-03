@@ -34,6 +34,11 @@ with lib;
         type = types.int;
         default = 7895;
       };
+      tproxyBypassSocks5Port = mkOption {
+        type = types.int;
+        default = 7905;
+        description = "这个sock5s端口什么都不做仅仅转发请求, 用于实现按需绕过的功能";
+      };
       socks5PortForSmartDnsResolving = mkOption {
         type = types.int;
         default = 7896;

@@ -26,6 +26,10 @@
     targets.nixvim.enable = false;
     targets.kitty.enable = true;
     targets.zen-browser.profileNames = [ "default-profile" ];
+    targets.qt = {
+      enable = true;
+      platform = "qtct";
+    };
 
     # Edited catppuccin
     base16Scheme = {

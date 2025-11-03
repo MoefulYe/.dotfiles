@@ -36,6 +36,12 @@ let
         listen: 127.0.0.1
         udp: true
         proxy: DNS
+      - name: for-tproxy-bypass
+        type: socks
+        port: ${builtins.toString cfg.tproxyBypassSocks5Port}
+        listen: 0.0.0.0
+        udp: true
+        proxy: DIRECT
     allow-lan: true
     log-level: ${cfg.logLevel}
     bind-address: "*"
@@ -87,10 +93,10 @@ let
 
   proxy-providers = [
     # "ikuuu"
-    "leiting"
-    "mojie"
-    "av1"
-    "fanyun"
+    "LEITING"
+    "MOJIE"
+    "AV1"
+    # "fanyun"
     # "pokemon"
   ];
 

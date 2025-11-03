@@ -28,7 +28,7 @@ let
            server-https https://dns.google/dns-query -exclude-default-group -proxy socks5
            server-https https://doh.opendns.com/dns-query -exclude-default-group -proxy socks5
            server-https https://dns.quad9.net/dns-query -exclude-default-group -proxy socks5
-           server-https https://doh.dns.sb/dns-query -exclude-default-group -proxy socks5
+           # server-https https://doh.dns.sb/dns-query -exclude-default-group -proxy socks5
            server-https https://doh.mullvad.net/dns-query -exclude-default-group -proxy socks5
            server-https https://dns.adguard-dns.com/dns-query -exclude-default-group -proxy socks5
            server-https https://dns-family.adguard.com/dns-query -exclude-default-group -proxy socks5

@@ -12,3 +12,5 @@ nftables improve
 anti-ad-updater有问题！！！
 同步笔记本配置
 解决qbit的问题
+
+## 日常检查smartdns中的上游服务器是否工作正常
