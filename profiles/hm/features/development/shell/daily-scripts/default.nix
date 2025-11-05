@@ -1,8 +1,10 @@
 { lib, ... }:
 let
   scripts = {
-    switch-to-airpods = ./switch-to-airpods.sh;
-    cleanup-bakup-files = ./cleanup-bakup-files.sh;
+    switch-to-airpods = ./switch-to-airpods;
+    cleanup-bakup-files = ./cleanup-bakup-files;
+    printsops = ./printsops;
+    readlink-deep = ./readlink-deep;
   };
 in
 {

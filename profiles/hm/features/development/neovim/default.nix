@@ -8,4 +8,5 @@
     # ./plugins
   ];
   # programs.nixvim.enable = true;
+  # programs.nixvim.plugins.lsp.servers.ansiblels.package = null;
 }
