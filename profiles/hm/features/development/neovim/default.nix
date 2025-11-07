@@ -7,6 +7,5 @@
     # ./keymaps.nix
     # ./plugins
   ];
-  # programs.nixvim.enable = true;
-  # programs.nixvim.plugins.lsp.servers.ansiblels.package = null;
+  programs.nixvim.enable = true;
 }

@@ -12,5 +12,6 @@
     lazygit
     devenv
     lsd
+    bat
   ];
 }

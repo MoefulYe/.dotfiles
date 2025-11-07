@@ -39,6 +39,7 @@
       pdc = "podman compose";
       pdv = "podman volume";
       run = "systemd-run --user";
+      iat = "kitty +kitten icat";
     };
     initContent = builtins.readFile ./init_content.sh;
   };
