@@ -57,9 +57,11 @@ let
 
         # hardcodedHosts
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrs (host: ip: ''
-            address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
-          '') hardcodedHosts
+          lib.attrValues (
+            lib.mapAttrs (host: ip: ''
+              address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
+            '') hardcodedHosts
+          )
         )}
         # 国内DNS解析与代理节点DNS解析
         bind [::]:${builtins.toString cfg.domesticDnsPort} -group domestic-dns
@@ -80,7 +82,8 @@ in
   systemd =
     let
       inherit (pkgs) my-pkgs;
-      antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
+      processor = "${pkgs.gawk}/bin/awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
+      antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- ${processor}";
       ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
       smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
         #!${pkgs.bash}/bin/bash
@@ -99,7 +102,7 @@ in
           ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
           ExecStartPre = lib.mkIf cfg.enableAntiAD ensureAntiAdExist;
           Environment = [
-            "PATH=${pkgs.gzip}/bin:${pkgs.gawk}/bin"
+            "PATH=${pkgs.gzip}/bin"
           ];
           User = tproxyBypassUser;
           Group = tproxyBypassUser;
