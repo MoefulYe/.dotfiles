@@ -48,5 +48,3 @@ function nbu {
   esac
   nix bundle --bundler "$bundler" "$derivation"
 }
-
-export PATH=$PATH:~/.local/bin

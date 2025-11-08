@@ -24,7 +24,7 @@
     };
     shellAliases = {
       lg = "lazygit";
-      ls = "lsd";
+      ls = "lsd --hyperlink=auto";
       vi = "nvim";
       vim = "nvim";
       e = "printenv";
