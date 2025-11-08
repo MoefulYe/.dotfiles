@@ -2,9 +2,8 @@
 {
   # for fun
   home.packages = with pkgs; [
-    cool-crt-term
+    cool-retro-term
     fastfetch
-    aafire
     cmatrix
     aalib
   ];

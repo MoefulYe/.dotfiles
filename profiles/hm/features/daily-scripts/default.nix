@@ -5,6 +5,9 @@ let
     cleanup-bakup-files = ./cleanup-bakup-files;
     printsops = ./printsops;
     readlink-deep = ./readlink-deep;
+    toggle-swayidle = ./toggle-swayidle;
+    toggle-waybar = ./toggle-waybar;
+    change-wallpaper = ./change-wallpaper;
   };
 in
 {
