@@ -37,7 +37,7 @@ let
       "8.8.4.4"
     ];
   };
-  configText =
+  configFile =
     [
       ''
         force-AAAA-SOA yes
@@ -70,79 +70,84 @@ let
         conf-file ${antiAdFilePath}
       '')
     ]
-    |> lib.concatStringsSep "\n";
-  configFile = pkgs.writeText "smartdns.conf" configText;
-  inherit (pkgs) my-pkgs;
-  smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
-    #!${pkgs.bash}/bin/bash
-    if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
-      ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
-    fi
-  '';
-  antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
-  ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
+    |> lib.concatStringsSep "\n"
+    |> pkgs.writeText "smartdns.conf";
 in
 {
   services.resolved.enable = false;
   services.nscd.enable = false;
   system.nssModules = lib.mkForce [ ];
-  systemd.services."my-smartdns" = {
-    enable = true;
-    requires = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
-      ExecStartPre = lib.mkIf cfg.enableAntiAD ensureAntiAdExist;
-      Environment = [
-        "PATH=${pkgs.gzip}/bin:${pkgs.gawk}/bin"
-      ];
-      User = tproxyBypassUser;
-      Group = tproxyBypassUser;
-      StateDirectory = "smartdns";
-      LogsDirectory = "smartdns";
-      CacheDirectory = "smartdns";
-      AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-      CapabilityBoundingSet = "CAP_NET_BIND_SERVICE";
+  systemd =
+    let
+      inherit (pkgs) my-pkgs;
+      antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
+      ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
+      smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
+        #!${pkgs.bash}/bin/bash
+        if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
+          ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
+        fi
+      '';
+    in
+    {
+      services."my-smartdns" = {
+        enable = true;
+        requires = [ "network-online.target" ];
+        after = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
+          ExecStartPre = lib.mkIf cfg.enableAntiAD ensureAntiAdExist;
+          Environment = [
+            "PATH=${pkgs.gzip}/bin:${pkgs.gawk}/bin"
+          ];
+          User = tproxyBypassUser;
+          Group = tproxyBypassUser;
+          StateDirectory = "smartdns";
+          LogsDirectory = "smartdns";
+          CacheDirectory = "smartdns";
+          AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+          CapabilityBoundingSet = "CAP_NET_BIND_SERVICE";
+        };
+      };
+      services."anti-ad-updater" = {
+        enable = cfg.enableAntiAD;
+        requires = [ "network-online.target" ];
+        after = [ "network-online.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = antiAdDownloader;
+          User = tproxyBypassUser;
+          Group = tproxyBypassUser;
+        };
+      };
+      timers."anti-ad-updater" = {
+        enable = cfg.enableAntiAD;
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = cfg.antiAdUpdateSchedule;
+          RandomizedDelaySec = "15min";
+          Persistent = false;
+        };
+      };
+      services."smartdns-reloader" = {
+        enable = cfg.enableAntiAD;
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${smartdnsReloader}";
+        };
+      };
+      paths."smartdns-reloader" = {
+        enable = cfg.enableAntiAD;
+        wantedBy = [ "multi-user.target" ];
+        pathConfig = {
+          PathChanged = antiAdFilePath;
+          Unit = "smartdns-reloader.service";
+        };
+      };
     };
-  };
   environment.etc."resolv.conf".text = ''
     nameserver 127.0.0.1
     nameserver 119.29.29.29
   '';
-  systemd.services."anti-ad-updater" = {
-    enable = cfg.enableAntiAD;
-    requires = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = antiAdDownloader;
-      User = tproxyBypassUser;
-      Group = tproxyBypassUser;
-    };
-  };
-  systemd.timers."anti-ad-updater" = {
-    enable = cfg.enableAntiAD;
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = cfg.antiAdUpdateSchedule;
-      RandomizedDelaySec = "15min";
-      Persistent = false;
-    };
-  };
-  systemd.services."smartdns-reloader" = {
-    enable = cfg.enableAntiAD;
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${smartdnsReloader}";
-    };
-  };
-  systemd.paths."smartdns-reloader" = {
-    enable = cfg.enableAntiAD;
-    wantedBy = [ "multi-user.target" ];
-    pathConfig = {
-      PathChanged = antiAdFilePath;
-      Unit = "smartdns-reloader.service";
-    };
-  };
 }
