@@ -9,6 +9,34 @@ let
   mihomoSocks5Port = config.osProfiles.features.tproxy.mihomo.socks5Port;
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
   antiAdFilePath = "/var/lib/smartdns/anti-ad-smartdns.conf";
+  antiAdUrl = "https://anti-ad.net/anti-ad-for-smartdns.conf";
+  domesticDns = [
+    "223.5.5.5"
+    "223.6.6.6"
+    "119.29.29.29"
+  ];
+  foreignDoh = [
+    "https://cloudflare-dns.com/dns-query"
+    "https://dns.google/dns-query"
+    "https://doh.opendns.com/dns-query"
+    "https://dns.quad9.net/dns-query"
+    # "https://doh.dns.sb/dns-query"
+    "https://doh.mullvad.net/dns-query"
+    "https://dns.adguard-dns.com/dns-query"
+    "https://dns-family.adguard.com/dns-query"
+    "https://freedns.controld.com/p0"
+    "https://dns.nextdns.io"
+  ];
+  hardcodedHosts = {
+    "cloudflare-dns.com" = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    "dns.google" = [
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
+  };
   configText =
     [
       ''
@@ -16,30 +44,23 @@ let
         proxy-server socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -name socks5
 
         group-begin domestic-dns
-           # 阿里云
-           server 223.5.5.5 -exclude-default-group -bootstrap-dns
-           server 223.6.6.6 -exclude-default-group -bootstrap-dns
-           # 腾讯云
-           server 119.29.29.29 -exclude-default-group -bootstrap-dns
+        ${lib.concatStringsSep "\n" (
+          lib.map (dns: "server ${dns} -exclude-default-group -bootstrap-dns") domesticDns
+        )}
         group-end
 
         group-begin foreign-doh
-           server-https https://cloudflare-dns.com/dns-query -exclude-default-group -proxy socks5
-           server-https https://dns.google/dns-query -exclude-default-group -proxy socks5
-           server-https https://doh.opendns.com/dns-query -exclude-default-group -proxy socks5
-           server-https https://dns.quad9.net/dns-query -exclude-default-group -proxy socks5
-           # server-https https://doh.dns.sb/dns-query -exclude-default-group -proxy socks5
-           server-https https://doh.mullvad.net/dns-query -exclude-default-group -proxy socks5
-           server-https https://dns.adguard-dns.com/dns-query -exclude-default-group -proxy socks5
-           server-https https://dns-family.adguard.com/dns-query -exclude-default-group -proxy socks5
-           server-https https://freedns.controld.com/p0 -exclude-default-group -proxy socks5
-           server-https https://dns.nextdns.io -exclude-default-group -proxy socks5
+        ${lib.concatStringsSep "\n" (
+          lib.map (doh: "server-https ${doh} -exclude-default-group -proxy socks5") foreignDoh
+        )}
         group-end
 
         # hardcodedHosts
-        address /cloudflare-dns.com/1.1.1.1,1.0.0.1
-        address /dns.google/8.8.8.8,8.8.4.4
-
+        ${lib.concatStringsSep "\n" (
+          lib.mapAttrs (host: ip: ''
+            address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
+          '') hardcodedHosts
+        )}
         # 国内DNS解析与代理节点DNS解析
         bind [::]:${builtins.toString cfg.domesticDnsPort} -group domestic-dns
         bind [::]:${builtins.toString cfg.foreignDnsPort} -group foreign-doh
@@ -51,14 +72,15 @@ let
     ]
     |> lib.concatStringsSep "\n";
   configFile = pkgs.writeText "smartdns.conf" configText;
-  downloader = pkgs.callPackage ../../../../../../packages/downloader { };
-  ensureExist = pkgs.callPackage ./ensure-exist.nix { };
+  inherit (pkgs) my-pkgs;
   smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
     #!${pkgs.bash}/bin/bash
     if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
       ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
     fi
   '';
+  antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
+  ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
 in
 {
   services.resolved.enable = false;
@@ -71,11 +93,9 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
-      ExecStartPre = lib.mkIf cfg.enableAntiAD (
-        "${ensureExist} ${antiAdFilePath} ${downloader} --dest ${antiAdFilePath} --url https://anti-ad.net/anti-ad-for-smartdns.conf --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}"
-      );
+      ExecStartPre = lib.mkIf cfg.enableAntiAD ensureAntiAdExist;
       Environment = [
-        "PATH=${pkgs.gzip}/bin"
+        "PATH=${pkgs.gzip}/bin:${pkgs.gawk}/bin"
       ];
       User = tproxyBypassUser;
       Group = tproxyBypassUser;
@@ -96,7 +116,7 @@ in
     after = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${downloader} --dest ${antiAdFilePath} --url https://anti-ad.net/anti-ad-for-smartdns.conf --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}";
+      ExecStart = antiAdDownloader;
       User = tproxyBypassUser;
       Group = tproxyBypassUser;
     };
