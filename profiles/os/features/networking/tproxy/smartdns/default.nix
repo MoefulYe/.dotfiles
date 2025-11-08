@@ -71,14 +71,9 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
-      ExecStartPre = lib.mkIf cfg.enableAntiAD ''
-        ${ensureExist} ${antiAdFilePath} \
-          ${downloader} \
-          --dest ${antiAdFilePath} \
-          --url https://anti-ad.net/anti-ad-for-smartdns.conf \
-          --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
-          -- awk '/^[[:space:]]*#/ {next} /^[[:space:]]*$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0,"); print }'
-      '';
+      ExecStartPre = lib.mkIf cfg.enableAntiAD (
+        "${ensureExist} ${antiAdFilePath} ${downloader} --dest ${antiAdFilePath} --url https://anti-ad.net/anti-ad-for-smartdns.conf --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}"
+      );
       Environment = [
         "PATH=${pkgs.gzip}/bin"
       ];
@@ -101,13 +96,7 @@ in
     after = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = ''
-        ${downloader} \
-          --dest ${antiAdFilePath} \
-          --url https://anti-ad.net/anti-ad-for-smartdns.conf \
-          --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
-          -- awk '/^[[:space:]]*#/ {next} /^[[:space:]]*$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0,"); print }'
-      '';
+      ExecStart = "${downloader} --dest ${antiAdFilePath} --url https://anti-ad.net/anti-ad-for-smartdns.conf --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}";
       User = tproxyBypassUser;
       Group = tproxyBypassUser;
     };

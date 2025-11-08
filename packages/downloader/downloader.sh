@@ -25,6 +25,7 @@ URL=""
 SOCKS5_PROXY=""
 
 TMP_FILE=""
+REMAINDER_ARGS=()
 
 cleanup() {
   local rc=$?
@@ -71,6 +72,7 @@ check_dependencies() {
 }
 
 parse_args() {
+  REMAINDER_ARGS=()
   while (($# > 0)); do
     case "$1" in
       --dest)
@@ -80,7 +82,12 @@ parse_args() {
       --socks5|--sock5)
         if [[ ${2-} && ${2:0:2} != "--" ]]; then SOCKS5_PROXY=$2; shift 2; else log_error "--socks5 requires a proxy"; usage; exit 2; fi ;;
       -h|--help) usage; exit 0 ;;
-      --) shift; break ;;
+      --)
+        shift
+        # Remaining args (if any) are the processor command
+        REMAINDER_ARGS=("$@")
+        break
+        ;;
       *) log_error "Unknown option: $1"; usage; exit 2 ;;
     esac
   done
@@ -107,12 +114,14 @@ main() {
   parse_args "$@"
   # Remaining args (if any) are the processor command
   local -a PROCESS_CMD=()
-  if (($# > 0)); then
-    PROCESS_CMD=("$@")
+  if ((${#REMAINDER_ARGS[@]} > 0)); then
+    PROCESS_CMD=("${REMAINDER_ARGS[@]}")
   fi
   log_info "Downloading..."
 
   local dest_dir
+  # Expand leading ~ in DEST_FILE to support common usage
+  DEST_FILE=${DEST_FILE/#\~/$HOME}
   dest_dir=$(dirname "$DEST_FILE")
   mkdir -p "$dest_dir"
   TMP_FILE=$(mktemp "$dest_dir/.downloader.XXXXXX")
