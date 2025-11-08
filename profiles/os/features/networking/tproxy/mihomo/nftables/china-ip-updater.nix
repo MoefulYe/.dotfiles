@@ -1,15 +1,21 @@
 {
   writeShellScript,
-  generateChinaIPList,
+  downloadChinaIPList,
   pkgs,
   cfg,
+  mihomoCfg,
   ...
 }:
 writeShellScript "china-ip-updater" ''
   #!${pkgs.bash}/bin/bash
   set -euo pipefail
   INPUT_FILE="/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}"
-  ${generateChinaIPList} --try-proxy
+  ${downloadChinaIPList} \
+    --dir "/var/lib/${cfg.chinaIpListDirname}" \
+    --out-name "${cfg.chinaIPListBasename}" \
+    --set-v4 "${cfg.chinaIpV4Set}" \
+    --set-v6 "${cfg.chinaIpV6Set}" \
+    --socks5 "socks5://127.0.0.1:${builtins.toString mihomoCfg.socks5Port}"
   if [ ! -f "$INPUT_FILE" ]; then
       echo "Error: Input file not found at '$INPUT_FILE'" >&2
       exit 1

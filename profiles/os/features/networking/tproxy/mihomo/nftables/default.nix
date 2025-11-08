@@ -3,10 +3,7 @@ let
   cfg = config.osProfiles.features.tproxy.nftables;
   mihomoCfg = config.osProfiles.features.tproxy.mihomo;
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
-  generateChinaIPList = pkgs.callPackage ./generate-china-ip-list.nix {
-    inherit cfg;
-    mihomoSocks5Port = mihomoCfg.socks5Port;
-  };
+  downloadChinaIPList = pkgs.callPackage ./download-china-ip-list.nix { };
   table = pkgs.callPackage ./table.nix {
     inherit
       config
@@ -16,10 +13,10 @@ let
       ;
   };
   mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix {
-    inherit generateChinaIPList table cfg;
+    inherit downloadChinaIPList table cfg;
   };
   chinaIpUpdater = pkgs.callPackage ./china-ip-updater.nix {
-    inherit generateChinaIPList cfg;
+    inherit downloadChinaIPList cfg mihomoCfg;
   };
 in
 {
@@ -27,7 +24,13 @@ in
   systemd.services."my-mihomo".serviceConfig = {
     StateDirectory = [ cfg.chinaIpListDirname ];
     PermissionsStartOnly = true;
-    ExecStartPre = [ "+${mihomoNftablesCtl} up" ];
+    ExecStartPre = [ ''+${mihomoNftablesCtl} up \
+      --table-file ${table} \
+      --china-dir "/var/lib/${cfg.chinaIpListDirname}" \
+      --china-name "${cfg.chinaIPListBasename}" \
+      --set-v4 "${cfg.chinaIpV4Set}" \
+      --set-v6 "${cfg.chinaIpV6Set}"
+    '' ];
     ExecStopPost = [ "+${mihomoNftablesCtl} down" ];
   };
   systemd.services."china-ip-updater" = {
