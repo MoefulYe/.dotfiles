@@ -6,7 +6,7 @@
 }:
 stdenv.mkDerivation {
   pname = "my-wallpapers";
-  version = "2025-08-11";
+  version = "2025-11-08";
   src = fetchzip {
     inherit url hash;
   };
