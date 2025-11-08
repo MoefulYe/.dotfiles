@@ -51,12 +51,8 @@ let
     ]
     |> lib.concatStringsSep "\n";
   configFile = pkgs.writeText "smartdns.conf" configText;
-  antiAdDownloader = pkgs.callPackage ./anti-ad-downloader.nix {
-    inherit mihomoSocks5Port;
-  };
-  ensureAntiAdExist = pkgs.callPackage ./ensure-anti-ad-exist.nix {
-    inherit antiAdDownloader;
-  };
+  downloader = pkgs.callPackage ../../../../../../packages/downloader { };
+  ensureExist = pkgs.callPackage ./ensure-exist.nix { };
   smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
     #!${pkgs.bash}/bin/bash
     if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
@@ -75,7 +71,14 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.smartdns}/bin/smartdns -f -c ${configFile} -p -";
-      ExecStartPre = lib.mkIf cfg.enableAntiAD "${ensureAntiAdExist}";
+      ExecStartPre = lib.mkIf cfg.enableAntiAD ''
+        ${ensureExist} ${antiAdFilePath} \
+          ${downloader} \
+          --dest ${antiAdFilePath} \
+          --url https://anti-ad.net/anti-ad-for-smartdns.conf \
+          --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
+          -- awk '/^[[:space:]]*#/ {next} /^[[:space:]]*$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0,"); print }'
+      '';
       Environment = [
         "PATH=${pkgs.gzip}/bin"
       ];
@@ -98,7 +101,13 @@ in
     after = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${antiAdDownloader} --dest ${antiAdFilePath} --try-proxy";
+      ExecStart = ''
+        ${downloader} \
+          --dest ${antiAdFilePath} \
+          --url https://anti-ad.net/anti-ad-for-smartdns.conf \
+          --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
+          -- awk '/^[[:space:]]*#/ {next} /^[[:space:]]*$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0,"); print }'
+      '';
       User = tproxyBypassUser;
       Group = tproxyBypassUser;
     };

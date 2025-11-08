@@ -15,4 +15,6 @@
   zju-connect = pkgs.callPackage ./zju-connect.nix { };
   gnome-terminal = pkgs.callPackage ./gnome-terminal.nix { };
   retro-crt = pkgs.callPackage ./retro-crt.nix { };
+  downloader = pkgs.callPackage ./downloader { };
+  ensure-exist = pkgs.callPackage ./ensure-exist { };
 }
