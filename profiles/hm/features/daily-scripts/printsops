@@ -5,7 +5,7 @@
 # Function to display usage information
 usage() {
     cat <<EOF
-Usage: $(basename "$0") [option...] KEY
+Usage: $(basename "$0") [option...] [KEY]
 
 Options:
   -u, --user UID     Print the specified user's nix-sops secret by UID.
@@ -15,13 +15,15 @@ Options:
 
 Description:
   This script prints the content of a nix-sops secret.
-  By default, it prints the current user's secret.
-  The --system and --user options are mutually exclusive.
+  By default, it targets the current user's secrets.
+  When KEY is omitted, it lists all available keys (non-directory files)
+  under the target secrets directory. The --system and --user options
+  are mutually exclusive.
 
 Paths:
-  - System secret:         /run/secrets/\$KEY
+  - System secret:           /run/secrets/\$KEY
   - System rendered secret:  /run/secrets/rendered/\$KEY
-  - User secret:           /run/user/\$UID/secrets.d/*/\$KEY
+  - User secret:             /run/user/\$UID/secrets.d/*/\$KEY
   - User rendered secret:    /run/user/\$UID/secrets.d/*/rendered/\$KEY
 EOF
     exit 1
@@ -81,12 +83,6 @@ while [[ "$#" -gt 0 ]]; do
     esac
 done
 
-# Check if KEY was provided
-if [[ -z "$KEY" ]]; then
-    echo "Error: KEY argument is required." >&2
-    usage
-fi
-
 # Determine the final secret path
 SECRET_PATH=""
 
@@ -112,6 +108,62 @@ case "$MODE" in
         BASE_PATH="/run/user/$UID_TO_USE/secrets.d"
         ;; 
 esac
+
+# If no KEY is provided, list keys for the chosen mode and exit
+if [[ -z "$KEY" ]]; then
+    case "$MODE" in
+        "system")
+            if [[ "$RENDERED" == true ]]; then
+                LIST_DIR="/run/secrets/rendered"
+            else
+                LIST_DIR="/run/secrets"
+            fi
+            if [[ ! -d "$LIST_DIR" ]]; then
+                echo "Error: Directory not found: $LIST_DIR" >&2
+                exit 1
+            fi
+            shopt -s nullglob
+            for f in "$LIST_DIR"/*; do
+                [[ -f "$f" ]] && basename -- "$f"
+            done | sort -u
+            shopt -u nullglob
+            exit 0
+            ;;
+        "current"|"user")
+            if [[ ! -d "/run/user/$UID_TO_USE" ]]; then
+                echo "Error: User with UID $UID_TO_USE does not have a runtime directory, or you lack permissions." >&2
+                exit 1
+            fi
+            shopt -s nullglob
+            declare -A SEEN
+            if [[ "$RENDERED" == true ]]; then
+                for d in "$BASE_PATH"/*; do
+                    [[ -d "$d/rendered" ]] || continue
+                    for f in "$d"/rendered/*; do
+                        [[ -f "$f" ]] || continue
+                        name="$(basename -- "$f")"
+                        [[ -n "${SEEN[$name]}" ]] && continue
+                        SEEN[$name]=1
+                        printf "%s\n" "$name"
+                    done
+                done
+            else
+                for d in "$BASE_PATH"/*; do
+                    [[ -d "$d" ]] || continue
+                    for f in "$d"/*; do
+                        [[ -f "$f" ]] || continue
+                        name="$(basename -- "$f")"
+                        [[ -n "${SEEN[$name]}" ]] && continue
+                        SEEN[$name]=1
+                        printf "%s\n" "$name"
+                    done
+                done
+            fi
+            shopt -u nullglob
+            exit 0
+            ;;
+    esac
+fi
 
 # For user modes, we need to handle the wildcard path
 if [[ "$MODE" == "current" || "$MODE" == "user" ]]; then

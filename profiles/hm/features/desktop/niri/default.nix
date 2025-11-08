@@ -559,5 +559,4 @@
         Mod+Shift+P { power-off-monitors; }
     }
   '';
-  xdg.configFile."niri/scripts".source = ./scripts;
 }
