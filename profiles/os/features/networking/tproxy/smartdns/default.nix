@@ -73,29 +73,6 @@ let
       '')
     ]
     |> lib.concatStringsSep "\n";
-  configFile = pkgs.writeText "smartdns.conf" configText;
-  inherit (pkgs) my-pkgs;
-  smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''
-    #!${pkgs.bash}/bin/bash
-    if ${pkgs.systemd}/bin/systemctl --quiet is-active my-smartdns.service; then 
-      ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
-    fi
-  '';
-  antiAdDownloader = pkgs.writeShellScript "anti-ad-downloader" ''
-    export PATH=$PATH:${pkgs.gawk}/bin
-    readonly DEST_TMP=$(mktemp ${antiAdFilePath}.XXXXXX)
-    if ${lib.getExe my-pkgs.downloader} ${antiAdUrl} \
-      --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
-      --quiet \
-      | awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0"); print }' \
-      > $DEST_TMP; then
-      mv -f $DEST_TMP ${antiAdFilePath}
-    else
-      rm -f $DEST_TMP
-      exit 1
-    fi
-  '';
-  ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
 in
 {
   services.resolved.enable = false;
