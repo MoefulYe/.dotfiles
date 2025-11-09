@@ -2,10 +2,9 @@
 #
 # downloader.sh
 #
-# Downloads a text resource and writes to a destination file atomically.
-# If a processor command is provided after "--", the downloaded content
-# is piped into the processor and the processor's stdout is written. If no
-# processor is provided, the raw download is written.
+# Downloads a text resource. By default, prints the result to stdout.
+# If --dest is provided, writes to that file atomically.
+# Processor support has been removed; output is the raw download.
 #
 # Dependencies: curl
 #
@@ -23,9 +22,9 @@ readonly CONNECT_TIMEOUT="10"
 DEST_FILE=""
 URL=""
 SOCKS5_PROXY=""
+QUIET=0
 
 TMP_FILE=""
-REMAINDER_ARGS=()
 
 cleanup() {
   local rc=$?
@@ -36,24 +35,23 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-log_info()  { printf '[*] %s\n' "$*" >&2; }
-log_warn()  { printf '[!] %s\n' "$*" >&2; }
+log_info()  { (( QUIET )) && return 0; printf '[*] %s\n' "$*"; }
+log_warn()  { (( QUIET )) && return 0; printf '[!] %s\n' "$*"; }
 log_error() { printf '[x] %s\n' "$*" >&2; }
 
 usage() {
-  cat <<'USAGE'
-Usage: downloader --dest <file> --url <url> [--socks5 <proxy>] [-- CMD [ARGS...]]
+  cat >&2 <<'USAGE'
+Usage: downloader [--dest <file>] [--socks5 <proxy>] [--quiet] <url>
 
 Options:
-  --dest <file>       Output file path (required). Written atomically.
-  --url <url>         Source URL (required).
+  --dest <file>       Output file path (optional). If omitted, prints to stdout. Written atomically when provided.
+  <url>               Source URL (required, positional).
   --socks5 <proxy>    SOCKS5 proxy (e.g., socks5://127.0.0.1:7890). If set, tries proxy first.
+  --quiet             Suppress non-error logs (errors still shown on stderr).
   -h, --help          Show this help and exit.
-
-Processor:
-  - If provided after "--", downloader pipes the fetched content to CMD.
-  - The output of CMD becomes the file content.
-  - If omitted, the raw fetched content is written.
+ 
+Notes:
+  - Prints to stdout by default when --dest is not provided.
 USAGE
 }
 
@@ -72,28 +70,27 @@ check_dependencies() {
 }
 
 parse_args() {
-  REMAINDER_ARGS=()
   while (($# > 0)); do
     case "$1" in
       --dest)
         if [[ ${2-} && ${2:0:2} != "--" ]]; then DEST_FILE=$2; shift 2; else log_error "--dest requires a path"; usage; exit 2; fi ;;
-      --url)
-        if [[ ${2-} && ${2:0:2} != "--" ]]; then URL=$2; shift 2; else log_error "--url requires a value"; usage; exit 2; fi ;;
       --socks5|--sock5)
         if [[ ${2-} && ${2:0:2} != "--" ]]; then SOCKS5_PROXY=$2; shift 2; else log_error "--socks5 requires a proxy"; usage; exit 2; fi ;;
+      --quiet)
+        QUIET=1; shift ;;
       -h|--help) usage; exit 0 ;;
-      --)
-        shift
-        # Remaining args (if any) are the processor command
-        REMAINDER_ARGS=("$@")
-        break
+      --*) log_error "Unknown option: $1"; usage; exit 2 ;;
+      *)
+        if [[ -z "$URL" ]]; then
+          URL=$1; shift
+        else
+          log_error "Unexpected extra argument: $1"; usage; exit 2
+        fi
         ;;
-      *) log_error "Unknown option: $1"; usage; exit 2 ;;
     esac
   done
 
-  if [[ -z "$DEST_FILE" ]]; then log_error "--dest is required"; usage; exit 2; fi
-  if [[ -z "$URL" ]]; then log_error "--url is required"; usage; exit 2; fi
+  if [[ -z "$URL" ]]; then log_error "<url> is required"; usage; exit 2; fi
 }
 
 fetch_via() {
@@ -112,54 +109,59 @@ fetch_via() {
 main() {
   check_dependencies
   parse_args "$@"
-  # Remaining args (if any) are the processor command
-  local -a PROCESS_CMD=()
-  if ((${#REMAINDER_ARGS[@]} > 0)); then
-    PROCESS_CMD=("${REMAINDER_ARGS[@]}")
-  fi
   log_info "Downloading..."
 
-  local dest_dir
-  # Expand leading ~ in DEST_FILE to support common usage
-  DEST_FILE=${DEST_FILE/#\~/$HOME}
-  dest_dir=$(dirname "$DEST_FILE")
-  mkdir -p "$dest_dir"
-  TMP_FILE=$(mktemp "$dest_dir/.downloader.XXXXXX")
+  # Prepare temp file. If writing to a file, place temp alongside it for atomic mv.
+  local dest_dir=""
+  if [[ -n "$DEST_FILE" ]]; then
+    # Expand leading ~ in DEST_FILE to support common usage
+    DEST_FILE=${DEST_FILE/#\~/$HOME}
+    dest_dir=$(dirname "$DEST_FILE")
+    mkdir -p "$dest_dir"
+    TMP_FILE=$(mktemp "$dest_dir/.downloader.XXXXXX")
+  else
+    TMP_FILE=""
+  fi
 
   if [[ -n "$SOCKS5_PROXY" ]]; then
     log_info "Trying proxy: ${SOCKS5_PROXY}"
-    if ((${#PROCESS_CMD[@]} > 0)); then
-      if fetch_via proxy | "${PROCESS_CMD[@]}" >"$TMP_FILE"; then
-        log_info "Downloaded via proxy (processed)."
-      else
-        log_warn "Proxy failed; fallback to direct."
-        fetch_via direct | "${PROCESS_CMD[@]}" >"$TMP_FILE"
-        log_info "Downloaded directly (processed)."
-      fi
-    else
+    if [[ -n "$DEST_FILE" ]]; then
       if fetch_via proxy >"$TMP_FILE"; then
         log_info "Downloaded via proxy."
       else
         log_warn "Proxy failed; fallback to direct."
         fetch_via direct >"$TMP_FILE"
+        log_info "Downloaded directly." 
+      fi
+    else
+      if fetch_via proxy; then
+        log_info "Downloaded via proxy."
+      else
+        log_warn "Proxy failed; fallback to direct."
+        fetch_via direct
         log_info "Downloaded directly."
       fi
     fi
   else
     log_info "Direct download"
-    if ((${#PROCESS_CMD[@]} > 0)); then
-      fetch_via direct | "${PROCESS_CMD[@]}" >"$TMP_FILE"
-      log_info "Downloaded directly (processed)."
-    else
+    if [[ -n "$DEST_FILE" ]]; then
       fetch_via direct >"$TMP_FILE"
+      log_info "Downloaded directly."
+    else
+      fetch_via direct
       log_info "Downloaded directly."
     fi
   fi
 
-  chmod 0644 "$TMP_FILE"
-  mv -f "$TMP_FILE" "$DEST_FILE"
-  TMP_FILE=""
-  log_info "Wrote ${DEST_FILE}"
+  if [[ -n "$DEST_FILE" ]]; then
+    chmod 0644 "$TMP_FILE"
+    mv -f "$TMP_FILE" "$DEST_FILE"
+    TMP_FILE=""
+    log_info "Wrote ${DEST_FILE}"
+  else
+    # No destination: content already printed to stdout
+    :
+  fi
 }
 
 main "$@"

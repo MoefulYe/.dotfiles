@@ -48,3 +48,11 @@ function nbu {
   esac
   nix bundle --bundler "$bundler" "$derivation"
 }
+
+function append_path {
+  for dir in "$@"; do
+    if [ -d "$dir" ] && [[ ":$PATH:" != *":$dir:"* ]]; then
+      export PATH="$PATH:$dir"
+    fi
+  done
+}

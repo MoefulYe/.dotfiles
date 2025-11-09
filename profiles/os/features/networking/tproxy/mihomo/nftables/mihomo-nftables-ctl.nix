@@ -1,14 +1,16 @@
 {
   writeShellApplication,
-  nftables,
   coreutils,
   gnugrep,
-  ensureExist,
-  chinaIpUpdater,
+  nftables,
   ...
 }:
 writeShellApplication {
   name = "mihomo-nftables-ctl";
-  runtimeInputs = [ nftables coreutils gnugrep ensureExist chinaIpUpdater ];
+  runtimeInputs = [
+    coreutils
+    gnugrep
+    nftables
+  ];
   text = builtins.readFile ./mihomo-nftables-ctl.sh;
 }

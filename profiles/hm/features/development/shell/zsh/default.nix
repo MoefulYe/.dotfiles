@@ -29,8 +29,11 @@
       vim = "nvim";
       e = "printenv";
       o = "xdg-open";
-      j = "just";
+      j = "journalctl";
+      ju = "just";
       s = "ssh";
+      sy = "systemctl";
+      syu = "systemctl --user";
       v = "nvim";
       pd = "podman";
       pdr = "podman run";
@@ -39,6 +42,7 @@
       pdc = "podman compose";
       pdv = "podman volume";
       run = "systemd-run --user";
+      runs = "systemd-run";
       iat = "kitty +kitten icat";
     };
     initContent = builtins.readFile ./init_content.sh;

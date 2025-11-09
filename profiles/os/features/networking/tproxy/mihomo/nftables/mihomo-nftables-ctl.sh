@@ -2,92 +2,117 @@
 #
 # mihomo-nftables-ctl.sh
 #
-# Controls the mihomo-tproxy nftables table: bring it up or down.
-# - Ensures the China IP list file exists
-# - Applies the nftables ruleset or deletes the table accordingly.
+# Control utility to apply/remove the nftables ruleset for Mihomo TProxy.
+# This script ONLY manages nftables rules: delete existing table, then apply
+# the provided ruleset; or delete the table on 'down'. It no longer handles
+# generating or ensuring China IP lists.
 #
-# Dependencies: nft, coreutils, grep, china-ip-updater
+# Dependencies: grep, nft
+#
+# Compatibility:
+# - Works on NixOS, macOS (Darwin), Ubuntu, Debian.
+# - Uses POSIX shell features and common utilities.
 
 set -eEuo pipefail
 shopt -s failglob
 
-NFT_TABLE_NAME="mihomo-tproxy"
-CHINA_IP_LIST_FILE=""
+# -------- Globals (mutable) --------
+SUBCMD=""
 TABLE_FILE=""
-REMAINDER_ARGS=()
+readonly TABLE_NAME="mihomo-tproxy"
 
-usage() {
-  cat >&2 <<'USAGE'
-Usage: mihomo-nftables-ctl {up|down} [options] [-- <initializer> [args...]]
-
-Commands:
-  up    Ensure IP list exists and apply nftables ruleset.
-  down  Delete the nftables table if present.
-Options (for 'up'):
-  --list <file>       China IP list file (required).
-  --table <file>      nftables rules file to apply (required).
-  --table-name <name> Override table name (default: mihomo-tproxy).
-USAGE
+cleanup() {
+  local rc=$?
+  exit "$rc"
 }
+trap cleanup EXIT INT TERM
 
 log_info()  { printf '[*] %s\n' "$*" >&2; }
 log_warn()  { printf '[!] %s\n' "$*" >&2; }
 log_error() { printf '[x] %s\n' "$*" >&2; }
 
+usage() {
+  cat <<'USAGE'
+Usage: mihomo-nftables-ctl <up|down> [options]
+
+Commands:
+  up                       Replace table (if present) and apply rules.
+  down                     Delete the nftables table if it exists.
+
+Options:
+  --table-file <file>      Path to nftables ruleset file (required for 'up').
+  -h, --help               Show this help and exit.
+USAGE
+}
+
+check_dependencies() {
+  local missing=()
+  local deps=(grep nft)
+  local dep
+  for dep in "${deps[@]}"; do
+    if ! command -v "$dep" >/dev/null 2>&1; then missing+=("$dep"); fi
+  done
+  if ((${#missing[@]} > 0)); then
+    log_error "Missing dependencies: ${missing[*]}"; exit 127
+  fi
+}
+
 parse_args() {
-  local cmd=${1-}
-  shift || true
-  case "$cmd" in
-    up)
-      while (($# > 0)); do
-        case "$1" in
-          --list) CHINA_IP_LIST_FILE=$2; shift 2;;
-          --table) TABLE_FILE=$2; shift 2;;
-          --table-name) NFT_TABLE_NAME=$2; shift 2;;
-          --) shift; REMAINDER_ARGS=("$@"); break;;
-          -h|--help) usage; exit 0;;
-          *) log_error "Unknown option: $1"; usage; exit 2;;
-        esac
-      done
-      [[ -n "$CHINA_IP_LIST_FILE" && -n "$TABLE_FILE" ]] || { log_error "--list and --table are required for 'up'"; usage; exit 2; }
-      ;;
-    down)
-      : ;;
-    -h|--help|help|"")
-      usage; exit 0 ;;
-    *)
-      log_error "Unknown command: $cmd"; usage; exit 2 ;;
+  if (($# == 0)); then usage; exit 2; fi
+  SUBCMD=$1; shift || true
+  case "$SUBCMD" in
+    up|down) ;; 
+    -h|--help) usage; exit 0 ;;
+    *) log_error "Unknown command: $SUBCMD"; usage; exit 2 ;;
   esac
-  echo "$cmd"
+
+  while (($# > 0)); do
+    case "$1" in
+      --table-file) if [[ ${2-} && ${2:0:1} != '-' ]]; then TABLE_FILE=$2; shift 2; else log_error "--table-file requires a file"; usage; exit 2; fi ;;
+      -h|--help) usage; exit 0 ;;
+      *) log_error "Unknown option: $1"; usage; exit 2 ;;
+    esac
+  done
+
+  if [[ "$SUBCMD" == "up" ]]; then
+    if [[ -z "$TABLE_FILE" ]]; then log_error "--table-file is required for 'up'"; usage; exit 2; fi
+  fi
+}
+
+cmd_up() {
+  check_dependencies
+  # best-effort removal
+  if nft list tables | grep -q "$TABLE_NAME"; then
+    if ! nft delete table inet "$TABLE_NAME"; then
+      log_error "Failed to delete table 'inet $TABLE_NAME'"; exit 1
+    fi
+    log_info "Deleted existing table: inet $TABLE_NAME"
+  else
+    log_info "Table not present: inet $TABLE_NAME"
+  fi
+  if ! nft -f "$TABLE_FILE"; then
+    log_error "Failed to apply ruleset: $TABLE_FILE"; exit 1
+  fi
+  log_info "Applied ruleset successfully."
+}
+
+cmd_down() {
+  check_dependencies
+  if nft list tables | grep -q "$TABLE_NAME"; then
+    if ! nft delete table inet "$TABLE_NAME"; then
+      log_error "Failed to delete table 'inet $TABLE_NAME'"; exit 1
+    fi
+    log_info "Deleted table: inet $TABLE_NAME"
+  else
+    log_info "Table not present; nothing to do: inet $TABLE_NAME"
+  fi
 }
 
 main() {
-  local cmd
-  cmd=$(parse_args "$@")
-  case "$cmd" in
-    up)
-      log_info "Applying $NFT_TABLE_NAME nftables rules..."
-      if [[ ! -f "$CHINA_IP_LIST_FILE" ]]; then
-        if ((${#REMAINDER_ARGS[@]} > 0)); then
-          log_warn "IP list missing; initializing via: ${REMAINDER_ARGS[*]}"
-          ensure-exist "$CHINA_IP_LIST_FILE" "${REMAINDER_ARGS[@]}"
-        else
-          log_error "IP list '$CHINA_IP_LIST_FILE' missing and no initializer provided (use -- <cmd> [args...])"; exit 1
-        fi
-      fi
-      nft delete table inet "$NFT_TABLE_NAME" || true
-      nft -f "$TABLE_FILE"
-      log_info "SUCCESS: $NFT_TABLE_NAME rules applied."
-      ;;
-    down)
-      log_info "Deleting $NFT_TABLE_NAME table if present..."
-      if nft list tables | grep -q "$NFT_TABLE_NAME"; then
-        nft delete table inet "$NFT_TABLE_NAME"
-        log_info "SUCCESS: $NFT_TABLE_NAME table deleted."
-      else
-        log_info "Table $NFT_TABLE_NAME not present; nothing to do."
-      fi
-      ;;
+  parse_args "$@"
+  case "$SUBCMD" in
+    up) cmd_up ;;
+    down) cmd_down ;;
   esac
 }
 
