@@ -1,13 +1,13 @@
 { lib, ... }:
 let
   scripts = {
-    switch-to-airpods = ./switch-to-airpods;
-    cleanup-bakup-files = ./cleanup-bakup-files;
-    printsops = ./printsops;
-    readlink-deep = ./readlink-deep;
-    toggle-swayidle = ./toggle-swayidle;
-    toggle-waybar = ./toggle-waybar;
-    change-wallpaper = ./change-wallpaper;
+    switch-to-airpods = ./switch-to-airpods.sh;
+    cleanup-bakup-files = ./cleanup-bakup-files.sh;
+    printsops = ./printsops.sh;
+    readlink-deep = ./readlink-deep.sh;
+    toggle-swayidle = ./toggle-swayidle.sh;
+    toggle-waybar = ./toggle-waybar.sh;
+    change-wallpaper = ./change-wallpaper.sh;
   };
 in
 {
