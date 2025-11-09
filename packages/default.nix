@@ -17,5 +17,4 @@
   retro-crt = pkgs.callPackage ./retro-crt.nix { };
   downloader = pkgs.callPackage ./downloader { };
   ensure-exist = pkgs.callPackage ./ensure-exist { };
-  dingtalk = pkgs.pkgs-25-05.callPackage ./dingtalk { };
 }

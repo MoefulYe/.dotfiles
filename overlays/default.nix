@@ -37,8 +37,7 @@ in
     });
   });
   add-my-pkgs = final: prev: {
-    my-pkgs = self.packages."${final.system}";
-    pkgs-25-05 = import inputs.nixpkgs-25-05 {
+    pkgs-stable = import inputs.nixpkgs-stable {
       system = final.system;
       config = {
         allowUnfree = true;
@@ -51,6 +50,19 @@ in
           };
         })
       ];
+    };
+    pkgs-stable-with-openssl_1_1_w = import inputs.nixpkgs-stable {
+      system = final.system;
+      config = {
+        allowUnfree = true;
+        allowBroken = true;
+        permittedInsecurePackages = [
+          "openssl-1.1.1w"
+        ];
+      };
+    };
+    my-pkgs = self.packages."${final.system}" // {
+      dingtalk = final.pkgs-stable-with-openssl_1_1_w.callPackage ../packages/dingtalk { };
     };
   };
 }
