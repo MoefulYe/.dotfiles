@@ -3,11 +3,11 @@
 # mihomo-nftables-ctl.sh
 #
 # Control utility to apply/remove the nftables ruleset for Mihomo TProxy.
-# Ensures China IP list exists (generates if missing via download-china-ip-list),
-# deletes any existing table, then applies the full ruleset from a table file.
+# This script ONLY manages nftables rules: delete existing table, then apply
+# the provided ruleset; or delete the table on 'down'. It no longer handles
+# generating or ensuring China IP lists.
 #
 # Dependencies: grep, nft
-# Optional: download-china-ip-list
 #
 # Compatibility:
 # - Works on NixOS, macOS (Darwin), Ubuntu, Debian.
@@ -18,13 +18,8 @@ shopt -s failglob
 
 # -------- Globals (mutable) --------
 SUBCMD=""
-TABLE_NAME="mihomo-tproxy"
 TABLE_FILE=""
-CHINA_DIR=""
-CHINA_NAME=""
-SET_V4=""
-SET_V6=""
-:
+readonly TABLE_NAME="mihomo-tproxy"
 
 cleanup() {
   local rc=$?
@@ -41,16 +36,11 @@ usage() {
 Usage: mihomo-nftables-ctl <up|down> [options]
 
 Commands:
-  up                       Ensure China list exists, replace table, apply rules.
+  up                       Replace table (if present) and apply rules.
   down                     Delete the nftables table if it exists.
 
 Options:
-  --table-name <name>      nftables table name (default: mihomo-tproxy).
   --table-file <file>      Path to nftables ruleset file (required for 'up').
-  --china-dir <dir>        Directory containing the China IP list file (required for 'up').
-  --china-name <file>      China IP list filename (required for 'up').
-  --set-v4 <name>          China IPv4 set name (required for 'up' initial download).
-  --set-v6 <name>          China IPv6 set name (required for 'up' initial download).
   -h, --help               Show this help and exit.
 USAGE
 }
@@ -78,12 +68,7 @@ parse_args() {
 
   while (($# > 0)); do
     case "$1" in
-      --table-name) if [[ ${2-} && ${2:0:1} != '-' ]]; then TABLE_NAME=$2; shift 2; else log_error "--table-name requires a value"; usage; exit 2; fi ;;
       --table-file) if [[ ${2-} && ${2:0:1} != '-' ]]; then TABLE_FILE=$2; shift 2; else log_error "--table-file requires a file"; usage; exit 2; fi ;;
-      --china-dir) if [[ ${2-} && ${2:0:1} != '-' ]]; then CHINA_DIR=${2/#\~/$HOME}; shift 2; else log_error "--china-dir requires a dir"; usage; exit 2; fi ;;
-      --china-name) if [[ ${2-} && ${2:0:1} != '-' ]]; then CHINA_NAME=$2; shift 2; else log_error "--china-name requires a file name"; usage; exit 2; fi ;;
-      --set-v4) if [[ ${2-} && ${2:0:1} != '-' ]]; then SET_V4=$2; shift 2; else log_error "--set-v4 requires a value"; usage; exit 2; fi ;;
-      --set-v6) if [[ ${2-} && ${2:0:1} != '-' ]]; then SET_V6=$2; shift 2; else log_error "--set-v6 requires a value"; usage; exit 2; fi ;;
       -h|--help) usage; exit 0 ;;
       *) log_error "Unknown option: $1"; usage; exit 2 ;;
     esac
@@ -91,40 +76,11 @@ parse_args() {
 
   if [[ "$SUBCMD" == "up" ]]; then
     if [[ -z "$TABLE_FILE" ]]; then log_error "--table-file is required for 'up'"; usage; exit 2; fi
-    if [[ -z "$CHINA_DIR" || -z "$CHINA_NAME" ]]; then log_error "--china-dir and --china-name are required for 'up'"; usage; exit 2; fi
   fi
-}
-
-ensure_china_list() {
-  local target_file="${CHINA_DIR%/}/$CHINA_NAME"
-  if [[ -e "$target_file" ]]; then
-    log_info "China IP list exists: $target_file"
-    return 0
-  fi
-
-  if [[ -z "$SET_V4" || -z "$SET_V6" ]]; then
-    log_error "China IP list missing and --set-v4/--set-v6 not provided for initial download"; exit 2
-  fi
-
-  local -a args=(
-    --dir "$CHINA_DIR"
-    --out-name "$CHINA_NAME"
-    --set-v4 "$SET_V4"
-    --set-v6 "$SET_V6"
-  )
-  log_info "China IP list not found; running downloader to initialize..."
-  if ! download-china-ip-list "${args[@]}"; then
-    log_error "Downloader failed to initialize China IP list"; exit 1
-  fi
-  if [[ ! -e "$target_file" ]]; then
-    log_error "Downloader ran but file still missing: $target_file"; exit 1
-  fi
-  log_info "Initialization complete: $target_file"
 }
 
 cmd_up() {
   check_dependencies
-  ensure_china_list
   # best-effort removal
   if nft list tables | grep -q "$TABLE_NAME"; then
     if ! nft delete table inet "$TABLE_NAME"; then

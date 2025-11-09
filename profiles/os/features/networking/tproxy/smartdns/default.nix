@@ -79,7 +79,20 @@ let
       ${pkgs.systemd}/bin/systemctl restart my-smartdns.service
     fi
   '';
-  antiAdDownloader = "${lib.getExe my-pkgs.downloader} --dest ${antiAdFilePath} --url ${antiAdUrl} --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -- awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'";
+  antiAdDownloader = pkgs.writeShellScript "anti-ad-downloader" ''
+    export PATH=$PATH:${pkgs.gawk}/bin
+    readonly DEST_TMP=$(mktemp ${antiAdFilePath}.XXXXXX)
+    if ${lib.getExe my-pkgs.downloader} ${antiAdUrl}
+      --dest $DEST_TMP
+      --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}
+      | awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'
+      > $DEST_TMP; then
+      mv $DEST_TMP ${antiAdFilePath}
+    else
+      rm -f $DEST_TMP
+      exit 1
+    fi
+  '';
   ensureAntiAdExist = "${lib.getExe my-pkgs.ensure-exist} ${antiAdFilePath} ${antiAdDownloader}";
 in
 {

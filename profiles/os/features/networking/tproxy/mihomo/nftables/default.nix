@@ -1,9 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.osProfiles.features.tproxy.nftables;
   mihomoCfg = config.osProfiles.features.tproxy.mihomo;
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
-  downloadChinaIPList = pkgs.callPackage ./download-china-ip-list.nix { };
   table = pkgs.callPackage ./table.nix {
     inherit
       config
@@ -12,72 +16,85 @@ let
       cfg
       ;
   };
-  mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix {
-    inherit downloadChinaIPList table cfg;
-  };
-  chinaIpUpdater = pkgs.callPackage ./china-ip-updater.nix {
-    inherit downloadChinaIPList cfg mihomoCfg;
-  };
 in
 {
   networking.nftables.enable = true;
-  systemd.services."my-mihomo".serviceConfig = {
-    StateDirectory = [ cfg.chinaIpListDirname ];
-    PermissionsStartOnly = true;
-    ExecStartPre = [ ''+${mihomoNftablesCtl} up \
-      --table-file ${table} \
-      --china-dir "/var/lib/${cfg.chinaIpListDirname}" \
-      --china-name "${cfg.chinaIPListBasename}" \
-      --set-v4 "${cfg.chinaIpV4Set}" \
-      --set-v6 "${cfg.chinaIpV6Set}"
-    '' ];
-    ExecStopPost = [ "+${mihomoNftablesCtl} down" ];
-  };
-  systemd.services."china-ip-updater" = {
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${chinaIpUpdater}";
-      User = tproxyBypassUser;
-      Group = tproxyBypassUser;
-      StandardOutput = "journal";
-      StandardError = "journal";
-      AmbientCapabilities = "CAP_NET_ADMIN";
-      CapabilityBoundingSet = "CAP_NET_ADMIN";
+  systemd =
+    let
+      chinaIpListPath = "/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}";
+      downloadChinaIPList = pkgs.callPackage ./download-china-ip-list.nix { };
+      mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix { };
+      updateChinaIpList = pkgs.writeShellScript "update-china-ip-list" ''
+        ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath} --socks5 127.0.0.1:${toString mihomoCfg.socks5Port}
+        (
+          echo "table inet $TABLE_NAME {"
+          cat "$input_file"
+          echo "}"
+        ) | ${pkgs.nftables}/bin/nft -f -
+        if [ $? -ne 0 ]; then
+          echo "Failed to update nftables with new China IP list"
+          exit 1
+        else
+          echo "Successfully updated China IP list and nftables"
+        fi
+      '';
+      inherit (pkgs.my-pkgs) ensure-exists;
+    in
+    {
+      services."my-mihomo".serviceConfig = {
+        StateDirectory = [ cfg.chinaIpListDirname ];
+        PermissionsStartOnly = true;
+        ExecStartPre = [
+          "+${lib.getExe ensure-exists} ${chinaIpListPath} ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath}"
+          "+${lib.getExe mihomoNftablesCtl} up --table-file ${table}"
+        ];
+        ExecStopPost = [ "+${lib.getExe mihomoNftablesCtl} down" ];
+      };
+      services."china-ip-updater" = {
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${updateChinaIpList}";
+          User = tproxyBypassUser;
+          Group = tproxyBypassUser;
+          StandardOutput = "journal";
+          StandardError = "journal";
+          AmbientCapabilities = "CAP_NET_ADMIN";
+          CapabilityBoundingSet = "CAP_NET_ADMIN";
+        };
+      };
+      timers."china-ip-updater" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = cfg.updateSchedule;
+          RandomizedDelaySec = "15min";
+          Persistent = false;
+        };
+      };
+      network.networks."${cfg.networkdUnitName}" = {
+        name = "lo";
+        routingPolicyRules = [
+          {
+            Family = "both";
+            FirewallMark = builtins.toString cfg.tproxyMark;
+            Priority = 10;
+            Table = 100;
+          }
+        ];
+        routes = [
+          {
+            Destination = "0.0.0.0/0";
+            Type = "local";
+            Table = 100;
+          }
+          {
+            Destination = "::/0";
+            Type = "local";
+            Table = 100;
+          }
+        ];
+      };
     };
-  };
 
-  systemd.timers."china-ip-updater" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = cfg.updateSchedule;
-      RandomizedDelaySec = "15min";
-      Persistent = false;
-    };
-  };
-  systemd.network.networks."${cfg.networkdUnitName}" = {
-    name = "lo";
-    routingPolicyRules = [
-      {
-        Family = "both";
-        FirewallMark = builtins.toString cfg.tproxyMark;
-        Priority = 10;
-        Table = 100;
-      }
-    ];
-
-    routes = [
-      {
-        Destination = "0.0.0.0/0";
-        Type = "local";
-        Table = 100;
-      }
-      {
-        Destination = "::/0";
-        Type = "local";
-        Table = 100;
-      }
-    ];
-  };
 }
