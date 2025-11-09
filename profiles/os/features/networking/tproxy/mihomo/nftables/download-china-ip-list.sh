@@ -113,7 +113,7 @@ format_set_block() {
   printf 'set %s { type %s; flags interval; elements = {\n' "$set_name" "$family"
   # Remove empty/whitespace-only lines, format with trailing commas, strip final trailing comma
   sed '/^[[:space:]]*$/d' | awk '{printf "        %s,\n", $0}' | sed -e '$s/, *$//'
-  printf '\n  } }\n'
+  printf '} }\n'
 }
 
 main() {

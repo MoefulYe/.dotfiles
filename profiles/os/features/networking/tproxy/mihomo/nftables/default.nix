@@ -22,13 +22,15 @@ in
   systemd =
     let
       chinaIpListPath = "/var/lib/${cfg.chinaIpListDirname}/${cfg.chinaIPListBasename}";
-      downloadChinaIPList = pkgs.callPackage ./download-china-ip-list.nix { };
+      downloadChinaIPList = pkgs.callPackage ./download-china-ip-list.nix {
+        inherit (pkgs.my-pkgs) downloader;
+      };
       mihomoNftablesCtl = pkgs.callPackage ./mihomo-nftables-ctl.nix { };
       updateChinaIpList = pkgs.writeShellScript "update-china-ip-list" ''
-        ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath} --socks5 127.0.0.1:${toString mihomoCfg.socks5Port}
+        ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath} --socks5 socks5://127.0.0.1:${toString mihomoCfg.socks5Port}
         (
-          echo "table inet $TABLE_NAME {"
-          cat "$input_file"
+          echo "table inet mihomo-tproxy {"
+          cat "${chinaIpListPath}"
           echo "}"
         ) | ${pkgs.nftables}/bin/nft -f -
         if [ $? -ne 0 ]; then
@@ -38,14 +40,14 @@ in
           echo "Successfully updated China IP list and nftables"
         fi
       '';
-      inherit (pkgs.my-pkgs) ensure-exists;
+      inherit (pkgs.my-pkgs) ensure-exist;
     in
     {
       services."my-mihomo".serviceConfig = {
         StateDirectory = [ cfg.chinaIpListDirname ];
         PermissionsStartOnly = true;
         ExecStartPre = [
-          "+${lib.getExe ensure-exists} ${chinaIpListPath} ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath}"
+          "+${lib.getExe ensure-exist} ${chinaIpListPath} ${lib.getExe downloadChinaIPList} --dest ${chinaIpListPath}"
           "+${lib.getExe mihomoNftablesCtl} up --table-file ${table}"
         ];
         ExecStopPost = [ "+${lib.getExe mihomoNftablesCtl} down" ];

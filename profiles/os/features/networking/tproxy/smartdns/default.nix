@@ -57,9 +57,11 @@ let
 
         # hardcodedHosts
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrs (host: ip: ''
-            address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
-          '') hardcodedHosts
+          lib.attrValues (
+            lib.mapAttrs (host: ip: ''
+              address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
+            '') hardcodedHosts
+          )
         )}
         # 国内DNS解析与代理节点DNS解析
         bind [::]:${builtins.toString cfg.domesticDnsPort} -group domestic-dns
@@ -82,12 +84,12 @@ let
   antiAdDownloader = pkgs.writeShellScript "anti-ad-downloader" ''
     export PATH=$PATH:${pkgs.gawk}/bin
     readonly DEST_TMP=$(mktemp ${antiAdFilePath}.XXXXXX)
-    if ${lib.getExe my-pkgs.downloader} ${antiAdUrl}
-      --dest $DEST_TMP
-      --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port}
-      | awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, \"0.0.0.0\"); print }'
+    if ${lib.getExe my-pkgs.downloader} ${antiAdUrl} \
+      --socks5 socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} \
+      --quiet \
+      | awk '/^[[:space:]]#/ {next} /^[[:space:]]$/ {next} { sub(/#[[:space:]]*$/, "0.0.0.0"); print }' \
       > $DEST_TMP; then
-      mv $DEST_TMP ${antiAdFilePath}
+      mv -f $DEST_TMP ${antiAdFilePath}
     else
       rm -f $DEST_TMP
       exit 1
