@@ -10,6 +10,5 @@
     ./fuzzel.nix
     ./input-method.nix
     ./swaync.nix
-    ./xdg.nix
   ];
 }
