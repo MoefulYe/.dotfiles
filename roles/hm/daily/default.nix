@@ -39,6 +39,7 @@ in
     "${hmProfiles}/features/instant-messengers/cn.nix"
     "${hmProfiles}/features/integration/kdeconnect"
     "${hmProfiles}/features/networking/mihomo-xdg"
+    "${hmProfiles}/features/remote-desktop/vnc.nix"
   ]
   ++ inventory.hosts.zjuSshConfigs;
 }

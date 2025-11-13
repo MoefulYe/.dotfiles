@@ -44,6 +44,9 @@
       run = "systemd-run --user";
       runs = "systemd-run";
       iat = "kitty +kitten icat";
+      ac = "source .venv/bin/activate";
+      de = "deactivate";
+      ze = "zellij";
     };
     initContent = builtins.readFile ./init_content.sh;
   };
