@@ -6,5 +6,6 @@
     fastfetch
     cmatrix
     aalib
+    asciiquarium
   ];
 }
