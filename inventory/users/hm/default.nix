@@ -23,4 +23,14 @@
       sshPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCHoR+QLELtWTjo8EWiat8FNcyiAEQniZ6kkaOFCIlV ashenye@lap00-xiaoxin-mei";
     };
   };
+  "ubuntu@zju-zhang" = {
+    mainModule = ./hm-module-entries + "/ubuntu@zju-zhang.nix";
+    extraModules = [ ];
+    userInfo = {
+      description = "ubuntu on zju-zhang";
+      tags = [
+        "lab"
+      ];
+    };
+  };
 }
