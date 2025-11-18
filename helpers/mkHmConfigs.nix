@@ -4,6 +4,7 @@
   specialArgs,
   home-manager,
   nixpkgs,
+  paths,
   ...
 }:
 users
@@ -37,7 +38,10 @@ users
     };
     modules = [
       {
-        imports = extraModules ++ [ mainModule ];
+        imports = extraModules ++ [ 
+          "${paths.hmRoles}/${userInfo.role}"
+          mainModule 
+        ];
         home.username = username;
       }
     ];

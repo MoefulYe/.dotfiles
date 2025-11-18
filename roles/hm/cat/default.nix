@@ -41,5 +41,5 @@ in
     "${hmProfiles}/features/networking/mihomo-xdg"
     "${hmProfiles}/features/remote-desktop/vnc.nix"
   ]
-  ++ inventory.hosts.zjuSshConfigs;
+  ++ inventory.zjuSshConfigs;
 }

@@ -7,10 +7,8 @@
     ];
     hostInfo = {
       system = "x86_64-linux";
-      tags = [
-        "daily"
-        "cat"
-      ];
+      role = "cat";
+      tags = [];
       description = "daily used desktop";
       priUser = "ashenye";
     };
@@ -23,10 +21,8 @@
     ];
     hostInfo = {
       system = "x86_64-linux";
-      tags = [
-        "daily"
-        "cat"
-      ];
+      role = "cat";
+      tags = [];
       description = "daily used laptop";
       priUser = "ashenye";
     };

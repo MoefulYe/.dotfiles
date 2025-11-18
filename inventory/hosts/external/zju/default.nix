@@ -1,5 +1,16 @@
-{
-  zju-zzm.sshConfig = ./ssh-configs/zju-zzm.nix;
-  zju-zhang.sshConfig = ./ssh-configs/zju-zhang.nix;
-  zju-yu-sg.sshConfig = ./ssh-configs/zju-yu-sg.nix;
+let
+  zjuTags = [ "zju"  "fox" ];
+in {
+  zju-zzm.hostInfo =  {
+    sshConfig= ./ssh-configs/zju-zzm.nix;
+    tags = zjuTags;
+  };
+  zju-zhang.hostInfo = {
+    sshConfig = ./ssh-configs/zju-zhang.nix;
+    tags = zjuTags;
+  };
+  zju-yu-sg.hostInfo = {
+    sshConfig = ./ssh-configs/zju-yu-sg.nix;
+    tags = zjuTags;
+  };
 }

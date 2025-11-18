@@ -4,8 +4,6 @@ let
 in
 {
   imports = [
-    "${osRoles}/cat"
-    "${osRoles}/daily"
     "${osProfiles}/hardware/nvidia-daily.nix"
     "${osProfiles}/features/streaming/sunshine.nix"
     "${osProfiles}/features/gaming/steam.nix"

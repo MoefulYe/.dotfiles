@@ -23,7 +23,10 @@ hosts
       (
         { hostInfo, ... }:
         {
-          imports = extraModules ++ [ mainModule ];
+          imports = extraModules ++ [ 
+          "${paths.osRoles}/${hostInfo.role}"
+            mainModule 
+          ];
           config.networking.hostName = hostInfo.hostname;
         }
       )
