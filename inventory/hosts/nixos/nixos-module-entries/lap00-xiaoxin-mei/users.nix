@@ -3,8 +3,6 @@
   users.users = {
     ashenye = {
       isNormalUser = true;
-      # openssh.authorizedKeys.keys = [
-      # ];
       createHome = true;
       extraGroups = [
         "wheel"
