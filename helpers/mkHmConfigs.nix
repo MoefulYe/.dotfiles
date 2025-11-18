@@ -19,6 +19,7 @@ users
     lib = nixpkgs.lib;
     splitFullyQualifiedUsername = import ./splitFullyQualifiedUsername.nix;
     inherit (splitFullyQualifiedUsername { inherit lib fullyQualifiedUserName; }) username hostname;
+    # 查询是否inventory中有对应的主机信息
     hostInfo = hosts."${hostname}".hostInfo or { };
   in
   home-manager.lib.homeManagerConfiguration {
@@ -29,12 +30,13 @@ users
         username
         hostname
         ;
-      hostInfo = hostInfo // {
+      # 主机信息的来源优先级: userInfo中定义的hostInfo字段 > inventory中的主机信息 > 自动生成的主机信息
+      hostInfo = {
         inherit hostname;
-      };
-      userInfo = userInfo // {
+      } // hostInfo // (userInfo.hostInfo or {});
+      userInfo = {
         inherit username;
-      };
+      } // userInfo;
     };
     modules = [
       {

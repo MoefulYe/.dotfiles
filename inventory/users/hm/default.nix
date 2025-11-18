@@ -25,6 +25,10 @@
     mainModule = ./hm-module-entries + "/ubuntu@zju-zhang.nix";
     extraModules = [ ];
     userInfo = {
+      username = "ubuntu";
+      hostInfo = {
+        hostname = "sv";
+      };
       description = "ubuntu on zju-zhang";
       role = "zoo";
       tags = [
