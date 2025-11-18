@@ -21,6 +21,7 @@ hosts
       (
         { hostInfo, ... }:
         {
+<<<<<<< HEAD
           imports =
             if builtins.isPath hostInfo.nixosConfig || builtins.isString hostInfo.nixosConfig then
               [
@@ -33,6 +34,12 @@ hosts
                 hostInfo.nixosConfig.main
                 "${paths.osRoles}/${hostInfo.role}"
               ];
+=======
+          imports = extraModules ++ [ 
+          "${paths.osRoles}/${hostInfo.role}"
+            mainModule 
+          ];
+>>>>>>> ec25090 (x)
           config.networking.hostName = hostInfo.hostname;
         }
       )

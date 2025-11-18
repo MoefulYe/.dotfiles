@@ -40,6 +40,11 @@ in
     "${hmProfiles}/features/integration/kdeconnect"
     "${hmProfiles}/features/networking/mihomo-xdg"
     "${hmProfiles}/features/remote-desktop/vnc.nix"
+<<<<<<< HEAD
     "${hmProfiles}/features/topology/ssh.nix"
   ];
+=======
+  ]
+  ++ inventory.zjuSshConfigs;
+>>>>>>> ec25090 (x)
 }

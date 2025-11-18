@@ -100,6 +100,7 @@
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
         inherit nixpkgs specialArgs paths;
+<<<<<<< HEAD
         inherit (inventory) hosts;
       };
       homeConfigurations = helpers.mkHmConfigs {
@@ -110,6 +111,14 @@
           paths
           ;
         inherit (inventory) users;
+=======
+        hosts = inventory.hosts.nixos;
+      };
+      homeConfigurations = helpers.mkHmConfigs {
+        inherit nixpkgs specialArgs home-manager paths;
+        hosts = inventory.hosts.all;
+        users = inventory.users.hm;
+>>>>>>> ec25090 (x)
       };
     };
 }
