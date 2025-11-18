@@ -16,5 +16,5 @@ rec {
     non-hm = import ./users/non-hm;
     all = hm // non-hm;
   };
-  zjuSshConfigs = zju |> lib.mapAttrs (name: props: props.sshConfig) |> lib.attrValues;
+  zjuSshConfigs = hosts.zju |> lib.mapAttrs (name: props: props.hostInfo.sshConfig) |> lib.attrValues;
 }

@@ -2,6 +2,7 @@
   hosts,
   nixpkgs,
   specialArgs,
+  paths,
   ...
 }:
 hosts
