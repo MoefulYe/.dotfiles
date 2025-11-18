@@ -4,7 +4,7 @@
     description = "List of authorized SSH public keys.";
     default = "";
   };
-  config = lib.mkIf (lib.length config.openssh.authorizedKeys != "") {
-    home.files.".ssh/authorized_keys".text = config.openssh.authorizedKeys;
+  config = lib.mkIf (config.openssh.authorizedKeys != "") {
+    home.file.".ssh/authorized_keys".text = config.openssh.authorizedKeys;
   };
 }
