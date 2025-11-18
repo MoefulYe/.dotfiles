@@ -59,29 +59,30 @@
       inventory = import ./inventory { inherit (nixpkgs) lib; };
       me = import ./me;
       helpers = import ./helpers;
+      paths = rec {
+        root = "${self}";
+        secrets = "${root}/secrets";
+        osModules = "${root}/modules/os";
+        hmModules = "${root}/modules/hm";
+        myPackages = "${root}/packages";
+        osProfiles = "${root}/profiles/os";
+        hmProfiles = "${root}/profiles/hm";
+        sharedProfiles = "${root}/profiles/shared";
+        myOverlays = "${root}/overlays";
+        osRoles = "${root}/roles/os";
+        hmRoles = "${root}/roles/hm";
+        osQuirks = "${root}/quirks/os";
+        hmQuirks = "${root}/quirks/hm";
+      };
       specialArgs = {
         inherit
           inputs
           inventory
           me
           helpers
+          paths
           ;
         outputs = self;
-        paths = rec {
-          root = "${self}";
-          secrets = "${root}/secrets";
-          osModules = "${root}/modules/os";
-          hmModules = "${root}/modules/hm";
-          myPackages = "${root}/packages";
-          osProfiles = "${root}/profiles/os";
-          hmProfiles = "${root}/profiles/hm";
-          sharedProfiles = "${root}/profiles/shared";
-          myOverlays = "${root}/overlays";
-          osRoles = "${root}/roles/os";
-          hmRoles = "${root}/roles/hm";
-          osQuirks = "${root}/quirks/os";
-          hmQuirks = "${root}/quirks/hm";
-        };
       };
     in
     (flake-utils.lib.eachDefaultSystem (
@@ -97,11 +98,11 @@
     // {
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
-        inherit nixpkgs specialArgs;
+        inherit nixpkgs specialArgs paths;
         hosts = inventory.hosts.nixos;
       };
       homeConfigurations = helpers.mkHmConfigs {
-        inherit nixpkgs specialArgs home-manager;
+        inherit nixpkgs specialArgs home-manager paths;
         hosts = inventory.hosts.all;
         users = inventory.users.hm;
       };

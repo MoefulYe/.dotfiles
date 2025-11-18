@@ -7,8 +7,6 @@ let
 in
 {
   imports = [
-    "${osRoles}/cat"
-    "${osRoles}/daily"
     "${osProfiles}/hardware/wireless.nix"
     ./hardware-configuration.nix
     ./users.nix
