@@ -27,20 +27,20 @@ if ! command -v fd &> /dev/null; then
 fi
 
 echo -e "${BLUE}正在搜索目录: ${SEARCH_DIR}${NC}"
-echo -e "${YELLOW}搜索模式: *.bakup*${NC}"
+echo -e "${YELLOW}搜索模式: *.bak*${NC}"
 echo ""
 
-# 使用 fd 搜索所有以 bakup 开头的扩展名文件
+# 使用 fd 搜索所有以 bak 开头的扩展名文件
 # 匹配模式: xxx.bakup, xxx.bakup2025090922222, xxx.bakup-2025090922222 等
-mapfile -t bakup_files < <(fd -t f --glob "*.bakup*" "$SEARCH_DIR" 2>/dev/null || true)
+mapfile -t bakup_files < <(fd -t f --glob "*.bak*" "$SEARCH_DIR" 2>/dev/null || true)
 
 # 检查是否找到文件
 if [ ${#bakup_files[@]} -eq 0 ]; then
-    echo -e "${GREEN}未找到任何 bakup 备份文件。${NC}"
+    echo -e "${GREEN}未找到任何 bak 备份文件。${NC}"
     exit 0
 fi
 
-echo -e "${YELLOW}找到 ${#bakup_files[@]} 个 bakup 备份文件:${NC}"
+echo -e "${YELLOW}找到 ${#bakup_files[@]} 个 bak 备份文件:${NC}"
 echo ""
 
 # 显示找到的文件
