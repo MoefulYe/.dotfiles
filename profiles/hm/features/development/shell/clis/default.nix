@@ -13,5 +13,6 @@
     devenv
     lsd
     bat
+    tlrc
   ];
 }
