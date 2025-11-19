@@ -156,6 +156,74 @@ let
         "PROCESS-NAME,qbittorrent"
       ];
     };
+    nvidia = {
+      behavior = "domain";
+      type = "inline";
+      payload = [
+        "+.geforce.cn"
+        "+.geforce.co.kr"
+        "+.geforce.co.uk"
+        "+.geforce.com"
+        "+.geforce.com.tw"
+        "+.gputechconf.cn"
+        "+.gputechconf.co.kr"
+        "+.gputechconf.com"
+        "+.gputechconf.com.au"
+        "+.gputechconf.com.tw"
+        "+.gputechconf.eu"
+        "+.gputechconf.in"
+        "+.gputechconf.jp"
+        "+.nvda.d2.sc.omtrdc.net"
+        "+.nvidia.asia"
+        "+.nvidia.at"
+        "+.nvidia.be"
+        "+.nvidia.ch"
+        "+.nvidia.cn"
+        "+.nvidia.co.at"
+        "+.nvidia.co.in"
+        "+.nvidia.co.jp"
+        "+.nvidia.co.kr"
+        "+.nvidia.co.uk"
+        "+.nvidia.com"
+        "+.nvidia.com.au"
+        "+.nvidia.com.br"
+        "+.nvidia.com.mx"
+        "+.nvidia.com.pe"
+        "+.nvidia.com.pl"
+        "+.nvidia.com.tr"
+        "+.nvidia.com.tw"
+        "+.nvidia.com.ua"
+        "+.nvidia.com.ve"
+        "+.nvidia.cz"
+        "+.nvidia.de"
+        "+.nvidia.dk"
+        "+.nvidia.es"
+        "+.nvidia.eu"
+        "+.nvidia.fi"
+        "+.nvidia.fr"
+        "+.nvidia.in"
+        "+.nvidia.it"
+        "+.nvidia.jp"
+        "+.nvidia.lu"
+        "+.nvidia.mx"
+        "+.nvidia.nl"
+        "+.nvidia.no"
+        "+.nvidia.pl"
+        "+.nvidia.ro"
+        "+.nvidia.ru"
+        "+.nvidia.se"
+        "+.nvidia.tt.omtrdc.net"
+        "+.nvidia.tw"
+        "+.nvidiaforhp.com"
+        "+.nvidiagrid.net"
+        "+.shotwithgeforce.com"
+        "+.tegrazone.co"
+        "+.tegrazone.co.kr"
+        "+.tegrazone.com"
+        "+.tegrazone.jp"
+        "+.tegrazone.kr"
+      ];
+    };
     github = {
       behavior = "classical";
       type = "inline";
@@ -464,6 +532,16 @@ let
         ++ regions;
       }
       {
+        name = "NVIDIA";
+        type = "select";
+        proxies = [
+          "universal"
+          "manual"
+          "DIRECT"
+        ]
+        ++ regions;
+      }
+      {
         name = "DNS";
         type = "fallback";
         proxies = [
@@ -501,6 +579,7 @@ let
       "GEOSITE,CN,DIRECT"
       "GEOIP,CN,DIRECT"
       "RULE-SET,github,GITHUB"
+      "RULE-SET,nvidia,NVIDIA"
       "RULE-SET,ai-service,AI"
       "RULE-SET,bt-download,DIRECT"
       "MATCH,universal"

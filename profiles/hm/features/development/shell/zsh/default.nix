@@ -33,7 +33,7 @@
       ju = "just";
       s = "ssh";
       sy = "systemctl";
-      syu = "systemctl --user";
+      sysu = "systemctl --user";
       v = "nvim";
       pd = "podman";
       pdr = "podman run";
@@ -43,10 +43,11 @@
       pdv = "podman volume";
       run = "systemd-run --user";
       runs = "systemd-run";
-      iat = "kitty +kitten icat";
+      icat = "kitty +kitten icat";
       ac = "source .venv/bin/activate";
       de = "deactivate";
       ze = "zellij";
+      tl = "tldr";
     };
     initContent = builtins.readFile ./init_content.sh;
   };

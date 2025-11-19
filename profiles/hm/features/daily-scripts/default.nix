@@ -8,6 +8,7 @@ let
     toggle-swayidle = ./toggle-swayidle.sh;
     toggle-waybar = ./toggle-waybar.sh;
     change-wallpaper = ./change-wallpaper.sh;
+    check-libs = ./check-libs.sh;
   };
 in
 {
