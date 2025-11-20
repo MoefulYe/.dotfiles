@@ -1,6 +1,5 @@
 {
   users,
-  hosts,
   specialArgs,
   home-manager,
   nixpkgs,
@@ -9,41 +8,38 @@
 }:
 users
 |> builtins.mapAttrs (
-  fullyQualifiedUserName:
-  {
-    mainModule,
-    extraModules ? [ ],
-    userInfo ? { },
-  }:
+  fullyQualifiedUserName: userInfo:
   let
     lib = nixpkgs.lib;
     splitFullyQualifiedUsername = import ./splitFullyQualifiedUsername.nix;
     inherit (splitFullyQualifiedUsername { inherit lib fullyQualifiedUserName; }) username hostname;
-    # 查询是否inventory中有对应的主机信息
-    hostInfo = hosts."${hostname}".hostInfo or { };
+    userInfo' = {
+      inherit username hostname;
+    }
+    // userInfo;
   in
   home-manager.lib.homeManagerConfiguration {
-    pkgs = nixpkgs.legacyPackages."${hostInfo.system or "x86_64-linux"}";
+    pkgs = nixpkgs.legacyPackages."${userInfo'.system or "x86_64-linux"}";
     extraSpecialArgs = specialArgs // {
-      inherit
-        fullyQualifiedUserName
-        username
-        hostname
-        ;
-      # 主机信息的来源优先级: userInfo中定义的hostInfo字段 > inventory中的主机信息 > 自动生成的主机信息
-      hostInfo = {
-        inherit hostname;
-      } // hostInfo // (userInfo.hostInfo or {});
-      userInfo = {
-        inherit username;
-      } // userInfo;
+      userInfo = userInfo';
     };
     modules = [
       {
-        imports = extraModules ++ [ 
-          "${paths.hmRoles}/${userInfo.role}"
-          mainModule 
-        ];
+        # imports = extraModules ++ [ "${paths.hmRoles}/${userInfo.role}"
+        #   mainModule
+        # ];
+        imports =
+          if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
+            [
+              userInfo.hmConfig
+              "${paths.hmRoles}/${userInfo.role}"
+            ]
+          else
+            userInfo.hmConfig.extra
+            ++ [
+              "${paths.hmRoles}/${userInfo.role}"
+              userInfo.hmConfig.main
+            ];
         home.username = username;
       }
     ];
