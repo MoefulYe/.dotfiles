@@ -1,11 +1,12 @@
 {
   lib,
   inventory,
-  userid,
+  userInfo,
   ...
 }:
 let
   sshGraph = inventory.topology.ssh;
+  inherit (userInfo) userid;
   # 所有允许连接到该用户的来源列表
   allowIn = sshGraph |> lib.filter ({ from, to }: to == userid) |> lib.map (entry: entry.from);
   # 所有该用户允许连接到的目标列表
@@ -23,11 +24,11 @@ in
   config =
     let
       authorizedKeysOfAllowIn = lib.concatMapStringsSep "\n" (
-        userId: inventory.users.${userId}.sshPubKeys
+        userId: inventory.users.${userId}.sshPubKey
       ) allowIn;
     in
     {
-      home.file.".ssh/authorized_keys".text = lib.mKIf (
+      home.file.".ssh/authorized_keys".text = lib.mkIf (
         authorizedKeysOfAllowIn != ""
       ) authorizedKeysOfAllowIn;
     };

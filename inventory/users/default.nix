@@ -8,14 +8,14 @@ in
     tags = [
       "gaming"
     ];
-    sshPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";
+    sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";
     hmConfig = mkHmConfigEntry "ashenye@desk00-u265kf-lan.nix";
   };
   "ashenye@lap00-xiaoxin-mei" = {
     description = "ashenye on lap00-xiaoxin-mei";
     role = "cat";
     tags = [ ];
-    sshPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCHoR+QLELtWTjo8EWiat8FNcyiAEQniZ6kkaOFCIlV ashenye@lap00-xiaoxin-mei";
+    sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCHoR+QLELtWTjo8EWiat8FNcyiAEQniZ6kkaOFCIlV ashenye@lap00-xiaoxin-mei";
     hmConfig = mkHmConfigEntry "ashenye@lap00-xiaoxin-mei.nix";
   };
   "ubuntu@zju-zhang" = {
