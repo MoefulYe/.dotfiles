@@ -1,7 +1,4 @@
-{ paths, inputs, ... }:
-let
-  inherit (paths) hmRoles;
-in
+{ inputs, ... }:
 {
   imports = [
     inputs.vscode-server.homeModules.default

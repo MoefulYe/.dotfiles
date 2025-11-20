@@ -15,6 +15,7 @@ users
     inherit (splitFullyQualifiedUsername { inherit lib fullyQualifiedUserName; }) username hostname;
     userInfo' = {
       inherit username hostname;
+      userid = fullyQualifiedUserName;
     }
     // userInfo;
   in

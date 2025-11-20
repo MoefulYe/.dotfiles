@@ -13,6 +13,7 @@ hosts
     specialArgs = specialArgs // {
       hostInfo = {
         inherit hostname;
+        hostid = hostname;
       }
       // hostInfo;
     };

@@ -1,0 +1,3 @@
+{
+  ssh = import ./ssh.nix;
+}
