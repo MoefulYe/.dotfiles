@@ -100,12 +100,16 @@
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
         inherit nixpkgs specialArgs paths;
-        hosts = inventory.hosts.nixos;
+        inherit (inventory) hosts;
       };
       homeConfigurations = helpers.mkHmConfigs {
-        inherit nixpkgs specialArgs home-manager paths;
-        hosts = inventory.hosts.all;
-        users = inventory.users.hm;
+        inherit
+          nixpkgs
+          specialArgs
+          home-manager
+          paths
+          ;
+        inherit (inventory) users;
       };
     };
 }

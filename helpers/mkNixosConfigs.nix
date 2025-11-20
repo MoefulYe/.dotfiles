@@ -22,12 +22,16 @@ hosts
         {
           imports =
             if builtins.isPath hostInfo.nixosConfig || builtins.isString hostInfo.nixosConfig then
-              [ hostInfo.nixosConfig ]
-            else
               [
-                hostInfo.nixosConfig.main
+                hostInfo.nixosConfig
+                "${paths.osRoles}/${hostInfo.role}"
               ]
-              ++ hostInfo.nixosConfig.extra;
+            else
+              hostInfo.nixosConfig.extra
+              ++ [
+                hostInfo.nixosConfig.main
+                "${paths.osRoles}/${hostInfo.role}"
+              ];
           config.networking.hostName = hostInfo.hostname;
         }
       )

@@ -1,5 +1,5 @@
 let
-  mkQuirksEntry = modulename: ../../../quirks/os + "/" + modulename;
+  mkQuirksEntry = modulename: ../../quirks/os + ("/" + modulename);
   desktopQuirks = [
     (mkQuirksEntry "fix-fn-keys.nix")
     (mkQuirksEntry "fix-fcitx5-svg-show-nothing.nix")
