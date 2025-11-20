@@ -7,27 +7,27 @@
 }:
 hosts
 |> builtins.mapAttrs (
-  hostname:
-  {
-    mainModule,
-    extraModules ? [ ],
-    hostInfo ? { },
-  }:
+  hostname: hostInfo:
   nixpkgs.lib.nixosSystem {
     system = hostInfo.system;
     specialArgs = specialArgs // {
-      hostInfo = hostInfo // {
+      hostInfo = {
         inherit hostname;
-      };
+      }
+      // hostInfo;
     };
     modules = [
       (
         { hostInfo, ... }:
         {
-          imports = extraModules ++ [ 
-          "${paths.osRoles}/${hostInfo.role}"
-            mainModule 
-          ];
+          imports =
+            if builtins.isPath hostInfo.nixosConfig || builtins.isString hostInfo.nixosConfig then
+              [ hostInfo.nixosConfig ]
+            else
+              [
+                hostInfo.nixosConfig.main
+              ]
+              ++ hostInfo.nixosConfig.extra;
           config.networking.hostName = hostInfo.hostname;
         }
       )
