@@ -4,5 +4,6 @@
     strace
     ltrace
     perf
+    sysstat
   ];
 }

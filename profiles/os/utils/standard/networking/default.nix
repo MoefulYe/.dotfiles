@@ -9,5 +9,6 @@
     nmap
     mtr
     iperf3
+    ethtool
   ];
 }
