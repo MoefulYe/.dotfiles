@@ -9,6 +9,6 @@ let
 in
 {
   programs.ssh.includes = [
-    conf
+    "${conf}"
   ];
 }

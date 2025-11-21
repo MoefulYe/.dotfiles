@@ -26,7 +26,6 @@ users
     };
     modules = [
       {
-<<<<<<< HEAD
         # imports = extraModules ++ [ "${paths.hmRoles}/${userInfo.role}"
         #   mainModule
         # ];
@@ -42,12 +41,6 @@ users
               "${paths.hmRoles}/${userInfo.role}"
               userInfo.hmConfig.main
             ];
-=======
-        imports = extraModules ++ [ 
-          "${paths.hmRoles}/${userInfo.role}"
-          mainModule 
-        ];
->>>>>>> ec25090 (x)
         home.username = username;
       }
     ];

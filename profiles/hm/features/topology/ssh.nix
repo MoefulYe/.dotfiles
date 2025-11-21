@@ -2,6 +2,7 @@
   lib,
   inventory,
   userInfo,
+  pkgs,
   ...
 }:
 let
@@ -13,23 +14,14 @@ let
   allowOut = sshGraph |> lib.filter ({ from, to }: from == userid) |> lib.map (entry: entry.to);
 in
 {
-  options.openssh.authorizedKeys =
-    with lib;
-    mkOption {
-      type = types.lines;
-      description = "List of authorized SSH public keys.";
-      default = "";
-    };
   imports = allowOut |> lib.map (toUserId: inventory.users.${toUserId}.sshConfig);
-  config =
-    let
-      authorizedKeysOfAllowIn = lib.concatMapStringsSep "\n" (
+  home.file.".ssh/authorized_keys" =   
+    let authorizedKeysContent =  lib.concatMapStringsSep "\n" (
         userId: inventory.users.${userId}.sshPubKey
       ) allowIn;
-    in
-    {
-      home.file.".ssh/authorized_keys".text = lib.mkIf (
-        authorizedKeysOfAllowIn != ""
-      ) authorizedKeysOfAllowIn;
-    };
+    in lib.mkIf (
+        authorizedKeysContent != ""
+      )  {
+        text = authorizedKeysContent;
+      };
 }
