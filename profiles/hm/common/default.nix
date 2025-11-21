@@ -10,7 +10,6 @@ let
 in
 {
   imports = [
-    ./ssh.nix
     "${sharedProfiles}/nix-settings/nixpkgs.nix"
     inputs.nur.modules.homeManager.default
   ];

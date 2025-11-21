@@ -40,5 +40,6 @@ in
     "${hmProfiles}/features/integration/kdeconnect"
     "${hmProfiles}/features/networking/mihomo-xdg"
     "${hmProfiles}/features/remote-desktop/vnc.nix"
+    "${hmProfiles}/features/topology/ssh.nix"
   ];
 }

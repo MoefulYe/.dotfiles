@@ -10,6 +10,7 @@ in
     ];
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";
     hmConfig = mkHmConfigEntry "ashenye@desk00-u265kf-lan.nix";
+    sshConfig = ./ssh-configs + "/ashenye@desk00-u265kf-lan.nix";
   };
   "ashenye@lap00-xiaoxin-mei" = {
     description = "ashenye on lap00-xiaoxin-mei";
@@ -24,13 +25,13 @@ in
     role = "fox";
     tags = [ "zju" ];
     hmConfig = mkHmConfigEntry "ubuntu@zju-zhang.nix";
-    sshConfig = ./ssh-configs/zju-zhang.nix;
+    sshConfig = ./ssh-configs + "/ubuntu@zhang.nix";
   };
   "yu@zju-yu-sg" = {
     username = "jiongchiyu";
     hostname = "XXF-GPU-00";
     role = "fox";
     tags = [ "zju" ];
-    sshConfig = ./ssh-configs/zju-yu-sg.nix;
+    sshConfig = ./ssh-configs + "/yu@zju-yu-sg";
   };
 }
