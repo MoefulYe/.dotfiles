@@ -15,13 +15,19 @@ let
 in
 {
   imports = allowOut |> lib.map (toUserId: inventory.users.${toUserId}.sshConfig);
-  home.file.".ssh/authorized_keys" =   
-    let authorizedKeysContent =  lib.concatMapStringsSep "\n" (
+  home.file.".ssh/.authorized_keys" =
+    let
+      authorizedKeysContent = lib.concatMapStringsSep "\n" (
         userId: inventory.users.${userId}.sshPubKey
       ) allowIn;
-    in lib.mkIf (
-        authorizedKeysContent != ""
-      )  {
-        text = authorizedKeysContent;
-      };
+    in
+    lib.mkIf (authorizedKeysContent != "") {
+      text = authorizedKeysContent;
+      onChange = ''
+        cat ~/.ssh/.authorized_keys > ~/.ssh/authorized_keys
+        rm ~/.ssh/.authorized_keys
+        chmod 600 ~/.ssh/authorized_keys
+      '';
+      force = true;
+    };
 }
