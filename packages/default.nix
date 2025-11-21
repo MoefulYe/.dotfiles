@@ -10,7 +10,7 @@
   };
   wallpapers = pkgs.callPackage ./my-wallpapers.nix {
     url = "https://blob.desktop.nix.059867.xyz/wallpapers.zip";
-    hash = "sha256-dVBKFDBBMjHbYnkclpi3gdldYR8ZTD79E6sC9/bgIrM=";
+    hash = "sha256-9M9nkYc6m3c1w2FJh4ifqb2GPlBk3Y23C8/RQ98yXrs=";
   };
   zju-connect = pkgs.callPackage ./zju-connect.nix { };
   gnome-terminal = pkgs.callPackage ./gnome-terminal.nix { };
