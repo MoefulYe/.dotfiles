@@ -25,13 +25,13 @@ in
     role = "fox";
     tags = [ "zju" ];
     hmConfig = mkHmConfigEntry "ubuntu@zju-zhang.nix";
-    sshConfig = ./ssh-configs + "/ubuntu@zhang.nix";
+    sshConfig = ./ssh-configs + "/ubuntu@zju-zhang.nix";
   };
   "yu@zju-yu-sg" = {
     username = "jiongchiyu";
     hostname = "XXF-GPU-00";
     role = "fox";
     tags = [ "zju" ];
-    sshConfig = ./ssh-configs + "/yu@zju-yu-sg";
+    sshConfig = ./ssh-configs + "/yu@zju-yu-sg.nix";
   };
 }
