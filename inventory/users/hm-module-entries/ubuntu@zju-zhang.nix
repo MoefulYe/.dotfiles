@@ -1,6 +1,6 @@
 { paths, ... }:
 let
-  inherit (paths) hmProfiles hmQuirks;
+  inherit (paths) hmProfiles hmQuirks sharedProfiles;
 in
 {
   imports = [
@@ -9,5 +9,6 @@ in
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/development/shell"
     "${hmProfiles}/features/development/neovim"
+    "${sharedProfiles}/nix-settings/nix-conf-settings.nix"
   ];
 }

@@ -5,7 +5,7 @@ deploy-os:
     sudo nixos-rebuild switch
 deploy-user:
     home-manager switch --flake "$(pwd)#$(id -un)@$(hostname)" -b bak
-deploy-all: deploy-os deploy-user 
+deploy-all: deploy-os deploy-user
 
 update-flake:
     nix flake update
