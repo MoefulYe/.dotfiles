@@ -1,6 +1,8 @@
+{ pkgs, ... }:
 {
   # 当host侧使用nix管理时不要导入这个配置
   nix = {
+    package = pkgs.nix;
     settings = {
       auto-optimise-store = true;
       experimental-features = [
