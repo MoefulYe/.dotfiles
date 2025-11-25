@@ -9,6 +9,7 @@ in
     "${osProfiles}/utils/standard"
     "${osProfiles}/nix/garbage-collector.nix"
     "${hmProfiles}/features/integration/kdeconnect/expose-ports.nix"
+    "${osProfiles}/features/downloading/aria2.nix"
     "${osProfiles}/desktop"
     # "${osProfiles}/features/development/gns3.nix"
     "${osProfiles}/features/development/wireshark.nix"

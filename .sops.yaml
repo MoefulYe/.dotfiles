@@ -34,6 +34,11 @@ creation_rules:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+  - path_regex: ^secrets/app-secrets\.yaml$
+    key_groups:
+      - age:
+          - *lap00-xiaoxin-mei
+          - *desk00-u265kf-lan
   - path_regex: ^secrets/per-host/lap00-xiaoxin-mei/.*\.yaml$
     key_groups:
       - age:
