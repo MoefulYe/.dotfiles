@@ -1,7 +1,6 @@
 {
   # 当host侧使用nix管理时不要导入这个配置
   nix = {
-    channel.enable = false;
     settings = {
       auto-optimise-store = true;
       experimental-features = [

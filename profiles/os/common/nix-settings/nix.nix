@@ -19,6 +19,7 @@ in
     };
     inherit overlays;
   };
+  nix.channel.enable = false;
   nix.settings.trusted-users = [
     "root"
     "@wheel"
