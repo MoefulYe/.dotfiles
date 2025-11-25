@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, paths, ... }: {
   environment.systemPackages = with pkgs; [
     aria2
   ]; 
@@ -11,6 +11,6 @@
 
   services.aria2 = {
     enable = true;
-    settings.rpcSecretFile = "/run/secrets/ARIA2_PASSWD";
+    rpcSecretFile = "/run/secrets/ARIA2_PASSWD";
   };
 }
