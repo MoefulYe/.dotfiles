@@ -22,6 +22,7 @@
         "libvirtd"
         "libvirt"
         "kvm"
+        "aria2"
       ];
       shell = pkgs.zsh;
     };

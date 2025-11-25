@@ -12,5 +12,9 @@
   services.aria2 = {
     enable = true;
     rpcSecretFile = "/run/secrets/ARIA2_PASSWD";
+    settings = {
+      rpc-allow-origin-all=true;
+      rpc-listen-all=true;
+    };
   };
 }

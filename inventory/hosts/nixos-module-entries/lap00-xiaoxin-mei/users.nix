@@ -13,6 +13,7 @@
         "libvirt"
         "wireshark"
         "ubridge"
+        "aria2"
       ];
       shell = pkgs.zsh;
     };
