@@ -49,7 +49,7 @@ with lib;
       };
       logLevel = mkOption {
         type = types.str;
-        default = "warning";
+        default = "error";
       };
       uid = mkOption {
         type = types.int;
