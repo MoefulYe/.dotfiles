@@ -11,5 +11,6 @@ in
     ./users.nix
     ./networking.nix
     ./power-management.nix
+    ./minecraft.nix
   ];
 }
