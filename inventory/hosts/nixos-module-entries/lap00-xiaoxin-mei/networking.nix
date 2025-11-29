@@ -20,5 +20,11 @@ in
     interface = "enp5s0f3u1";
   };
   networking.nameservers = [ "192.168.1.2" ];
-  systemd.network.netdevs.wlp2s0.enable = false;
+  systemd.network.networks.wlp2s0 = {
+    enable = true;
+    matchConfig.Name = "wlp2s0";
+    linkConfig = {
+      Unmanaged = true;
+    };
+  };
 }
