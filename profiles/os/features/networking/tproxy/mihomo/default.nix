@@ -31,17 +31,23 @@ let
     tproxy-port: ${builtins.toString cfg.tproxyPort}
     listeners:
       - name: for-smartdns-resolve
-        type: socks
+        type: mixed
         port: ${builtins.toString cfg.socks5PortForSmartDnsResolving}
         listen: 127.0.0.1
         udp: true
         proxy: DNS
       - name: for-tproxy-bypass
-        type: socks
+        type: mixed
         port: ${builtins.toString cfg.tproxyBypassSocks5Port}
         listen: 0.0.0.0
         udp: true
         proxy: DIRECT
+      - name: load-balance
+        type: mixed
+        port: 7910
+        listen: 0.0.0.0
+        udp: true
+        proxy: load-balance
     allow-lan: true
     log-level: ${cfg.logLevel}
     bind-address: "*"
@@ -562,6 +568,11 @@ let
         ]
         ++ regions;
       }
+      {
+        name = "load-balance";
+        type = "load-balance";
+        use = [ "AV1" ];
+      }
     ]
     proxy-groups-by-region
   ];
@@ -617,6 +628,17 @@ in
     proxy-providers = proxy-providers';
     rule-providers = rule-providers';
   };
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  networking.firewall.allowedTCPPorts = [
+    53
+    7893
+    cfg.tproxyPort
+  ];
+  networking.firewall.allowedUDPPorts = [
+    53
+    7893
+    cfg.tproxyPort
+  ];
   systemd.services."my-mihomo" = {
     enable = true;
     requires = [ "network-online.target" ];

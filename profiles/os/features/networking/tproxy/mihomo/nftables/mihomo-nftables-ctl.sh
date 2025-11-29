@@ -79,6 +79,24 @@ parse_args() {
   fi
 }
 
+remove_sys_fw_rule() {
+  if nft list chain inet sys-fw input >/dev/null 2>&1; then
+    local handle
+    while handle=$(nft -a list chain inet sys-fw input 2>/dev/null | grep "meta mark 0x00000001 accept" | awk '/handle/ {print $NF}' | head -n1); do
+      if [[ "$handle" =~ ^[0-9]+$ ]]; then
+        if nft delete rule inet sys-fw input handle "$handle"; then
+             log_info "Deleted rule from inet sys-fw input (handle $handle)"
+        else
+             log_warn "Failed to delete rule handle $handle"
+             break
+        fi
+      else
+        break
+      fi
+    done
+  fi
+}
+
 cmd_up() {
   check_dependencies
   # best-effort removal
@@ -94,6 +112,17 @@ cmd_up() {
     log_error "Failed to apply ruleset: $TABLE_FILE"; exit 1
   fi
   log_info "Applied ruleset successfully."
+
+  remove_sys_fw_rule
+  if nft list chain inet sys-fw input >/dev/null 2>&1; then
+    if nft insert rule inet sys-fw input meta mark 0x00000001 accept; then
+      log_info "Inserted rule into inet sys-fw input: meta mark 0x00000001 accept"
+    else
+      log_error "Failed to insert rule into inet sys-fw input"
+    fi
+  else
+    log_warn "Chain 'inet sys-fw input' does not exist. Skipping rule insertion."
+  fi
 }
 
 cmd_down() {
@@ -106,6 +135,8 @@ cmd_down() {
   else
     log_info "Table not present; nothing to do: inet $TABLE_NAME"
   fi
+
+  remove_sys_fw_rule
 }
 
 main() {
