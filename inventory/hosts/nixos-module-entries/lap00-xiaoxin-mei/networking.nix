@@ -2,21 +2,20 @@
 let
   inherit (paths) osProfiles;
   outbounds = [
-    "wlp2s0"
+    "enp5s0f3u1"
   ];
 in
 {
-  imports = [
-    "${osProfiles}/features/networking/tproxy"
-    "${osProfiles}/hardware/wireless.nix"
-  ];
-  osProfiles.features.tproxy = {
-    nftables = {
-      inherit outbounds;
-    };
-    smartdns = {
-      enableAntiAD = true;
-    };
+  networking.interfaces.wlp2s0.enable = false;
+  networking.interfaces.enp5s0f3u1 = {
+    useDHCP = false;
+    ipv4.addresses = [
+      {
+        address = "192.168.1.3";
+        prefixLength = 24;
+      }
+    ];
   };
-  networking.interfaces.wlp2s0.useDHCP = true;
+  networking.defaultGateway = "192.168.1.2";
+  networking.nameservers = [ "192.168.1.2" ];
 }

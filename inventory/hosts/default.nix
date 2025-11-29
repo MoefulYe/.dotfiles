@@ -19,10 +19,9 @@ in
   };
   lap00-xiaoxin-mei = {
     system = "x86_64-linux";
-    role = "cat";
+    role = "dog";
     tags = [ ];
-    description = "daily used laptop";
-    priUser = "ashenye";
+    description = "laptop as server";
     nixosConfig = {
       main = ./nixos-module-entries/lap00-xiaoxin-mei;
       extra = desktopQuirks ++ [ ];

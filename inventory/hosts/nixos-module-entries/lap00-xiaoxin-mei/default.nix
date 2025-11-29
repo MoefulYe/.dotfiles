@@ -11,5 +11,6 @@ in
     ./hardware-configuration.nix
     ./users.nix
     ./networking.nix
+    ./power-management.nix
   ];
 }

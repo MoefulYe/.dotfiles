@@ -14,7 +14,7 @@ in
   };
   "ashenye@lap00-xiaoxin-mei" = {
     description = "ashenye on lap00-xiaoxin-mei";
-    role = "cat";
+    role = "dog";
     tags = [ ];
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCHoR+QLELtWTjo8EWiat8FNcyiAEQniZ6kkaOFCIlV ashenye@lein";
     hmConfig = mkHmConfigEntry "ashenye@lap00-xiaoxin-mei.nix";
