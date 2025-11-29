@@ -6,7 +6,6 @@ let
   ];
 in
 {
-  networking.interfaces.wlp2s0.enable = false;
   networking.interfaces.enp5s0f3u1 = {
     useDHCP = false;
     ipv4.addresses = [
@@ -16,6 +15,10 @@ in
       }
     ];
   };
-  networking.defaultGateway = "192.168.1.2";
+  networking.defaultGateway = {
+    address = "192.168.1.2";
+    interface = "enp5s0f3u1";
+  };
   networking.nameservers = [ "192.168.1.2" ];
+  systemd.network.netdevs.wlp2s0.enable = false;
 }
