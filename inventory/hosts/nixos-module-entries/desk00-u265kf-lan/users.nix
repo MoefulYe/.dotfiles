@@ -1,8 +1,5 @@
 {
   pkgs,
-  helpers,
-  inventory,
-  lib,
   ...
 }:
 {

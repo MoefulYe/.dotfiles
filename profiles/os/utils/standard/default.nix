@@ -2,7 +2,6 @@
   imports = [
     ./compression
     ./development
-    ./diagnostics
     ./file-management
     ./hardware
     ./misc
@@ -11,5 +10,6 @@
     ./security
     ./terminal
     ./text-processing
+    ./diagnostics
   ];
 }

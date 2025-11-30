@@ -11,7 +11,6 @@ in
     "${hmProfiles}/features/integration/kdeconnect/expose-ports.nix"
     "${osProfiles}/features/downloading/aria2.nix"
     "${osProfiles}/desktop"
-    # "${osProfiles}/features/development/gns3.nix"
     "${osProfiles}/features/development/wireshark.nix"
     "${osProfiles}/features/virtualisation/podman.nix"
     "${osProfiles}/hardware/gaomon.nix"

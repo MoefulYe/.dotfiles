@@ -27,4 +27,14 @@ in
       extra = desktopQuirks ++ [ ];
     };
   };
+  lap01-macm4-mume = {
+    system = "aarch64-darwin";
+    role = "hermit";
+    tags = [ ];
+    description = "personal laptop";
+    darwinConfig = {
+      main = ./nixos-module-entries/lap01-macm4-mume;
+      extra = [ ];
+    };
+  };
 }

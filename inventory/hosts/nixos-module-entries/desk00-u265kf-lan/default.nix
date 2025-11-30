@@ -1,6 +1,6 @@
-{ paths, pkgs, ... }:
+{ paths, ... }:
 let
-  inherit (paths) osProfiles osRoles;
+  inherit (paths) osProfiles;
 in
 {
   imports = [

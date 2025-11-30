@@ -2,6 +2,8 @@
   description = "just dotfiles";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable?shallow=1";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master?shallow=1";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05?shallow=1";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master?shallow=1";
     nixvim = {
@@ -99,6 +101,10 @@
     // {
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
+        inherit nixpkgs specialArgs paths;
+        inherit (inventory) hosts;
+      };
+      darwinConfigurations = helpers.mkDarwinConfigs {
         inherit nixpkgs specialArgs paths;
         inherit (inventory) hosts;
       };
