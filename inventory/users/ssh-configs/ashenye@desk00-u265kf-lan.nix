@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   programs.ssh.matchBlocks = {
     "lan" = {
@@ -6,7 +5,7 @@
       user = "ashenye";
       port = 2222;
     };
-    "lan-school" = {
+    "lan-zju" = {
       hostname = "10.87.5.23";
       user = "ashenye";
       port = 2222;
