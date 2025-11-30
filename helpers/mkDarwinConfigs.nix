@@ -3,12 +3,13 @@
   nixpkgs,
   specialArgs,
   paths,
+  nix-darwin,
   ...
 }:
 hosts
 |> builtins.mapAttrs (
   hostname: hostInfo:
-  nixpkgs.lib.darwinSystem {
+  nix-darwin.lib.darwinSystem {
     system = hostInfo.system;
     specialArgs = specialArgs // {
       hostInfo = {

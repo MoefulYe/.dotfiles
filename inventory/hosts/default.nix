@@ -33,7 +33,7 @@ in
     tags = [ ];
     description = "personal laptop";
     darwinConfig = {
-      main = ./nixos-module-entries/lap01-macm4-mume;
+      main = ./darwin-module-entries/lap01-macm4-mume;
       extra = [ ];
     };
   };

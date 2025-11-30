@@ -107,6 +107,7 @@
       darwinConfigurations = helpers.mkDarwinConfigs {
         inherit nixpkgs specialArgs paths;
         inherit (inventory) hosts;
+        inherit (inputs) nix-darwin;
       };
       homeConfigurations = helpers.mkHmConfigs {
         inherit
