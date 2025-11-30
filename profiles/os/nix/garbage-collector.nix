@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ isLinux, ... }:
 {
   nix.gc =
-    if pkgs.stdenv.isLinux then
+    if isLinux then
       {
         automatic = true;
         persistent = true;

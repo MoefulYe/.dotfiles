@@ -1,7 +1,7 @@
-{ inputs, pkgs, ... }:
+{ inputs, isLinux, ... }:
 {
   imports =
-    if pkgs.stdenv.isLinux then
+    if isLinux then
       [
         inputs.nix-index-database.nixosModules.nix-index
       ]

@@ -16,6 +16,8 @@ hosts
         hostid = hostname;
       }
       // hostInfo;
+      isDarwin = false;
+      isLinux = true;
     };
     modules = [
       (

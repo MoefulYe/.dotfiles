@@ -1,6 +1,6 @@
 {
   paths,
-  pkgs,
+  isLinux,
   ...
 }:
 let
@@ -13,7 +13,7 @@ in
   ];
   nix.channel.enable = false;
   nix.settings.trusted-users =
-    if pkgs.stdenv.isLinux then
+    if isLinux then
       [
         "root"
         "@wheel"
@@ -24,7 +24,7 @@ in
         "@admin"
       ];
   system.stateVersion =
-    if pkgs.stdenv.isLinux then
+    if isLinux then
       import "${sharedProfiles}/nix-settings/state-version.nix"
     else
       import "${sharedProfiles}/nix-settings/darwin-state-version.nix";

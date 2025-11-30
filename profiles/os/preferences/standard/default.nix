@@ -1,6 +1,11 @@
-{ pkgs, lib, ... }:
 {
-  users.defaultUserShell = lib.mkIf pkgs.stdenv.isLinux pkgs.bash;
+  isLinux,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  users.defaultUserShell = lib.mkIf isLinux pkgs.bash;
   environment.variables = {
     EDITOR = "vim";
     VISUAL = "vim";

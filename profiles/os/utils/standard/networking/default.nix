@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  isLinux,
+  ...
+}:
 {
   environment.systemPackages =
     with pkgs;
@@ -11,7 +16,7 @@
       mtr
       iperf3
     ]
-    ++ (lib.optionals pkgs.stdenv.isLinux [
+    ++ (lib.optionals isLinux [
       iproute2
       ethtool
     ]);

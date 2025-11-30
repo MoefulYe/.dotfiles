@@ -1,7 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, isLinux, ... }:
 {
   services.openssh =
-    if pkgs.stdenv.isLinux then
+    if isLinux then
       {
         enable = lib.mkDefault true;
         settings = {

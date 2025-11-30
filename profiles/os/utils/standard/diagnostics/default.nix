@@ -1,9 +1,14 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  isLinux,
+  ...
+}:
 {
   environment.systemPackages =
     with pkgs;
     [ ]
-    ++ (lib.optionals pkgs.stdenv.isLinux [
+    ++ (lib.optionals isLinux [
       strace
       ltrace
       perf
