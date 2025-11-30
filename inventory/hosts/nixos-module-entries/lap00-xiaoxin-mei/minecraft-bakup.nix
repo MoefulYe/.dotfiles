@@ -9,17 +9,10 @@ let
       pkgs.findutils
       pkgs.coreutils
     ];
-    text = builtins.readFile ./minecraft-backup.sh;
+    text = builtins.readFile ./minecraft-bakup.sh;
   };
 in
 {
-  # 1. 软件包依赖
-  environment.systemPackages = with pkgs; [
-    mcrcon
-    zstd
-    gnutar
-  ];
-
   # 2. 创建备份目录
   systemd.tmpfiles.rules = [
     "d /var/lib/minecraft-bakup 0750 minecraft minecraft - -"
@@ -32,8 +25,7 @@ in
       "network.target"
       "systemd-tmpfiles-setup.service"
     ];
-
-    service = {
+    serviceConfig = {
       Type = "oneshot";
       User = "minecraft";
       Group = "minecraft";
@@ -43,14 +35,6 @@ in
       PrivateTmp = true;
       ExecStart = "${lib.getExe bakupScript}";
     };
-
-    path = with pkgs; [
-      mcrcon
-      gnutar
-      zstd
-      findutils
-      coreutils
-    ];
   };
 
   # 4. 定时器

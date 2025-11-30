@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- 变量定义 ---
-RCON_PASS=$(cat /var/lib/minecraft/rcon.pass)
 RCON="mcrcon -H 127.0.0.1 -P 25575 -p zju-cst-mc-server"
 
 BACKUP_DIR="/var/lib/minecraft-bakup"
