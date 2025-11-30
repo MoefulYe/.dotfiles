@@ -1,14 +1,15 @@
 { pkgs, ... }:
-let
-  conf = pkgs.writeText "ashenye@desk00.conf" ''
-    Host desk00
-      HostName 10.87.5.23
-      User ashenye
-      Port 2222
-  '';
-in
 {
-  programs.ssh.includes = [
-    "${conf}"
-  ];
+  programs.ssh.matchBlocks = {
+    "lan" = {
+      hostname = "192.168.1.2";
+      user = "ashenye";
+      port = 2222;
+    };
+    "lan-school" = {
+      hostname = "10.87.5.23";
+      user = "ashenye";
+      port = 2222;
+    };
+  };
 }
