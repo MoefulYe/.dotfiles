@@ -12,7 +12,7 @@
     defaultSopsFile = "${paths.secrets}/default.yaml";
     age = {
       generateKey = true;
-      keyFile = "${config.home.homeDirectory}/.config/sops/age/key.txt";
+      keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     };
   };
 }
