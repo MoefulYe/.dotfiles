@@ -6,6 +6,7 @@ keys:
       - &ashenye-at-lap00-xiaoxin-mei age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc
       - &ashenye-at-desk00-u265kf-lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
       - &ubuntu-at-zju-zhang age1uk9g8km8mjvkuca5yyjn7rkxektrydtan6w6k3mf3dwpnl859fdq7z599p
+      - &ashenye-at-lap01-macm4-mume age1ymn47ncldl8eex7a6hq2drh5y9qhh54e9f2dxdjz8a9e83x2aatsmuw45p
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
@@ -14,6 +15,7 @@ creation_rules:
           - *desk00-u265kf-lan
           - *ashenye-at-lap00-xiaoxin-mei
           - *ashenye-at-desk00-u265kf-lan
+          - *ashenye-at-lap01-macm4-mume
   - path_regex: ^secrets/zju\.yaml$
     key_groups:
       - age:
@@ -21,6 +23,7 @@ creation_rules:
           - *desk00-u265kf-lan
           - *ashenye-at-lap00-xiaoxin-mei
           - *ashenye-at-desk00-u265kf-lan
+          - *ashenye-at-lap01-macm4-mume
   - path_regex: ^secrets/api-tokens\.yaml$
     key_groups:
       - age:
@@ -29,6 +32,7 @@ creation_rules:
           - *ashenye-at-desk00-u265kf-lan
           - *ashenye-at-lap00-xiaoxin-mei
           - *ubuntu-at-zju-zhang
+          - *ashenye-at-lap01-macm4-mume
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
