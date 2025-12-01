@@ -3,6 +3,7 @@
   pkgs,
   userInfo,
   inputs,
+  lib,
   ...
 }:
 let
@@ -19,7 +20,7 @@ in
   ];
   home.username = userInfo.username;
   # TODO 不定义这个选项会有影响吗
-  home.homeDirectory = "/home/${userInfo.username}";
+  home.homeDirectory = lib.mkDefault "/home/${userInfo.username}";
   home.sessionPath = [
     "$HOME/.local/bin"
   ];

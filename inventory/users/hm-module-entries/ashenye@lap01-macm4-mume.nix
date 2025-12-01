@@ -1,1 +1,3 @@
-{ }
+{
+  home.homeDirectory = "/Users/ashenye";
+}

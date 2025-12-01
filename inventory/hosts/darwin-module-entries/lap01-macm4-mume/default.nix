@@ -1,13 +1,19 @@
 {
   specialArgs,
+  paths,
   hostInfo,
   inventory,
+  inputs,
+  pkgs,
   ...
 }:
 let
   hostname = hostInfo.hostname;
 in
 {
+  imports = [
+    inputs.home-manager.darwinModules.home-manager
+  ];
   system.keyboard = {
     enableKeyMapping = true;
     userKeyMapping = [
@@ -20,6 +26,10 @@ in
         HIDKeyboardModifierMappingDst = 30064771129;
       }
     ];
+  };
+  users.users."ashenye" = {
+    shell = pkgs.zsh;
+    home = "/Users/ashenye";
   };
   home-manager =
     let
@@ -45,12 +55,12 @@ in
           if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
             [
               userInfo.hmConfig
-              "${specialArgs.path.hmRoles}/${userInfo.role}"
+              "${paths.hmRoles}/${userInfo.role}"
             ]
           else
             userInfo.hmConfig.extra
             ++ [
-              "${specialArgs.path.hmRoles}/${userInfo.role}"
+              "${paths.hmRoles}/${userInfo.role}"
               userInfo.hmConfig.main
             ];
         home.username = username;
