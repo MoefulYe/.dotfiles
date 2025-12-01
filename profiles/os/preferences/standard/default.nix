@@ -5,9 +5,9 @@
   ...
 }:
 {
-  users = lib.mkIf isLinux {
+  users = if isLinux then {
     defaultUserShell = pkgs.bash;
-  };
+  } else {};
   environment.variables = {
     EDITOR = "vim";
     VISUAL = "vim";
