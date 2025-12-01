@@ -13,6 +13,7 @@ let
   };
 in
 [
-  (mkEdge "ashenye@desk00-u265kf-lan" "ashenye@lap00-xiaoxin-mei")
-  (mkCartesianProduct [ "ashenye@desk00-u265kf-lan" ] [ "ubuntu@zju-zhang" "yu@zju-yu-sg" ])
+  (mkCartesianProduct [ "ashenye@desk00-u265kf-lan" "ashenye@lap01-macm4-mume" ] [ "ashenye@lap00-xiaoxin-mei" ])
+  (mkCartesianProduct [ "ashenye@desk00-u265kf-lan" "ashenye@lap01-macm4-mume" ] [ "ubuntu@zju-zhang" "yu@zju-yu-sg" ])
+  (mkEdge "ashenye@lap01-macm4-mume" "ashenye@desk00-u265kf-lan" )
 ]
