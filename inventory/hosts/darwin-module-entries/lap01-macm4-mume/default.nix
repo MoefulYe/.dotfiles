@@ -1,9 +1,12 @@
 {
-  helpers,
   specialArgs,
-  lib,
+  hostInfo,
+  inventory,
   ...
 }:
+let
+  hostname = hostInfo.hostname;
+in
 {
   system.keyboard = {
     enableKeyMapping = true;
@@ -18,10 +21,39 @@
       }
     ];
   };
-  home-manager.backupFileExtension = ".bak";
-  home-manager.users."ashenye" =
-    (helpers.mkEmbedHmConfigs {
-      fullyQualifiedUserName = "ashenye@lap01-macm4-mume";
-      inherit specialArgs lib;
-    }).config;
+  home-manager =
+    let
+      username = "ashenye";
+      fullyQualifiedUserName = "ashenye@${hostname}";
+      userInfo = inventory.users.${fullyQualifiedUserName};
+      userInfo' = {
+        inherit username hostname;
+        userid = fullyQualifiedUserName;
+      }
+      // userInfo;
+      extraSpecialArgs = specialArgs // {
+        isDarwin = true;
+        isLinux = false;
+        userInfo = userInfo';
+      };
+    in
+    {
+      backupFileExtension = ".bak";
+      inherit extraSpecialArgs;
+      users."ashenye" = {
+        imports =
+          if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
+            [
+              userInfo.hmConfig
+              "${specialArgs.path.hmRoles}/${userInfo.role}"
+            ]
+          else
+            userInfo.hmConfig.extra
+            ++ [
+              "${specialArgs.path.hmRoles}/${userInfo.role}"
+              userInfo.hmConfig.main
+            ];
+        home.username = username;
+      };
+    };
 }
