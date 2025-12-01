@@ -1,4 +1,10 @@
 {
+  helpers,
+  specialArgs,
+  lib,
+  ...
+}:
+{
   system.keyboard = {
     enableKeyMapping = true;
     userKeyMapping = [
@@ -12,4 +18,10 @@
       }
     ];
   };
+  home-manager.backupFileExtension = ".bak";
+  home-manager.users."ashenye" =
+    (helpers.mkEmbedHmConfigs {
+      fullyQualifiedUserName = "ashenye@lap01-macm4-mume";
+      inherit specialArgs lib;
+    }).config;
 }

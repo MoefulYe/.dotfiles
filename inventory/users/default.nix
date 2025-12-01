@@ -20,6 +20,12 @@ in
     hmConfig = mkHmConfigEntry "ashenye@lap00-xiaoxin-mei.nix";
     sshConfig = ./ssh-configs + "/ashenye@lap00-xiaoxin-mei.nix";
   };
+  "ashenye@lap01-macm4-mume" = {
+    description = "ashenye on lap01-macm4-mume";
+    role = "hermit";
+    tags = [ ];
+    hmConfig = mkHmConfigEntry "ashenye@lap01-macm4-mume.nix";
+  };
   "ubuntu@zju-zhang" = {
     username = "ubuntu";
     hostname = "sv";

@@ -86,6 +86,7 @@
           paths
           ;
         outputs = self;
+        inherit specialArgs;
       };
     in
     (flake-utils.lib.eachDefaultSystem (
