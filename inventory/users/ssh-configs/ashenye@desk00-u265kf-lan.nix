@@ -6,7 +6,7 @@
       port = 2222;
     };
     "lan-zju" = {
-      hostname = "10.87.5.23";
+      hostname = "10.87.5.212";
       user = "ashenye";
       port = 2222;
     };
