@@ -38,7 +38,7 @@ in
   });
   add-my-pkgs = final: prev: {
     pkgs-stable = import inputs.nixpkgs-stable {
-      stdenv.hostPlatform.system = final.stdenv.hostPlatform.system;
+      system = final.system;
       config = {
         allowUnfree = true;
         allowBroken = true;
@@ -52,7 +52,7 @@ in
       ];
     };
     pkgs-stable-with-openssl_1_1_w = import inputs.nixpkgs-stable {
-      stdenv.hostPlatform.system = final.stdenv.hostPlatform.system;
+      system = final.system;
       config = {
         allowUnfree = true;
         allowBroken = true;
@@ -61,7 +61,7 @@ in
         ];
       };
     };
-    my-pkgs = self.packages."${final.stdenv.hostPlatform.system}" // {
+    my-pkgs = self.packages."${final.system}" // {
       dingtalk = final.pkgs-stable-with-openssl_1_1_w.callPackage ../packages/dingtalk { };
     };
   };

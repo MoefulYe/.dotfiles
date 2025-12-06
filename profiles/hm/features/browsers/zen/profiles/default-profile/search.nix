@@ -1,3 +1,4 @@
+{ ... }:
 {
   force = true;
   default = "bing";

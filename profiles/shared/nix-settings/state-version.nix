@@ -1,2 +1,2 @@
 # shared option for all nixos and home-manager side
-"26.05"
+"25.11"
