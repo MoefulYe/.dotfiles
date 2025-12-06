@@ -1,4 +1,4 @@
-{ paths, inventory, ... }:
+{ paths, ... }:
 let
   inherit (paths) hmProfiles hmQuirks;
 in
