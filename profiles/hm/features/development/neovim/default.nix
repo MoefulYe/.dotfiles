@@ -1,4 +1,9 @@
-{ inputs, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
@@ -7,5 +12,6 @@
     ./keymaps.nix
     ./plugins
   ];
-  programs.nixvim.enable = true;
+  programs.nixvim.enable = false;
+  programs.neovim.enable = true;
 }
