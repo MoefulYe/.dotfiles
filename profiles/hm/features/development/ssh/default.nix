@@ -1,7 +1,4 @@
 {
-  imports = [
-    ./github.nix
-  ];
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
