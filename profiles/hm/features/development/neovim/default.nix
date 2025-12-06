@@ -1,4 +1,4 @@
-{ inputs, isLinux, lib,  ... }:
+{ inputs, ... }:
 {
   imports = [
     inputs.nixvim.homeModules.nixvim

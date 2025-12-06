@@ -1,4 +1,4 @@
-{ paths, inputs, ... }:
+{ inputs, ... }:
 {
   imports = [
     inputs.vscode-server.homeModules.default

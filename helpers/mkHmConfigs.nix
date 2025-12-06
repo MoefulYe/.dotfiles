@@ -18,20 +18,18 @@ users
       userid = fullyQualifiedUserName;
     }
     // userInfo;
-    isLinux = lib.strings.hasInfix "linux" (userInfo.system or "x86_64-linux");
-    isDarwin = !isLinux;
+    system = userInfo.system or "x86_64-linux";
+    isLinux = lib.strings.hasInfix "linux" system;
+    isDarwin = lib.strings.hasInfix "darwin" system;
   in
   home-manager.lib.homeManagerConfiguration {
-    pkgs = nixpkgs.legacyPackages."${userInfo'.system or "x86_64-linux"}";
-    extraSpecialArgs = specialArgs // rec {
+    pkgs = nixpkgs.legacyPackages.${system};
+    extraSpecialArgs = specialArgs // {
       userInfo = userInfo';
       inherit isDarwin isLinux;
     };
     modules = [
       {
-        # imports = extraModules ++ [ "${paths.hmRoles}/${userInfo.role}"
-        #   mainModule
-        # ];
         imports =
           if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
             [

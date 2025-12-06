@@ -7,8 +7,8 @@ in
   imports = [
     "${osProfiles}/common/services/openssh.nix"
     "${osProfiles}/common/nix-settings/nix.nix"
-    "${osProfiles}/preferences/standard"
-    "${osProfiles}/utils/standard"
+    "${osProfiles}/preferences/std"
+    "${osProfiles}/utils/std"
     "${osProfiles}/nix/garbage-collector.nix"
     "${osProfiles}/nix/nix-index.nix"
   ];

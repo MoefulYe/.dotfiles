@@ -5,8 +5,8 @@ in
 {
   imports = [
     "${osProfiles}/common"
-    "${osProfiles}/preferences/standard"
-    "${osProfiles}/utils/standard"
+    "${osProfiles}/preferences/std"
+    "${osProfiles}/utils/std"
     "${osProfiles}/nix/garbage-collector.nix"
     "${hmProfiles}/features/integration/kdeconnect/expose-ports.nix"
     "${osProfiles}/features/downloading/aria2.nix"

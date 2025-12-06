@@ -1,12 +1,12 @@
 { paths, ... }:
 let
-  inherit (paths) osProfiles hmProfiles;
+  inherit (paths) osProfiles;
 in
 {
   imports = [
     "${osProfiles}/common"
-    "${osProfiles}/preferences/standard"
-    "${osProfiles}/utils/standard"
+    "${osProfiles}/preferences/std"
+    "${osProfiles}/utils/std"
     "${osProfiles}/nix/garbage-collector.nix"
   ];
 }
