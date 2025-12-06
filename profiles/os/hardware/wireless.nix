@@ -9,6 +9,7 @@
     userControlled.enable = true;
     networks = {
       "ZJUNB" = { };
+      "ZJUNB-GUEST" = { };
     };
   };
 }

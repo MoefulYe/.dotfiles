@@ -4,6 +4,8 @@
   userInfo,
   inputs,
   lib,
+  isLinux,
+  isDarwin,
   ...
 }:
 let
@@ -20,7 +22,14 @@ in
   ];
   home.username = userInfo.username;
   # TODO 不定义这个选项会有影响吗
-  home.homeDirectory = lib.mkDefault "/home/${userInfo.username}";
+  home.homeDirectory = lib.mkDefault (
+    if isLinux then
+      "/home/${userInfo.username}"
+    else if isDarwin then
+      "/Users/${userInfo.username}"
+    else
+      throw "profiles/hm/common/default.nix: Unsupported platform"
+  );
   home.sessionPath = [
     "$HOME/.local/bin"
   ];

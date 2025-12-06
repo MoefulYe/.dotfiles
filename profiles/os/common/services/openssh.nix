@@ -15,6 +15,7 @@
     else
       {
         enable = lib.mkDefault true;
+        # FIXME: 好像没有起到效果?
         extraConfig = ''
           PermitRootLogin no
           PasswordAuthentication no

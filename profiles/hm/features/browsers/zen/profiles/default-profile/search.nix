@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   force = true;
   default = "bing";

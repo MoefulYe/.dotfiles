@@ -1,5 +1,7 @@
 {
   pkgs,
+  lib,
+  isLinux,
   ...
 }:
 {
@@ -10,12 +12,16 @@
         vapoursynthSupport = true;
         vapoursynth = (pkgs.vapoursynth.withPlugins [ pkgs.vapoursynth-mvtools ]);
       };
-      scripts = with pkgs.mpvScripts; [
-        mpris
-        thumbfast
-        mpv-notify-send
-        uosc
-      ];
+      scripts =
+        with pkgs.mpvScripts;
+        [
+          thumbfast
+          mpv-notify-send
+          uosc
+        ]
+        ++ (lib.optionals isLinux [
+          mpris
+        ]);
     };
   };
   home.packages = with pkgs; [
