@@ -7,6 +7,9 @@ deploy-user:
     home-manager switch --flake "$(pwd)#$(id -un)@$(hostname)" -b bak
 deploy-all: deploy-os deploy-user
 
+deploy-darwin:
+    sudo darwin-rebuild switch
+
 update-flake:
     nix flake update
 
