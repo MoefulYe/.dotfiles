@@ -25,6 +25,7 @@ in
     role = "hermit";
     tags = [ ];
     hmConfig = mkHmConfigEntry "ashenye@lap01-macm4-mume.nix";
+    sshConfig = ./ssh-configs + "/ashenye@lap01-macm4-mume.nix";
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl8IkGvU1g8lv/r+RtRVXXmtlW0XNac5zQrRgZ3RCij ashenye@lap01-macm4-mume";
   };
   "ubuntu@zju-zhang" = {

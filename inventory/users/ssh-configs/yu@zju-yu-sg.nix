@@ -12,7 +12,7 @@
   };
 
   sops.templates."zju-yu-sg.conf".content = ''
-    Host zju-yu-sg
+    Host yu-sg.zju
       HostName 143.198.205.199
       User jiongchiyu
       Port 6666
