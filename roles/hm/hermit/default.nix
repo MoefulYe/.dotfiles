@@ -17,7 +17,7 @@ in
     "${hmProfiles}/features/development/ssh"
     "${hmProfiles}/features/development/zsh"
     "${hmProfiles}/features/downloading/bittorrent.nix"
-    "${hmProfiles}/features/downloading/ariang.nix"
+    "${hmProfiles}/features/downloading/aria2.nix"
     "${hmProfiles}/features/gaming/minecraft.nix"
     "${hmProfiles}/features/knowledge"
     "${hmProfiles}/features/llms/codex"
