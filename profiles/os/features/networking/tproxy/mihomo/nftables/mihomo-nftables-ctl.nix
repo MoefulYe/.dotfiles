@@ -3,6 +3,7 @@
   coreutils,
   gnugrep,
   nftables,
+  gawk,
   ...
 }:
 writeShellApplication {
@@ -11,6 +12,7 @@ writeShellApplication {
     coreutils
     gnugrep
     nftables
+    gawk
   ];
   text = builtins.readFile ./mihomo-nftables-ctl.sh;
 }

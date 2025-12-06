@@ -616,17 +616,21 @@ in
     })
     |> builtins.listToAttrs
   );
-  sops.templates."mihomo.yaml".content = mkConfig {
-    inherit
-      lib
-      basic-config
-      dns-config
-      proxies
-      rules
-      proxy-groups
-      ;
-    proxy-providers = proxy-providers';
-    rule-providers = rule-providers';
+  sops.templates."mihomo.yaml" = {
+    content = mkConfig {
+      inherit
+        lib
+        basic-config
+        dns-config
+        proxies
+        rules
+        proxy-groups
+        ;
+      proxy-providers = proxy-providers';
+      rule-providers = rule-providers';
+    };
+    owner = "tproxy-bypass";
+    mode = "0400";
   };
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   networking.firewall.allowedTCPPorts = [
@@ -648,14 +652,12 @@ in
       ExecStart = lib.concatStringsSep " " [
         "${pkgs.mihomo}/bin/mihomo"
         "-d /var/lib/mihomo"
-        "-f \${CREDENTIALS_DIRECTORY}/mihomo.yaml"
+        "-f ${config.sops.templates."mihomo.yaml".path}"
         "-ext-ui ${pkgs.metacubexd}"
       ];
       StateDirectory = [ "mihomo" ];
       User = tproxyBypassUserCfg.name;
       Group = tproxyBypassUserCfg.name;
-      LoadCredential = "mihomo.yaml:${config.sops.templates."mihomo.yaml".path}";
-
       ## Hardening
       DeviceAllow = "";
       LockPersonality = true;
