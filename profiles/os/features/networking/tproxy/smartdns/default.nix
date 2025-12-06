@@ -99,8 +99,16 @@ let
 in
 {
   services.resolved.enable = false;
-  services.nscd.enable = false;
-  system.nssModules = lib.mkForce [ ];
+  # 禁用nscd的hosts缓存，否则可能导致dns污染问题
+  services.nscd = {
+    enable = true;
+    config = ''
+      enable-cache passwd yes
+      enable-cache group yes
+      enable-cache hosts no
+    '';
+  };
+  # system.nssModules = lib.mkForce [ ];
   systemd.services."my-smartdns" = {
     enable = true;
     requires = [ "network-online.target" ];
