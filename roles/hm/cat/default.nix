@@ -22,6 +22,7 @@ in
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/downloading/ariang.nix"
     "${hmProfiles}/features/editors/gimp.nix"
+    "${hmProfiles}/features/gaming/minecraft.nix"
     "${hmProfiles}/features/instant-messengers/discord.nix"
     "${hmProfiles}/features/instant-messengers/telegram.nix"
     "${hmProfiles}/features/instant-messengers/cn.nix"

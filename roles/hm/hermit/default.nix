@@ -18,6 +18,7 @@ in
     "${hmProfiles}/features/development/zsh"
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/downloading/ariang.nix"
+    "${hmProfiles}/features/gaming/minecraft.nix"
     "${hmProfiles}/features/knowledge"
     "${hmProfiles}/features/llms/codex"
     "${hmProfiles}/features/llms/gemini"
