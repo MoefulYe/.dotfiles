@@ -46,7 +46,7 @@
       icat = "kitty +kitten icat";
       ac = "source .venv/bin/activate";
       de = "deactivate";
-      ze = "zellij";
+      zj = "zellij";
       tl = "tldr";
     };
     initContent = builtins.readFile ./init_content.sh;

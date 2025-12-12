@@ -1,10 +1,11 @@
 {
   programs.ssh.matchBlocks = {
     "lan.void" = {
-      hostname = "192.168.1.2";
+      hostname = "192.168.231.3";
       user = "ashenye";
       port = 2222;
     };
+    # FIXME: change to public IP and use VPN
     "lan.zju" = {
       hostname = "10.87.5.212";
       user = "ashenye";

@@ -10,16 +10,16 @@ in
     useDHCP = false;
     ipv4.addresses = [
       {
-        address = "192.168.1.3";
+        address = "192.168.231.4";
         prefixLength = 24;
       }
     ];
   };
   networking.defaultGateway = {
-    address = "192.168.1.2";
+    address = "192.168.231.3";
     interface = "enp5s0f3u1";
   };
-  networking.nameservers = [ "192.168.1.2" ];
+  networking.nameservers = [ "192.168.231.3" ];
   systemd.network.networks.wlp2s0 = {
     enable = true;
     matchConfig.Name = "wlp2s0";

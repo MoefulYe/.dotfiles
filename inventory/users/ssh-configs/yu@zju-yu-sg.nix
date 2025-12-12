@@ -11,18 +11,16 @@
     };
   };
 
-  sops.templates."zju-yu-sg.conf".content = ''
-    Host yu-sg.zju
-      HostName 143.198.205.199
-      User jiongchiyu
-      Port 6666
-      IdentityFile ${config.sops.secrets.YU_SG_KEY.path}
-      ServerAliveInterval 60
-      ServerAliveCountMax 3
-      TCPKeepAlive yes
-      Compression yes
-  '';
-  programs.ssh.includes = [
-    config.sops.templates."zju-yu-sg.conf".path
-  ];
+  programs.ssh.matchBlocks."yu-sg.zju" = {
+      hostname = "143.198.205.199";
+      user =  "jiongchiyu";
+      port =  6666;
+      identityFile = "~/.config/sops-nix/secrets/YU_SG_KEY";
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+      compression = true;
+      extraOptions = {
+        TCPKeepAlive = "yes";
+      };
+  };
 }
