@@ -50,8 +50,8 @@ let
     )
     ++ [
       {
-        type = "A";
-        name = "nixcache.void";
+        type = "CNAME";
+        name = "attic.void";
         address = "192.168.231.3";
       }
     ];

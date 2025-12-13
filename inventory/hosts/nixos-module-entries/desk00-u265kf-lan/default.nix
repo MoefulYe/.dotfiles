@@ -13,6 +13,6 @@ in
     ./bootloader.nix
     ./libvirtd.nix
     ./users.nix
-    ./nix-bincache.nix
+    ./remote-builder.nix
   ];
 }
