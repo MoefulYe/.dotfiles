@@ -85,7 +85,7 @@ rec {
             ];
           };
           networking.defaultGateway = {
-            address = gateway;
+            address = sidecarGateway; # 默认指向旁路由网关
             interface = interface;
           };
           networking.nameservers = [ dnsServer ];
