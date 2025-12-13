@@ -13,5 +13,6 @@ in
     ./bootloader.nix
     ./libvirtd.nix
     ./users.nix
+    ./nix-bincache.nix
   ];
 }

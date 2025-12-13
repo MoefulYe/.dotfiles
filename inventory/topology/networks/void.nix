@@ -15,37 +15,46 @@ let
     "lap01-macm4-mume" = {
       type = "dhcp";
       mac = "68:5e:dd:0e:99:08";
-      ip = "192.168.231.254";
+      ip = "192.168.231.5";
     };
-    "nas00-8100t-xuanwu" = "192.168.231.5";
+    "nas00-8100t-xuanwu" = "192.168.231.6";
   };
   getStaticMemberIp = ipInfo: if lib.isAttrs ipInfo then ipInfo.ip else ipInfo;
   dnsSuffix = "void";
   dnsRecords =
-    staticMembers
-    |> lib.mapAttrsToList (
-      name: ipInfo:
-      let
-        ip = getStaticMemberIp ipInfo;
-        aliases = hosts.${name}.aliases or [ ];
-      in
-      [
-        {
-          type = "A";
-          name = "${name}.${dnsSuffix}";
-          address = ip;
-        }
-      ]
-      ++ (
-        aliases
-        |> lib.map (alias: {
-          type = "CNAME";
-          name = "${alias}.${dnsSuffix}";
-          canonicalName = "${name}.${dnsSuffix}";
-        })
+    (
+      staticMembers
+      |> lib.mapAttrsToList (
+        name: ipInfo:
+        let
+          ip = getStaticMemberIp ipInfo;
+          aliases = hosts.${name}.aliases or [ ];
+        in
+        [
+          {
+            type = "A";
+            name = "${name}.${dnsSuffix}";
+            address = ip;
+          }
+        ]
+        ++ (
+          aliases
+          |> lib.map (alias: {
+            type = "CNAME";
+            name = "${alias}.${dnsSuffix}";
+            canonicalName = "${name}.${dnsSuffix}";
+          })
+        )
       )
+      |> lib.concatLists
     )
-    |> lib.concatLists;
+    ++ [
+      {
+        type = "A";
+        name = "nixcache.void";
+        address = "192.168.231.3";
+      }
+    ];
   smartdnsRecords =
     dnsRecords
     |> lib.map (
