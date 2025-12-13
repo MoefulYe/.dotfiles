@@ -8,8 +8,12 @@ in
 {
   desk00-u265kf-lan = {
     system = "x86_64-linux";
+    aliases = [
+      "desk00"
+      "lan"
+    ];
     role = "cat";
-    tags = [ ];
+    tags = [ "void" ];
     description = "daily used desktop";
     priUser = "ashenye";
     nixosConfig = {
@@ -19,8 +23,12 @@ in
   };
   lap00-xiaoxin-mei = {
     system = "x86_64-linux";
+    aliases = [
+      "lap00"
+      "mei"
+    ];
     role = "dog";
-    tags = [ ];
+    tags = [ "void" ];
     description = "laptop as server";
     nixosConfig = {
       main = ./nixos-module-entries/lap00-xiaoxin-mei;
@@ -29,12 +37,49 @@ in
   };
   lap01-macm4-mume = {
     system = "aarch64-darwin";
+    aliases = [
+      "lap01"
+      "mume"
+    ];
     role = "hermit";
-    tags = [ ];
+    tags = [ "void" ];
     description = "personal laptop";
     darwinConfig = {
       main = ./darwin-module-entries/lap01-macm4-mume;
       extra = [ ];
     };
+  };
+  rutr00-k2p-zhuque = {
+    system = "aarch64-linux";
+    aliases = [
+      "rutr00"
+      "zhuque"
+    ];
+    role = "router";
+    tags = [
+      "void"
+      "router"
+    ];
+  };
+  rutr01-n1-qingloong = {
+    system = "aarch64-linux";
+    aliases = [
+      "rutr01"
+      "qingloong"
+    ];
+    role = "router-backup";
+    tags = [
+      "void"
+      "router"
+    ];
+  };
+  nas00-8100t-xuanwu = {
+    system = "x86_64-linux";
+    aliases = [
+      "nas00"
+      "xuanwu"
+    ];
+    role = "nas";
+    tags = [ "void" ];
   };
 }

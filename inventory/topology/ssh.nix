@@ -1,3 +1,4 @@
+inputs:
 let
   mkEdge = from: to: {
     type = "edge";
@@ -11,9 +12,21 @@ let
     type = "complete-graph";
     inherit nodes;
   };
+  zjus = [
+    "ubuntu@zju-zhang"
+    "yu@zju-yu-sg"
+  ];
+  voids = [
+    "ashenye@lap00-xiaoxin-mei"
+    "root@rutr00-k2p-zhuque"
+  ];
+  dailies = [
+    "ashenye@desk00-u265kf-lan"
+    "ashenye@lap01-macm4-mume"
+  ];
 in
 [
-  (mkCartesianProduct [ "ashenye@desk00-u265kf-lan" "ashenye@lap01-macm4-mume" ] [ "ashenye@lap00-xiaoxin-mei" "root@rutr00-k2p-zhuque" ])
-  (mkCartesianProduct [ "ashenye@desk00-u265kf-lan" "ashenye@lap01-macm4-mume" ] [ "ubuntu@zju-zhang" "yu@zju-yu-sg" ])
-  (mkCompleteGraph [ "ashenye@lap01-macm4-mume" "ashenye@desk00-u265kf-lan" ])
+  (mkCartesianProduct dailies voids)
+  (mkCartesianProduct dailies zjus)
+  (mkCompleteGraph dailies)
 ]

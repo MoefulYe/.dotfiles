@@ -7,6 +7,7 @@ in
     role = "cat";
     tags = [
       "gaming"
+      "daily"
     ];
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";
     hmConfig = mkHmConfigEntry "ashenye@desk00-u265kf-lan.nix";
@@ -23,7 +24,9 @@ in
   "ashenye@lap01-macm4-mume" = {
     description = "ashenye on lap01-macm4-mume";
     role = "hermit";
-    tags = [ ];
+    tags = [
+      "daily"
+    ];
     hmConfig = mkHmConfigEntry "ashenye@lap01-macm4-mume.nix";
     sshConfig = ./ssh-configs + "/ashenye@lap01-macm4-mume.nix";
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl8IkGvU1g8lv/r+RtRVXXmtlW0XNac5zQrRgZ3RCij ashenye@lap01-macm4-mume";

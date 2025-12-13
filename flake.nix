@@ -59,7 +59,6 @@
       ...
     }@inputs:
     let
-      inventory = import ./inventory { inherit (nixpkgs) lib; };
       me = import ./me;
       helpers = import ./helpers;
       paths = rec {
@@ -76,6 +75,15 @@
         hmRoles = "${root}/roles/hm";
         osQuirks = "${root}/quirks/os";
         hmQuirks = "${root}/quirks/hm";
+      };
+      inventory = import ./inventory {
+        inherit (nixpkgs) lib;
+        inherit
+          paths
+          helpers
+          me
+          inventory
+          ;
       };
       specialArgs = {
         inherit
