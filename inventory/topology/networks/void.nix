@@ -114,10 +114,10 @@ rec {
           ];
           listen-address = "${dhcpServer}";
           log-dhcp = true;
-          # dhcp-host =
-          #   staticMembers
-          #   |> lib.filterAttrs (_: info: info.type == "dhcp")
-          #   |> lib.mapAttrsToList (_: { mac, ip }: "${mac},${ip}");
+          dhcp-host =
+            staticMembers
+            |> lib.filterAttrs (_: info: lib.isAttrs info && info.type == "dhcp")
+            |> lib.mapAttrsToList (_: { mac, ip, ... }: "${mac},${ip}");
         };
       };
       # boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
