@@ -96,6 +96,10 @@ with lib;
         type = types.str;
         default = "*-*-* 04:00:00";
       };
+      staticRecords = mkOption {
+        type = types.lines;
+        default = "";
+      };
       extraSettings = mkOption {
         type = types.lines;
         default = "";

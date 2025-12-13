@@ -33,7 +33,7 @@ in
     };
     smartdns = {
       enableAntiAD = true;
-      extraSettings = inventory.topology.networks.void.smartdnsRecords;
+      staticRecords = inventory.topology.networks.void.smartdnsRecords;
     };
   };
   networking.interfaces.wlp128s20f3.useDHCP = true;

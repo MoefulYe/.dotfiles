@@ -27,52 +27,42 @@ let
     "https://freedns.controld.com/p0"
     "https://dns.nextdns.io"
   ];
-  hardcodedHosts = {
-    "cloudflare-dns.com" = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-    "dns.google" = [
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
-  };
-  configText =
-    [
-      ''
-        force-AAAA-SOA yes
-        proxy-server socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -name socks5
+  hardcodedHosts = ''
+    address /cloudflare-dns.com/1.1.1.1,1.0.0.1
+    address /dns.google/8.8.8.8,8.8.4.4
+  ''
+  + cfg.staticRecords;
 
-        group-begin domestic-dns
-        ${lib.concatStringsSep "\n" (
-          lib.map (dns: "server ${dns} -exclude-default-group -bootstrap-dns") domesticDns
-        )}
-        group-end
+  antiad = (
+    lib.optionalString cfg.enableAntiAD ''
+      conf-file ${antiAdFilePath}
+    ''
+  );
+  configText = ''
+    force-AAAA-SOA yes
+    proxy-server socks5://127.0.0.1:${builtins.toString mihomoSocks5Port} -name socks5
 
-        group-begin foreign-doh
-        ${lib.concatStringsSep "\n" (
-          lib.map (doh: "server-https ${doh} -exclude-default-group -proxy socks5") foreignDoh
-        )}
-        group-end
+    group-begin domestic-dns
+    ${antiad}
+    ${hardcodedHosts}
+    ${lib.concatStringsSep "\n" (
+      lib.map (dns: "server ${dns} -exclude-default-group -bootstrap-dns") domesticDns
+    )}
+    group-end
 
-        # hardcodedHosts
-        ${lib.concatStringsSep "\n" (
-          lib.attrValues (
-            lib.mapAttrs (host: ip: ''
-              address /${host}/${if lib.isString ip then ip else lib.concatStringsSep "," ip}
-            '') hardcodedHosts
-          )
-        )}
-        # 国内DNS解析与代理节点DNS解析
-        bind [::]:${builtins.toString cfg.domesticDnsPort} -group domestic-dns
-        bind [::]:${builtins.toString cfg.foreignDnsPort} -group foreign-doh
-      ''
-      cfg.extraSettings
-      (lib.optionalString cfg.enableAntiAD ''
-        conf-file ${antiAdFilePath}
-      '')
-    ]
-    |> lib.concatStringsSep "\n";
+    group-begin foreign-doh
+    ${antiad}
+    ${hardcodedHosts}
+    ${lib.concatStringsSep "\n" (
+      lib.map (doh: "server-https ${doh} -exclude-default-group -proxy socks5") foreignDoh
+    )}
+    group-end
+
+    # 国内DNS解析与代理节点DNS解析
+    bind [::]:${builtins.toString cfg.domesticDnsPort} -group domestic-dns
+    bind [::]:${builtins.toString cfg.foreignDnsPort} -group foreign-doh
+    ${cfg.extraSettings}
+  '';
   configFile = pkgs.writeText "smartdns.conf" configText;
   inherit (pkgs) my-pkgs;
   smartdnsReloader = pkgs.writeShellScript "smartdns-reloader" ''

@@ -5,7 +5,7 @@ let
   # 64-127静态分配虚拟机
   # 128-254动态分配
   # IP # shorthand for the static type
-  # | { type = "dhcp-host"; mac = "xx:xx:xx:xx:xx:xx"; ip = "192.168.231.xxx"; }
+  # | { type = "dhcp"; mac = "xx:xx:xx:xx:xx:xx"; ip = "192.168.231.xxx"; }
   # | { type = "static"; ip = "192.168.231.xxx"; }
   staticMembers = {
     "rutr00-k2p-zhuque" = "192.168.231.1";
@@ -13,7 +13,7 @@ let
     "desk00-u265kf-lan" = "192.168.231.3";
     "lap00-xiaoxin-mei" = "192.168.231.4";
     "lap01-macm4-mume" = {
-      type = "dhcp-host";
+      type = "dhcp";
       mac = "d4:ae:52:1c:bb:6c";
       ip = "192.168.231.5";
     };
@@ -114,6 +114,10 @@ rec {
           ];
           listen-address = "${dhcpServer}";
           log-dhcp = true;
+          # dhcp-host =
+          #   staticMembers
+          #   |> lib.filterAttrs (_: info: info.type == "dhcp")
+          #   |> lib.mapAttrsToList (_: { mac, ip }: "${mac},${ip}");
         };
       };
       # boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
