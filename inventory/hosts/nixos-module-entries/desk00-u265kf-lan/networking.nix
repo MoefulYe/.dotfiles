@@ -19,7 +19,11 @@ in
     (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
       interface = defaultIface;
       override = {
-        networking.defaultGateway = "192.168.231.1";
+        networking.defaultGateway = {
+          address = "192.168.231.1";
+          interface = defaultIface;
+          metric = 100;
+        };
       };
     })
   ];
@@ -33,6 +37,5 @@ in
     };
   };
   networking.interfaces.wlp128s20f3.useDHCP = true;
-  networking.defaultGateway.metric = 100;
   systemd.network.networks."40-wlp128s20f3".dhcpV4Config.RouteMetric = 200;
 }

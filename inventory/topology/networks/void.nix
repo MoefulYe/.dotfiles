@@ -44,7 +44,8 @@ let
           canonicalName = "${name}.${dnsSuffix}";
         })
       )
-    );
+    )
+    |> lib.concatLists;
   smartdnsRecords =
     dnsRecords
     |> lib.map (
@@ -95,11 +96,10 @@ rec {
             interface = interface;
           };
           networking.nameservers = [ dnsServer ];
-        }
-        // override;
+        };
       in
       {
-        inherit config;
+        config = lib.recursiveUpdate config override;
       };
     dnsmasqConfig = {
       services.dnsmasq = {
@@ -116,7 +116,7 @@ rec {
           log-dhcp = true;
         };
       };
-      boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+      # boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
       networking.firewall = {
         allowedUDPPorts = [
           67
