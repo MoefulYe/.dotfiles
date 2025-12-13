@@ -102,7 +102,7 @@ rec {
           };
           networking.defaultGateway = {
             address = sidecarGateway; # 默认指向旁路由网关
-            interface = interface;
+            inherit interface;
           };
           networking.nameservers = [ dnsServer ];
         };
