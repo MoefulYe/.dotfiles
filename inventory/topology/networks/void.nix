@@ -14,10 +14,10 @@ let
     "lap00-xiaoxin-mei" = "192.168.231.4";
     "lap01-macm4-mume" = {
       type = "dhcp";
-      mac = "d4:ae:52:1c:bb:6c";
-      ip = "192.168.231.5";
+      mac = "68:5e:dd:0e:99:08";
+      ip = "192.168.231.254";
     };
-    "nas00-8100t-xuanwu" = "192.168.231.6";
+    "nas00-8100t-xuanwu" = "192.168.231.5";
   };
   getStaticMemberIp = ipInfo: if lib.isAttrs ipInfo then ipInfo.ip else ipInfo;
   dnsSuffix = "void";
@@ -106,7 +106,7 @@ rec {
         enable = true;
         settings = {
           port = 0;
-          bind-interfaces = true;
+          # bind-interfaces = true;
           dhcp-range = [ dhcpRange ];
           dhcp-option = [
             "option:router,${sidecarGateway}"
