@@ -51,8 +51,8 @@ let
     ++ [
       {
         type = "CNAME";
-        name = "attic.void";
-        address = "192.168.231.3";
+        name = "builder.nix.void";
+        canonicalName = "desk00-u265kf-lan.void";
       }
     ];
   smartdnsRecords =

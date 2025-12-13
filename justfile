@@ -34,7 +34,7 @@ gen-age-key path:
 
 # print host age-key
 get-host-age-key:
-    @sudo grep '^AGE-SECRET-KEY' /var/lib/sops-nix/key.txt
+    @sudo grep '^AGE-SECRET-KEY' /var/lib/sops-nix/keys.txt
 
 fmt:
     nix fmt **/*.nix
