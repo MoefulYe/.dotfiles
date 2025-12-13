@@ -97,7 +97,7 @@ with lib;
         default = "*-*-* 04:00:00";
       };
       extraSettings = mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
       };
       # 在代理未运行的情况下也是默认的系统dns

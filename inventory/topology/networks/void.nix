@@ -55,7 +55,8 @@ let
         "cname /${record.name}/${record.canonicalName}"
       else
         throw "Unknown record type: ${record.type}"
-    );
+    )
+    |> lib.concatStringsSep "\n";
 in
 rec {
   # 网络 子网掩码 网关 DNS 服务器 静态成员的声明
@@ -64,13 +65,18 @@ rec {
   gateway = "192.168.231.1";
   sidecarGateway = "192.168.231.3";
   dnsServer = "192.168.231.3";
+  dhcpServer = "192.168.231.3";
+  dhcpRange = "192.168.231.128,192.168.231.254,255.255.255.0,12h";
   inherit staticMembers dnsRecords smartdnsRecords;
   nixosConfig = {
     staticMemberNetworkdConfig =
       {
-        hostname,
         interface,
         override,
+        ...
+      }:
+      {
+        hostInfo,
         ...
       }:
       let
@@ -79,7 +85,7 @@ rec {
             useDHCP = false;
             ipv4.addresses = [
               {
-                address = getStaticMemberIp staticMembers.${hostname};
+                address = getStaticMemberIp staticMembers.${hostInfo.hostname};
                 prefixLength = prefixLength;
               }
             ];
@@ -95,5 +101,27 @@ rec {
       {
         inherit config;
       };
+    dnsmasqConfig = {
+      services.dnsmasq = {
+        enable = true;
+        settings = {
+          port = 0;
+          bind-interfaces = true;
+          dhcp-range = [ dhcpRange ];
+          dhcp-option = [
+            "option:router,${sidecarGateway}"
+            "option:dns-server,${dnsServer}"
+          ];
+          listen-address = "${dhcpServer}";
+          log-dhcp = true;
+        };
+      };
+      boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+      networking.firewall = {
+        allowedUDPPorts = [
+          67
+        ];
+      };
+    };
   };
 }

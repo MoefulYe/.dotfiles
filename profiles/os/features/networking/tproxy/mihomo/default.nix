@@ -92,6 +92,7 @@ let
         - 'geosite:private'
         - 'rule-set:zju-intranet-domain'
         - 'rule-set:bypass-fake-ip'
+        - 'rule-set:mynet'
       fallback:
         - https://doh.pub/dns-query
         - https://dns.alidns.com/dns-query
@@ -228,6 +229,15 @@ let
         "+.tegrazone.com"
         "+.tegrazone.jp"
         "+.tegrazone.kr"
+      ];
+    };
+    mynet = {
+      behavior = "classical";
+      type = "inline";
+      payload = [
+        "IP-CIDR,192.168.231.0/24"
+        "IP-CIDR,192.168.232.0/24"
+        "DOMAIN-SUFFIX,void"
       ];
     };
     github = {
