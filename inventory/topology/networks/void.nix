@@ -82,7 +82,7 @@ rec {
     staticMemberNetworkdConfig =
       {
         interface,
-        override,
+        override ? {},
         ...
       }:
       {

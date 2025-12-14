@@ -30,9 +30,9 @@
       # Nix custom ssh-variant that avoids lots of "trusted-users" settings pain
       protocol = "ssh-ng";
       # default is 1 but may keep the builder idle in between builds
-      maxJobs = 3;
+      maxJobs = 20;
       # how fast is the builder compared to your local machine
-      speedFactor = 2;
+      speedFactor = 4;
       supportedFeatures = [
         "nixos-test"
         "benchmark"
@@ -55,4 +55,6 @@
       IdentityFile ${config.sops.secrets.NIX_REMOTE_BUILDER_PRIVKEY.path}
       Port 2222
   '';
+  # set local's max-job to 0 to force remote building(disable local building)
+  nix.settings.max-jobs = 0;
 }

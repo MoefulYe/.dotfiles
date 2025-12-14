@@ -75,6 +75,7 @@
         hmRoles = "${root}/roles/hm";
         osQuirks = "${root}/quirks/os";
         hmQuirks = "${root}/quirks/hm";
+	infra = "${root}/infra";
       };
       inventory = import ./inventory {
         inherit (nixpkgs) lib;
