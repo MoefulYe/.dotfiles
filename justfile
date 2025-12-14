@@ -1,14 +1,15 @@
 default:
     just --list
 
-deploy-os:
+deploy-nixos:
     sudo nixos-rebuild switch
-deploy-user:
+deploy-home:
     home-manager switch --flake "$(pwd)#$(id -un)@$(hostname)" -b bak
-deploy-all: deploy-os deploy-user
+deploy-both: deploy-nixos deploy-home
 
 deploy-darwin:
     sudo darwin-rebuild switch
+
 
 update-flake:
     nix flake update

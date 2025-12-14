@@ -37,6 +37,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils?shallow=1";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
   nixConfig = {
     extra-substituters = [
@@ -128,5 +129,6 @@
           ;
         inherit (inventory) users;
       };
+      deploy = import ./infra/remote-deploy.nix specialArgs;
     };
 }

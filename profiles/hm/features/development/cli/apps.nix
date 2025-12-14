@@ -11,6 +11,6 @@
     tlrc
     awscli2
     delta
+    deploy-rs
   ];
-
 }

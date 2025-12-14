@@ -25,16 +25,16 @@
     shellAliases = {
       lg = "lazygit";
       ls = "lsd --hyperlink=auto";
+      v = "nvim";
       vi = "nvim";
       vim = "nvim";
       e = "printenv";
       o = "xdg-open";
       j = "journalctl";
-      ju = "just";
+      js = "just";
       s = "ssh";
-      sy = "systemctl";
-      sysu = "systemctl --user";
-      v = "nvim";
+      st = "systemctl";
+      stu = "systemctl --user";
       pd = "podman";
       pdr = "podman run";
       pdb = "podman build";
@@ -42,7 +42,6 @@
       pdc = "podman compose";
       pdv = "podman volume";
       run = "systemd-run --user";
-      runs = "systemd-run";
       icat = "kitty +kitten icat";
       ac = "source .venv/bin/activate";
       de = "deactivate";

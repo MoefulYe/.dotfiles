@@ -14,7 +14,7 @@
       # Will be used to call "ssh builder" to connect to the builder machine.
       # The details of the connection (user, port, url etc.)
       # are taken from your "~/.ssh/config" file.
-      hostName = "builder";
+      hostName = "remote-builder";
       # CPU architecture of the builder, and the operating system it runs.
       # Replace the line by the architecture of your builder, e.g.
       # - Normal Intel/AMD CPUs use "x86_64-linux"
@@ -49,7 +49,7 @@
     builders-use-substitutes = true;
   };
   programs.ssh.extraConfig = ''
-    Host builder
+    Host remote-builder
       User remote-builder
       HostName builder.nix.void
       IdentityFile ${config.sops.secrets.NIX_REMOTE_BUILDER_PRIVKEY.path}
