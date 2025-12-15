@@ -8,7 +8,7 @@
   sops.secrets = {
     NIX_REMOTE_BUILDER_PRIVKEY = {
       mode = "0400";
-      sopsFile = "${paths.secrets}/app-secrets.yaml";
+      sopsFile = "${paths.secrets}/infra.yaml";
     };
   };
   # You can see the resulting builder-strings of this NixOS-configuration with "cat /etc/nix/machines".
