@@ -1,5 +1,10 @@
 hosts: # lists of { hostname, domain, port }
-{ paths,lib, ... }:
+{
+  paths,
+  lib,
+  config,
+  ...
+}:
 {
   sops.secrets = {
     NIX_REMOTE_BUILDER_PRIVKEY = {
@@ -7,10 +12,22 @@ hosts: # lists of { hostname, domain, port }
       sopsFile = "${paths.secrets}/infra.yaml";
     };
   };
-  programs.ssh.matchBlocks = hosts |> lib.map ({ hostname, domain, port }: {
-    name = "${hostname}-deploy";
-    value = {
-      Host
-    };
-  });
+  programs.ssh.matchBlocks =
+    hosts
+    |> lib.map (
+      {
+        hostname,
+        domain,
+        port,
+      }:
+      {
+        name = "${hostname}-deploy";
+        value = {
+          hostname = domain;
+          user = "deployee";
+          inherit port;
+          IdentityFile = config.sops.secrets.NIX_REMOTE_BUILDER_PRIVKEY.path;
+        };
+      }
+    );
 }
