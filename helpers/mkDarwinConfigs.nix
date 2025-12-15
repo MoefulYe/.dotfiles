@@ -7,6 +7,7 @@
   ...
 }:
 hosts
+|> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "darwin" (hostInfo.tags or [ ]))
 |> builtins.mapAttrs (
   hostname: hostInfo:
   nix-darwin.lib.darwinSystem {

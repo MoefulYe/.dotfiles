@@ -13,7 +13,10 @@ in
       "lan"
     ];
     role = "cat";
-    tags = [ "void" ];
+    tags = [
+      "void"
+      "nixos"
+    ];
     description = "daily used desktop";
     priUser = "ashenye";
     nixosConfig = {
@@ -28,7 +31,10 @@ in
       "mei"
     ];
     role = "dog";
-    tags = [ "void" ];
+    tags = [
+      "void"
+      "nixos"
+    ];
     description = "laptop as server";
     nixosConfig = {
       main = ./nixos-module-entries/lap00-xiaoxin-mei;
@@ -42,7 +48,10 @@ in
       "mume"
     ];
     role = "hermit";
-    tags = [ "void" ];
+    tags = [
+      "void"
+      "darwin"
+    ];
     description = "personal laptop";
     darwinConfig = {
       main = ./darwin-module-entries/lap01-macm4-mume;
@@ -59,6 +68,7 @@ in
     tags = [
       "void"
       "router"
+      "openwrt"
     ];
   };
   rutr01-n1-qingloong = {
@@ -71,6 +81,7 @@ in
     tags = [
       "void"
       "router"
+      "nixos"
     ];
   };
   nas00-8100t-xuanwu = {
@@ -80,6 +91,9 @@ in
       "xuanwu"
     ];
     role = "nas";
-    tags = [ "void" ];
+    tags = [
+      "void"
+      "nixos"
+    ];
   };
 }

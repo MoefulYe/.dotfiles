@@ -37,16 +37,16 @@
         };
       };
     };
-    lap01-macm4-mume = {
-      sshUser = "ashenye";
-      hostname = "mume.void";
-      profiles = {
-        system = {
-          user = "root";
-          path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.lap01-macm4-mume;
-        };
-      };
-    };
+    # lap01-macm4-mume = {
+    #   sshUser = "ashenye";
+    #   hostname = "mume.void";
+    #   profiles = {
+    #     system = {
+    #       user = "root";
+    #       path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.lap01-macm4-mume;
+    #     };
+    #   };
+    # };
   };
   interactiveSudo = true;
 }
