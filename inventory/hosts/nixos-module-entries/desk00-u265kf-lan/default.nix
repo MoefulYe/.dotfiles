@@ -15,5 +15,6 @@ in
     ./libvirtd.nix
     ./users.nix
     ./remote-builder.nix
+    ./binfmt-misc.nix
   ];
 }
