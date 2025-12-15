@@ -1,4 +1,4 @@
-inputs:
+{ lib, ... }:
 let
   mkEdge = from: to: {
     type = "edge";
@@ -24,9 +24,26 @@ let
     "ashenye@desk00-u265kf-lan"
     "ashenye@lap01-macm4-mume"
   ];
+  deployeeSshConfig =
+    [
+      "lan"
+      "mei"
+      "mume"
+    ]
+    |> lib.map (name: {
+      hostname = name;
+      domain = "${name}.void";
+      port = 2222;
+    })
+    |> import ../../infra/remote-builder/mkDeployeeSshConfig.nix;
+  deployee = {
+    sshConfig = deployeeSshConfig;
+  };
 in
 [
   (mkCartesianProduct dailies voids)
   (mkCartesianProduct dailies zjus)
+  (mkCartesianProduct)
   (mkCompleteGraph dailies)
+  (mkCartesianProduct dailies deployee)
 ]

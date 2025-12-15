@@ -1,6 +1,8 @@
-{ paths, ... }: let
+{ paths, ... }:
+let
   inherit (paths) infra;
-in {
+in
+{
   imports = [
     ./hardware-configuration.nix
     ./users.nix
@@ -8,6 +10,7 @@ in {
     ./power-management.nix
     ./minecraft.nix
     ./minecraft-bakup.nix
-    "${infra}/remote-builder.nix"
+    "${infra}/remote-builder/client.nix"
+    "${infra}/remote-deploy/deployee.nix"
   ];
 }

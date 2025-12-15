@@ -50,11 +50,30 @@ let
   allowOut = resolved |> lib.concatMap (r: r.allowOut) |> lib.unique;
 in
 {
-  imports = allowOut |> lib.map (toUserId: inventory.users.${toUserId}.sshConfig);
+  imports =
+    allowOut
+    |> lib.map (
+      toUserId:
+      if lib.isString toUserId then
+        inventory.users.${toUserId}.sshConfig
+      else if lib.isAttrs toUserId && lib.hasAttr "sshConfig" toUserId then
+        toUserId.sshConfig
+      else
+        throw "Invalid sshConfig for userId"
+    );
   home.file.".ssh/.authorized_keys" =
     let
       authorizedKeysContent =
-        allowIn |> lib.concatMapStringsSep "\n" (userId: inventory.users.${userId}.sshPubKey);
+        allowIn
+        |> lib.concatMapStringsSep "\n" (
+          userId:
+          if lib.isString userId then
+            inventory.users.${userId}.sshPubKey
+          else if lib.isAttrs userId && lib.hasAttr "sshPubKey" userId then
+            userId.sshPubKey
+          else
+            throw "Invalid sshPubKey for userId"
+        );
     in
     lib.mkIf (authorizedKeysContent != "") {
       text = authorizedKeysContent;
