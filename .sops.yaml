@@ -14,6 +14,7 @@ creation_rules:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+          - *lap01-macm4-mume
           - *ashenye-at-lap00-xiaoxin-mei
           - *ashenye-at-desk00-u265kf-lan
           - *ashenye-at-lap01-macm4-mume
@@ -22,6 +23,7 @@ creation_rules:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+          - *lap01-macm4-mume
           - *ashenye-at-lap00-xiaoxin-mei
           - *ashenye-at-desk00-u265kf-lan
           - *ashenye-at-lap01-macm4-mume
@@ -30,6 +32,7 @@ creation_rules:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+          - *lap01-macm4-mume
           - *ashenye-at-desk00-u265kf-lan
           - *ashenye-at-lap00-xiaoxin-mei
           - *ubuntu-at-zju-zhang
@@ -39,11 +42,13 @@ creation_rules:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+          - *lap01-macm4-mume
   - path_regex: ^secrets/app-secrets\.yaml$
     key_groups:
       - age:
           - *lap00-xiaoxin-mei
           - *desk00-u265kf-lan
+          - *lap01-macm4-mume
   - path_regex: ^secrets/per-host/lap00-xiaoxin-mei/.*\.yaml$
     key_groups:
       - age:

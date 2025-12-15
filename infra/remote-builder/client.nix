@@ -1,4 +1,9 @@
-{ paths, config, ... }:
+{
+  paths,
+  config,
+  lib,
+  ...
+}:
 {
   sops.secrets = {
     NIX_REMOTE_BUILDER_PRIVKEY = {
@@ -56,5 +61,5 @@
       Port 2222
   '';
   # set local's max-job to 0 to force remote building(disable local building)
-  nix.settings.max-jobs = 0;
+  nix.settings.max-jobs = lib.mkDefault 0;
 }
