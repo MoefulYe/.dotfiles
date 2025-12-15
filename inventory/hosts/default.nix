@@ -81,7 +81,7 @@ in
     tags = [
       "void"
       "router"
-      "nixos"
+      # "nixos"
     ];
   };
   nas00-8100t-xuanwu = {
@@ -93,7 +93,7 @@ in
     role = "nas";
     tags = [
       "void"
-      "nixos"
+      # "nixos"
     ];
   };
 }
