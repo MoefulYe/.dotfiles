@@ -14,7 +14,6 @@ in
     ./bootloader.nix
     ./libvirtd.nix
     ./users.nix
-    ./remote-builder.nix
     ./binfmt-misc.nix
   ];
 }
