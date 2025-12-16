@@ -30,12 +30,12 @@ let
       "mei"
       "mume"
     ]
-    |> lib.map (name: {
+    |> (lib.map (name: {
       hostname = name;
       domain = "${name}.void";
       port = 2222;
-    })
-    |> import ../../infra/remote-builder/mkDeployeeSshConfig.nix;
+    }))
+    |> (import ../../infra/remote-builder/mkDeployeeSshConfig.nix);
   deployee = {
     sshConfig = deployeeSshConfig;
   };
@@ -43,7 +43,6 @@ in
 [
   (mkCartesianProduct dailies voids)
   (mkCartesianProduct dailies zjus)
-  (mkCartesianProduct)
   (mkCompleteGraph dailies)
-  (mkCartesianProduct dailies deployee)
+  (mkCartesianProduct dailies [ deployee ])
 ]
