@@ -73,9 +73,9 @@ rec {
   network = "192.168.231.0";
   prefixLength = 24;
   gateway = "192.168.231.1";
-  sidecarGateway = "192.168.231.3";
-  dnsServer = "192.168.231.3";
-  dhcpServer = "192.168.231.3";
+  sidecarGateway = "192.168.231.2";
+  dnsServer = "192.168.231.2";
+  dhcpServer = "192.168.231.2";
   dhcpRange = "192.168.231.128,192.168.231.254,255.255.255.0,12h";
   inherit staticMembers dnsRecords smartdnsRecords;
   nixosConfig = {
