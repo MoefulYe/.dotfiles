@@ -71,17 +71,17 @@ in
       "openwrt"
     ];
   };
-  rutr01-n1-qingloong = {
-    system = "aarch64-linux";
+  rutr01-j4105-qingloong = {
+    system = "x86_64-linux";
     aliases = [
       "rutr01"
       "qingloong"
     ];
-    role = "router-backup";
+    role = "slim";
     tags = [
       "void"
       "router"
-      # "nixos"
+      "nixos"
     ];
   };
   nas00-8100t-xuanwu = {
