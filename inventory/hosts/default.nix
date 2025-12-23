@@ -71,7 +71,7 @@ in
       "rutr01"
       "qingloong"
     ];
-    role = "slim";
+    role = "dog";
     tags = [
       "void"
       "router"

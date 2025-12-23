@@ -7,7 +7,7 @@
   users =
     if isLinux then
       {
-        defaultUserShell = pkgs.zsh;
+        defaultUserShell = pkgs.bash;
       }
     else
       { };
