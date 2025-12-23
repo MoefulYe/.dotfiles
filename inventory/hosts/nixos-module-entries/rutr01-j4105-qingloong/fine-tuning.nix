@@ -26,7 +26,7 @@
     "vm.watermark_scale_factor" = 180;
     # 内核网络栈微调
     # Enable IP Forwarding (Essential for a router)
-    "net.ipv4.ip_forward" = 1;
+    # "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
     # TCP BBR Congestion Control (Better throughput for Tailscale/Proxy)
     "net.core.default_qdisc" = "fq";

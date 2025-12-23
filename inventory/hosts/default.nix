@@ -36,10 +36,7 @@ in
       "nixos"
     ];
     description = "laptop as server";
-    nixosConfig = {
-      main = ./nixos-module-entries/lap00-xiaoxin-mei;
-      extra = desktopQuirks ++ [ ];
-    };
+    nixosConfig = ./nixos-module-entries/lap00-xiaoxin-mei;
   };
   lap01-macm4-mume = {
     system = "aarch64-darwin";
@@ -53,10 +50,7 @@ in
       "darwin"
     ];
     description = "personal laptop";
-    darwinConfig = {
-      main = ./darwin-module-entries/lap01-macm4-mume;
-      extra = [ ];
-    };
+    darwinConfig = ./darwin-module-entries/lap01-macm4-mume;
   };
   rutr00-k2p-zhuque = {
     system = "aarch64-linux";
@@ -83,6 +77,7 @@ in
       "router"
       "nixos"
     ];
+    nixosConfig = ./nixos-module-entries/rutr01-j4105-qingloong;
   };
   nas00-8100t-xuanwu = {
     system = "x86_64-linux";
