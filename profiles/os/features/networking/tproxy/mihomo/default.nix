@@ -647,11 +647,14 @@ in
     53
     7893
     cfg.tproxyPort
+    cfg.externalController
+    cfg.tproxyBypassSocks5Port
   ];
   networking.firewall.allowedUDPPorts = [
     53
     7893
     cfg.tproxyPort
+    cfg.tproxyBypassSocks5Port
   ];
   systemd.services."my-mihomo" = {
     enable = true;
