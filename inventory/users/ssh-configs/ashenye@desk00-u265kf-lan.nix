@@ -1,7 +1,7 @@
 {
   programs.ssh.matchBlocks = {
-    "lan.void" = {
-      hostname = "192.168.231.3";
+    "lan" = {
+      hostname = "lan.void";
       user = "ashenye";
       port = 2222;
     };

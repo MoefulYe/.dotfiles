@@ -2,12 +2,12 @@
   users.users.deployee = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    createHome = true;
     openssh.authorizedKeys.keys = [
       (builtins.readFile ./id_ed25519.pub)
     ];
+    hashedPassword = "$y$j9T$t/Cvl6/8QfmSpf59G7sxt1$HO6ltOhL5Fs3HGyJ..FCRbtfWWCICoiCuUk9SmL.jsC";
   };
   security.sudo.extraConfig = ''
-    ashenye ALL=(ALL) NOPASSWD: ALL
+    deployee ALL=(ALL) NOPASSWD: ALL
   '';
 }

@@ -7,7 +7,7 @@ hosts: # lists of { hostname, domain, port }
 }:
 {
   sops.secrets = {
-    NIX_REMOTE_BUILDER_PRIVKEY = {
+    REMOTE_DEPLOY_PRIVKEY = {
       mode = "0400";
       sopsFile = "${paths.secrets}/infra.yaml";
     };
@@ -26,8 +26,9 @@ hosts: # lists of { hostname, domain, port }
           hostname = domain;
           user = "deployee";
           inherit port;
-          IdentityFile = config.sops.secrets.NIX_REMOTE_BUILDER_PRIVKEY.path;
+          identityFile = config.sops.secrets.REMOTE_DEPLOY_PRIVKEY.path;
         };
       }
-    );
+    )
+    |> lib.listToAttrs;
 }

@@ -35,7 +35,7 @@ let
       domain = "${name}.void";
       port = 2222;
     }))
-    |> (import ../../infra/remote-builder/mkDeployeeSshConfig.nix);
+    |> (import ../../infra/remote-deploy/mkDeployeeSshConfig.nix);
   deployee = {
     sshConfig = deployeeSshConfig;
   };

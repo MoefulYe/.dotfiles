@@ -9,7 +9,7 @@ let
   # | { type = "static"; ip = "192.168.231.xxx"; }
   staticMembers = {
     "rutr00-k2p-zhuque" = "192.168.231.1";
-    "rutr01-n1-qingloong" = "192.168.231.2";
+    "rutr01-j4105-qingloong" = "192.168.231.2";
     "desk00-u265kf-lan" = "192.168.231.3";
     "lap00-xiaoxin-mei" = "192.168.231.4";
     "lap01-macm4-mume" = {
@@ -82,7 +82,7 @@ rec {
     staticMemberNetworkdConfig =
       {
         interface,
-        override ? {},
+        override ? { },
         ...
       }:
       {
