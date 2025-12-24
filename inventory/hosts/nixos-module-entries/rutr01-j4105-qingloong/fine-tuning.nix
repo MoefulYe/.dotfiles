@@ -46,5 +46,5 @@
     "nf_conntrack"
     "nf_conntrack_netlink"
   ];
-  nix.settings.max-jobs = 1;
+  nix.optimise.automatic = false
 }

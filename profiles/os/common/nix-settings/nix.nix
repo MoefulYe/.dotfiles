@@ -1,6 +1,7 @@
 {
   paths,
   isLinux,
+  lib,
   ...
 }:
 let
@@ -11,6 +12,7 @@ in
     "${sharedProfiles}/nix-settings/nix-conf-settings.nix"
     "${sharedProfiles}/nix-settings/nixpkgs.nix"
   ];
+  nix.optimise.automatic = lib.mkDefault true;
   nix.channel.enable = false;
   nix.settings.trusted-users =
     if isLinux then

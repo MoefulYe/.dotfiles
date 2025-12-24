@@ -56,5 +56,6 @@ in
     tags = [ "router" ];
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0h/Sw/GdJy8/Z88HIFwDWrhLg00/iw/X3gsBPBfSDM ashenye@rutr01-j4105-qingloong";
     sshConfig = ./ssh-configs + "/ashenye@rutr01-j4105-qingloong.nix";
+    hmConfig = mkHmConfigEntry "ashenye@rutr01-j4105-qingloong.nix";
   };
 }
