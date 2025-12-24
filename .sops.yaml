@@ -3,11 +3,13 @@ keys:
       - &lap00-xiaoxin-mei age1jycrhjpfpw2n9rszq6056zqt3552pr38d3vz2mk8udetglrk0pfqhfhtnx
       - &desk00-u265kf-lan age1xdlmmj7gvvmvpl7n28yv6l9zsrrlazyunesyrzhzy37n59zexepsp4gpxn
       - &lap01-macm4-mume age18gjva8lxepd4gc5whz73q39xjerphtm6nmfaax9ye9f2dzsj293qgg7xw5
+      - &rutr01-j4105-qingloong age1jlsr9ff6adssdjqdtqxuwr0vxszj9sz4pmg47gygktjfes47lsfq7ff4zm
   - users:
       - &ashenye-at-lap00-xiaoxin-mei age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc
       - &ashenye-at-desk00-u265kf-lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
       - &ubuntu-at-zju-zhang age1uk9g8km8mjvkuca5yyjn7rkxektrydtan6w6k3mf3dwpnl859fdq7z599p
       - &ashenye-at-lap01-macm4-mume age1se6rw68dnwf6896j8r2v2vjf3kvm5l2x2220epdnm4k2xwzjee7qqj9hl8
+      - &ashenye-at-rutr01-j4105-qingloong age1jywpjzcpcuruz405pwcfcyzqz0x9r90exxzq8qxljklamryhds9sszmyqy
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
@@ -37,6 +39,7 @@ creation_rules:
           - *ashenye-at-lap00-xiaoxin-mei
           - *ubuntu-at-zju-zhang
           - *ashenye-at-lap01-macm4-mume
+          - *ashenye-at-rutr01-j4105-qingloong
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
@@ -72,3 +75,4 @@ creation_rules:
     key_groups:
       - age:
           - *rutr01-j4105-qingloong
+

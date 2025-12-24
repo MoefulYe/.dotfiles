@@ -9,5 +9,6 @@ in
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/development/git"
     "${hmProfiles}/features/development/ssh"
+    "${hmProfiles}/features/topology/ssh.nix"
   ];
 }
