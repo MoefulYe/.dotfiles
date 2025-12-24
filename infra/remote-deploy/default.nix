@@ -42,17 +42,17 @@ in
         };
       };
     };
-    lap01-macm4-mume = {
-      hostname = "mume.void";
-      remoteBuild = true;
-      profiles = {
-        system = {
-          sshUser = "deployee";
-          user = "root";
-          path = deploy-rs.lib.aarch64-darwin.activate.darwin outputs.darwinConfigurations.lap01-macm4-mume;
-        };
-      };
-    };
+    # lap01-macm4-mume = {
+    #   hostname = "mume.void";
+    #   remoteBuild = true;
+    #   profiles = {
+    #     system = {
+    #       sshUser = "deployee";
+    #       user = "root";
+    #       path = deploy-rs.lib.aarch64-darwin.activate.darwin outputs.darwinConfigurations.lap01-macm4-mume;
+    #     };
+    #   };
+    # };
   };
   sshOpts = [ "-p" "2222" "-i" "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY" ];
 }
