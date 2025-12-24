@@ -35,10 +35,27 @@ in
         };
         ashenye = {
           user = "ashenye";
-	  sshUser = "ashenye";
+          sshUser = "ashenye";
           path =
             deploy-rs.lib.x86_64-linux.activate.home-manager
               outputs.homeConfigurations."ashenye@lap00-xiaoxin-mei";
+        };
+      };
+    };
+    rutr01-j4105-qingloong = {
+      hostname = "qingloong.void";
+      profiles = {
+        system = {
+          user = "root";
+          sshUser = "deployee";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.rutr01-j4105-qingloong;
+        };
+        ashenye = {
+          user = "ashenye";
+          sshUser = "ashenye";
+          path =
+            deploy-rs.lib.x86_64-linux.activate.home-manager
+              outputs.homeConfigurations."ashenye@rutr01-j4105-qingloong";
         };
       };
     };
@@ -54,5 +71,10 @@ in
     #   };
     # };
   };
-  sshOpts = [ "-p" "2222" "-i" "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY" ];
+  sshOpts = [
+    "-p"
+    "2222"
+    "-i"
+    "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY"
+  ];
 }
