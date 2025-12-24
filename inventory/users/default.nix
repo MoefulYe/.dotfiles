@@ -50,4 +50,11 @@ in
     tags = [ "router" ];
     sshConfig = ./ssh-configs + "/root@rutr00-k2p-zhuque.nix";
   };
+  "ashenye@rutr01-j4105-qingloong" = {
+    description = "ashenye on rutr01-j4105-qingloong";
+    role = "fox";
+    tags = [ "router" ];
+    sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0h/Sw/GdJy8/Z88HIFwDWrhLg00/iw/X3gsBPBfSDM ashenye@rutr01-j4105-qingloong";
+    sshConfig = ./ssh-configs + "/ashenye@rutr01-j4105-qingloong.nix";
+  };
 }
