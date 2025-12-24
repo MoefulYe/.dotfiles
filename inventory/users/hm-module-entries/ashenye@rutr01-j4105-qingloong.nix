@@ -7,5 +7,7 @@ in
     "${hmQuirks}/github-access-limits.nix"
     "${hmProfiles}/common"
     "${hmProfiles}/nix/sops.nix"
+    "${hmProfiles}/features/development/git"
+    "${hmProfiles}/features/development/ssh"
   ];
 }
