@@ -12,6 +12,4 @@ in
     ./networking.nix
     ./users.nix
   ];
-  services.openssh.permitRootLogin = lib.mkForce "yes";
-  services.openssh.passwordAuthentication = lib.mkForce true;
 }

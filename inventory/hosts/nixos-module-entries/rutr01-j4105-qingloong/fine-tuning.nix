@@ -46,5 +46,5 @@
     "nf_conntrack"
     "nf_conntrack_netlink"
   ];
-  nix.optimise.automatic = false
+  nix.optimise.automatic = false;
 }

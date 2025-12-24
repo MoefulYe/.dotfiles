@@ -19,6 +19,7 @@ let
   voids = [
     "ashenye@lap00-xiaoxin-mei"
     "root@rutr00-k2p-zhuque"
+    "ashenye@rutr01-j4105-qingloong"
   ];
   dailies = [
     "ashenye@desk00-u265kf-lan"
