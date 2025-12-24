@@ -38,8 +38,8 @@ let
     ego =
       { nodes, ... }:
       {
-        allowIn = lib.optionals (lib.elem userid nodes) [ ];
-        allowOut = lib.optionals (lib.elem userid nodes) [ ];
+        allowIn = lib.optionals (lib.elem userid nodes) [ userid ];
+        allowOut = lib.optionals (lib.elem userid nodes) [ userid ];
       };
   };
   handleEntry =
