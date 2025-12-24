@@ -43,7 +43,6 @@ in
       };
     };
     lap01-macm4-mume = {
-      sshUser = "ashenye";
       hostname = "mume.void";
       remoteBuild = true;
       profiles = {
@@ -55,5 +54,5 @@ in
       };
     };
   };
-  sshOpts = [ "-p" "2222" ];
+  sshOpts = [ "-p" "2222" "-i" "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY" ];
 }

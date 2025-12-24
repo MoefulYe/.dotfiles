@@ -12,6 +12,10 @@ let
     type = "complete-graph";
     inherit nodes;
   };
+  mkEgo = nodes: {
+    type = "ego";
+    inherit nodes;
+  };
   zjus = [
     "ubuntu@zju-zhang"
     "yu@zju-yu-sg"
@@ -46,4 +50,5 @@ in
   (mkCartesianProduct dailies zjus)
   (mkCompleteGraph dailies)
   (mkCartesianProduct dailies [ deployee ])
+  (mkEgo dailies)
 ]

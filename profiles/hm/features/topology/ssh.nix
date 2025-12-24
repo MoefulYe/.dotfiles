@@ -35,6 +35,12 @@ let
           allowIn = [ ];
           allowOut = [ ];
         };
+    ego =
+      { nodes, ... }:
+      {
+        allowIn = lib.optionals (lib.elem userid nodes) [ ];
+        allowOut = lib.optionals (lib.elem userid nodes) [ ];
+      };
   };
   handleEntry =
     entry:
