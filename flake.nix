@@ -129,6 +129,6 @@
           ;
         inherit (inventory) users;
       };
-      deploy = import ./infra/remote-deploy.nix specialArgs;
+      deploy = import ./infra/remote-deploy specialArgs;
     };
 }
