@@ -11,5 +11,6 @@ in
     ./hardware-configuration.nix
     ./networking.nix
     ./users.nix
+    ./tailscale.nix
   ];
 }
