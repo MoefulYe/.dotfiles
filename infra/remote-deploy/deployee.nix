@@ -2,7 +2,7 @@
 {
   assertions = [
     {
-      assertions = isLinux;
+      assertion = isLinux;
       message = "This configuration is only for Linux systems.";
     }
   ];
