@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./disko.nix
     ./users.nix
     ./networking.nix
     ./fine-tuning.nix
