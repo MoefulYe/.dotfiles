@@ -1,4 +1,5 @@
 {
+  boot.loader.efi.canTouchEfiVariables = true;
   services.fstrim.enable = true;
   services.fstrim.interval = "weekly"; # 每周整理一次 SSD/eMMC 空间
   powerManagement.cpuFreqGovernor = "performance";

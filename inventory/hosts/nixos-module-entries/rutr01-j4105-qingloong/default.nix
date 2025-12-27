@@ -6,11 +6,10 @@ in
   imports = [
     "${infra}/remote-builder/client.nix"
     "${infra}/remote-deploy/deployee.nix"
-    ./bootloader.nix
     ./fine-tuning.nix
     ./hardware-configuration.nix
     ./networking.nix
     ./users.nix
-    ./tailscale.nix
+    ./services
   ];
 }
