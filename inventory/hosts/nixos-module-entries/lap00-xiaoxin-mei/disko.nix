@@ -12,7 +12,7 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "512MiB";
+              size = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -30,7 +30,7 @@
             };
 
             swap = {
-              size = "16GiB";
+              size = "16G";
               content = {
                 type = "swap";
                 randomEncryption = false;
@@ -43,7 +43,7 @@
             };
 
             btrfs = {
-              size = "80GiB";
+              size = "80G";
               content = {
                 type = "btrfs";
                 extraArgs = [
