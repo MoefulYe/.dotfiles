@@ -9,4 +9,21 @@
       proton-ge-bin
     ];
   };
+  environment.systemPackages = with pkgs; [
+    mangohud # 性能监控 FPS显示
+    protonup-qt # 管理 Proton-GE
+    lutris # 玩非 Steam 游戏
+    steamtinkerlaunch
+  ];
+
+  programs.gamemode = {
+    enable = true;
+    enableRenice = true;
+    settings = {
+      general = {
+        softrealtime = "auto";
+        renice = 10;
+      };
+    };
+  };
 }

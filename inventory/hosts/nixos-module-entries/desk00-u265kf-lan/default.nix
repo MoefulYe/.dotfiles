@@ -1,4 +1,4 @@
-{ paths, ... }:
+{ paths, pkgs, ... }:
 let
   inherit (paths) osProfiles infra;
 in

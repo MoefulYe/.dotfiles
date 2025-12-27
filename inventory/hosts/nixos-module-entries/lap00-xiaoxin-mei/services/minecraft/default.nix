@@ -23,8 +23,11 @@ let
   ];
 in
 {
+  imports = [
+    ./bakup.nix
+  ];
   services.minecraft-server = {
-    enable = true;
+    enable = false;
     package = pkgs.minecraftServers.vanilla-1-21;
     eula = true;
     openFirewall = true;

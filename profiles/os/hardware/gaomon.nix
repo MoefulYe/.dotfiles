@@ -3,11 +3,11 @@
   ...
 }:
 {
+  services.xserver.digimend.enable = false;
   hardware.opentabletdriver = {
-    enable = false;
+    enable = true;
+    daemon.enable = true;
   };
-  services.xserver.digimend.enable = true;
-  boot.extraModulePackages = [
-    config.boot.kernelPackages.digimend
-  ];
+
+  boot.kernelModules = [ "uinput" ];
 }

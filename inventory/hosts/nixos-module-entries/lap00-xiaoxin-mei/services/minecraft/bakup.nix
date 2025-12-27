@@ -9,7 +9,7 @@ let
       pkgs.findutils
       pkgs.coreutils
     ];
-    text = builtins.readFile ./minecraft-bakup.sh;
+    text = builtins.readFile ./bakup.sh;
   };
 in
 {
@@ -20,6 +20,7 @@ in
 
   # 3. 备份服务
   systemd.services.minecraft-backup = {
+    enable = false;
     description = "Minecraft Server Backup Service";
     after = [
       "network.target"

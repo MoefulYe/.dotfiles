@@ -7,9 +7,8 @@ in
     ./hardware-configuration.nix
     ./users.nix
     ./networking.nix
-    ./power-management.nix
-    ./minecraft.nix
-    ./minecraft-bakup.nix
+    ./fine-tuning.nix
+    ./services
     "${infra}/remote-builder/client.nix"
     "${infra}/remote-deploy/deployee.nix"
   ];
