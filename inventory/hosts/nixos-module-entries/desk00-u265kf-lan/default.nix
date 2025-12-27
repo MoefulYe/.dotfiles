@@ -1,4 +1,4 @@
-{ paths, pkgs, ... }:
+{ paths, ... }:
 let
   inherit (paths) osProfiles infra;
 in
@@ -12,9 +12,7 @@ in
     ./disko.nix
     ./hardware-configuration.nix
     ./networking.nix
-    ./bootloader.nix
-    ./libvirtd.nix
     ./users.nix
-    ./binfmt-misc.nix
+    ./fine-tuning.nix
   ];
 }
