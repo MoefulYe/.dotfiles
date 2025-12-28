@@ -40,6 +40,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     microvm.url = "github:microvm-nix/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
+    impermanence.url = "github:nix-community/impermanence";
   };
   nixConfig = {
     extra-substituters = [
