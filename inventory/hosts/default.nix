@@ -114,6 +114,7 @@ in
     tags = [
       "void"
       "microvm"
+      "nixos"
     ];
     nixosConfig = ./nixos-module-entries/vm01-lap00-red.nix;
   };
@@ -126,6 +127,7 @@ in
     tags = [
       "void"
       "microvm"
+      "nixos"
     ];
     nixosConfig = ./nixos-module-entries/vm02-lap00-white.nix;
   };
@@ -133,11 +135,13 @@ in
     aliases = [
       "lap00vm03"
       "black"
+      "nixos"
     ];
     role = "bee";
     tags = [
       "void"
       "microvm"
+      "nixos"
     ];
     nixosConfig = ./nixos-module-entries/vm03-lap00-black.nix;
   };
