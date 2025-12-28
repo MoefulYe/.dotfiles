@@ -118,5 +118,28 @@ in
     mem = config.bee.mem;
     vcpu = config.bee.vcpu;
     services.fstrim.enable = true;
+
+    environment.persistence."/var/lib/nixos-state" = {
+      hideMounts = true;
+
+      # 2. 目录类 (Bind Mount)
+      directories = [
+        {
+          directory = "/root";
+          mode = "0700"; # 必须限制权限，保护 root 隐私
+        }
+      ];
+
+      # 3. 文件类 (Symlink)
+      files = [
+        "/etc/machine-id"
+        "/etc/ssh/ssh_host_ed25519_key"
+        "/etc/ssh/ssh_host_ed25519_key.pub"
+      ];
+    };
+
+    # 4. 关键修正：防止 Systemd 在挂载持久化存储前就生成临时的 machine-id
+    # 这一步对于 MicroVM 这种极速启动的环境非常重要
+    systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
   };
 }
