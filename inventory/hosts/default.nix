@@ -92,3 +92,53 @@ in
     ];
   };
 }
+// {
+  vm00-lap00-azure = {
+    aliases = [
+      "lap00vm00"
+      "azure"
+    ];
+    role = "bee";
+    tags = [
+      "void"
+      "microvm"
+    ];
+    nixosConfig = ./nixos-module-entries/vm00-lap00-azure.nix;
+  };
+  vm01-lap00-red = {
+    aliases = [
+      "lap00vm01"
+      "red"
+    ];
+    role = "bee";
+    tags = [
+      "void"
+      "microvm"
+    ];
+    nixosConfig = ./nixos-module-entries/vm01-lap00-red.nix;
+  };
+  vm02-lap00-white = {
+    aliases = [
+      "lap00vm02"
+      "white"
+    ];
+    role = "bee";
+    tags = [
+      "void"
+      "microvm"
+    ];
+    nixosConfig = ./nixos-module-entries/vm02-lap00-white.nix;
+  };
+  vm03-lap00-black = {
+    aliases = [
+      "lap00vm03"
+      "black"
+    ];
+    role = "bee";
+    tags = [
+      "void"
+      "microvm"
+    ];
+    nixosConfig = ./nixos-module-entries/vm03-lap00-black.nix;
+  };
+}
