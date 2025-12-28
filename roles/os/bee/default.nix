@@ -68,6 +68,7 @@ in
     services.openssh.settings.PermitRootLogin = "prohibit-password";
     users.users.root.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl8IkGvU1g8lv/r+RtRVXXmtlW0XNac5zQrRgZ3RCij ashenye@lap01-macm4-mume"
     ];
     systemd.network.networks."${config.bee.interfaceConfigFilename}" = {
       matchConfig.Name = config.bee.interfaceMatchName;
