@@ -38,6 +38,8 @@
     flake-utils.url = "github:numtide/flake-utils?shallow=1";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     deploy-rs.url = "github:serokell/deploy-rs";
+    microvm.url = "github:microvm-nix/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
   };
   nixConfig = {
     extra-substituters = [

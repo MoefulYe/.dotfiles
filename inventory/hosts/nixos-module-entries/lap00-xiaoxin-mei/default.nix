@@ -10,6 +10,7 @@ in
     ./networking.nix
     ./fine-tuning.nix
     ./services
+    ./mircovm.nix
     "${infra}/remote-builder/client.nix"
     "${infra}/remote-deploy/deployee.nix"
   ];
