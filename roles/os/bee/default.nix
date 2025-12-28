@@ -52,7 +52,7 @@ in
         description = "The amount of memory (in MB) for bee microVM.";
       };
       volumes = lib.mkOption {
-        type = lib.types.listOf lib.types.attrset;
+        type = lib.types.listOf lib.types.attrs;
         description = "List of volume mount points for bee microVM.";
       };
     };
@@ -83,41 +83,43 @@ in
       "noatime"
       "commit=60"
     ];
-    virtiofsd.extraArgs = [
-      "--cache=always"
-      "--writeback" # 会提升性能，但可能缓存一致性较差, 只共享只读目录无所谓了
-    ];
-    volumes = config.bee.volumes;
-    # volumes = [
-    #   {
-    #     mountPoint = "/var";
-    #     image = "/dev/vg_pool/vm0";
-    #     size = 1024 * 64;
-    #     fsType = "ext4";
-    #   }
-    # ];
-    shares = [
-      {
-        proto = "virtiofs";
-        tag = "ro-store";
-        # a host's /nix/store will be picked up so that no
-        # squashfs/erofs will be built for it.
-        source = "/nix/store";
-        mountPoint = "/nix/.ro-store";
-      }
-      # 根目录配置
-    ];
-    interfaces = [
-      {
-        type = "tap";
-        id = config.bee.tapId;
-        mac = config.bee.mac;
-      }
-    ];
-    hypervisor = "cloud-hypervisor";
-    socket = "control.socket";
-    mem = config.bee.mem;
-    vcpu = config.bee.vcpu;
+    microvm = {
+      virtiofsd.extraArgs = [
+        "--cache=always"
+        "--writeback" # 会提升性能，但可能缓存一致性较差, 只共享只读目录无所谓了
+      ];
+      volumes = config.bee.volumes;
+      # volumes = [
+      #   {
+      #     mountPoint = "/var";
+      #     image = "/dev/vg_pool/vm0";
+      #     size = 1024 * 64;
+      #     fsType = "ext4";
+      #   }
+      # ];
+      shares = [
+        {
+          proto = "virtiofs";
+          tag = "ro-store";
+          # a host's /nix/store will be picked up so that no
+          # squashfs/erofs will be built for it.
+          source = "/nix/store";
+          mountPoint = "/nix/.ro-store";
+        }
+        # 根目录配置
+      ];
+      interfaces = [
+        {
+          type = "tap";
+          id = config.bee.tapId;
+          mac = config.bee.mac;
+        }
+      ];
+      hypervisor = "cloud-hypervisor";
+      socket = "control.socket";
+      mem = config.bee.mem;
+      vcpu = config.bee.vcpu;
+    };
     services.fstrim.enable = true;
 
     environment.persistence."/var/lib/nixos-state" = {
