@@ -13,7 +13,7 @@
         fsType = "ext4";
       }
     ];
+    vcpu = 4;
+    mem = 4096;
   };
-  vcpu = 4;
-  mem = 4096;
 }
