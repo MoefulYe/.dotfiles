@@ -91,9 +91,8 @@ in
       # "nixos"
     ];
   };
-}
-// {
   vm00-lap00-azure = {
+    system = "x86_64-linux";
     aliases = [
       "lap00vm00"
       "azure"
@@ -102,10 +101,12 @@ in
     tags = [
       "void"
       "microvm"
+      "nixos"
     ];
     nixosConfig = ./nixos-module-entries/vm00-lap00-azure.nix;
   };
   vm01-lap00-red = {
+    system = "x86_64-linux";
     aliases = [
       "lap00vm01"
       "red"
@@ -119,6 +120,7 @@ in
     nixosConfig = ./nixos-module-entries/vm01-lap00-red.nix;
   };
   vm02-lap00-white = {
+    system = "x86_64-linux";
     aliases = [
       "lap00vm02"
       "white"
@@ -132,6 +134,7 @@ in
     nixosConfig = ./nixos-module-entries/vm02-lap00-white.nix;
   };
   vm03-lap00-black = {
+    system = "x86_64-linux";
     aliases = [
       "lap00vm03"
       "black"
