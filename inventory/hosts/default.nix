@@ -138,7 +138,6 @@ in
     aliases = [
       "lap00vm03"
       "black"
-      "nixos"
     ];
     role = "bee";
     tags = [
