@@ -13,5 +13,6 @@
         fsType = "ext4";
       }
     ];
+    vsock.cid = 4;
   };
 }

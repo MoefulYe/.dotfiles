@@ -55,6 +55,10 @@ in
         type = lib.types.listOf lib.types.attrs;
         description = "List of volume mount points for bee microVM.";
       };
+      vsock.cid = lib.mkOption {
+        type = lib.types.int;
+        description = "The vsock CID for bee microVM.";
+      };
     };
   };
   imports = [
@@ -115,10 +119,12 @@ in
           mac = config.bee.mac;
         }
       ];
-      hypervisor = "cloud-hypervisor";
+      hypervisor = "qemu";
+      qemu.machine = "q35";
       socket = "control.socket";
       mem = config.bee.mem;
       vcpu = config.bee.vcpu;
+      vsock.cid = config.bee.vsock.cid;
     };
     services.fstrim.enable = true;
 
