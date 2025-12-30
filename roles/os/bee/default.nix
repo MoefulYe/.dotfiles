@@ -48,7 +48,7 @@ in
       };
       mem = lib.mkOption {
         type = lib.types.int;
-        default = 2048;
+        default = 2048 + 1;
         description = "The amount of memory (in MB) for bee microVM.";
       };
       volumes = lib.mkOption {
@@ -120,7 +120,7 @@ in
         }
       ];
       hypervisor = "qemu";
-      qemu.machine = "q35";
+      # qemu.machine = "q35";
       socket = "control.socket";
       mem = config.bee.mem;
       vcpu = config.bee.vcpu;
