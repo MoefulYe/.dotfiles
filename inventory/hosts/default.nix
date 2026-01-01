@@ -147,4 +147,16 @@ in
     ];
     nixosConfig = ./nixos-module-entries/vm03-lap00-black.nix;
   };
+  vps00-foxhk-citrus = {
+    system = "x86_64-linux";
+    aliases = [
+      "vps00"
+      "citrus"
+    ];
+    role = "dog";
+    tags = [
+      "nixos"
+    ];
+    nixosConfig = ./nixos-module-entries/vps00-foxhk-citrus;
+  };
 }
