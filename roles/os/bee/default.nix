@@ -150,5 +150,6 @@ in
     # 4. 关键修正：防止 Systemd 在挂载持久化存储前就生成临时的 machine-id
     # 这一步对于 MicroVM 这种极速启动的环境非常重要
     systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+    osProfiles.common.bootloader = "none";
   };
 }
