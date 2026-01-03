@@ -1,8 +1,10 @@
-{ ... }: {
+{ ... }:
+{
   imports = [
     ./hardware-configuration.nix
-    ./fine-tuning.nix    
-    ./networking.nix 
+    ./fine-tuning.nix
+    ./networking.nix
     ./users.nix
+    ./services.nix
   ];
 }
