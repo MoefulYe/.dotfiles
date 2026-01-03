@@ -29,6 +29,9 @@ let
     "ashenye@desk00-u265kf-lan"
     "ashenye@lap01-macm4-mume"
   ];
+  vpses = [
+    "ashenye@vps00-foxhk-citrus"
+  ];
   deployeeSshConfig =
     [
       "lan"
@@ -48,6 +51,7 @@ in
 [
   (mkCartesianProduct dailies voids)
   (mkCartesianProduct dailies zjus)
+  (mkCartesianProduct dailies vpses)
   (mkCompleteGraph dailies)
   (mkCartesianProduct dailies [ deployee ])
   (mkEgo dailies)
