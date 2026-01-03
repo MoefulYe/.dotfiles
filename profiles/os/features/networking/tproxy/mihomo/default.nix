@@ -93,9 +93,9 @@ let
         - 'rule-set:zju-intranet-domain'
         - 'rule-set:bypass-fake-ip'
         - 'rule-set:mynet'
-      fallback:
-        - https://doh.pub/dns-query
-        - https://dns.alidns.com/dns-query
+      # fallback:
+      #   - https://doh.pub/dns-query
+      #   - https://dns.alidns.com/dns-query
   '';
 
   proxy-providers = [
