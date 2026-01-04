@@ -32,4 +32,8 @@
   services.nginx.virtualHosts."derp.059867.xyz" = {
     enableACME = true;
   };
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }
