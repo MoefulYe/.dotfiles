@@ -27,6 +27,9 @@
   # 3. 配置 ACME (Let's Encrypt) 必须的邮箱
   security.acme = {
     acceptTerms = true;
-    defaults.email = "you@example.com"; # 替换为你的真实邮箱
+    defaults.email = "luren145@gmail.com"; # 替换为你的真实邮箱
+  };
+  services.nginx.virtualHosts."derp.059867.xyz" = {
+    enableACME = true;
   };
 }
