@@ -5,6 +5,6 @@
     ./fine-tuning.nix
     ./networking.nix
     ./users.nix
-    ./services.nix
+    ./services
   ];
 }
