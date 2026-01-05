@@ -1,4 +1,11 @@
+{ paths, ... }:
+let
+  inherit (paths) osProfiles;
+in
 {
+  imports = [
+    "${osProfiles}/features/virtualisation/k8s/master.nix"
+  ];
   bee = {
     tapId = "vm-red";
     mac = "52:54:00:aa:bb:01";
