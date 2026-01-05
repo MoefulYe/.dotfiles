@@ -25,4 +25,5 @@
       # needed if you use swap
       kubelet.extraOpts = "--fail-swap-on=false --resolv-conf=${corednsFile} --pod-infra-container-image=registry.k8s.io/pause:3.9";
     };
+  networking.firewall.enable = false;
 }

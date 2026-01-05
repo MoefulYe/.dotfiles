@@ -36,4 +36,5 @@
       # needed if you use swap
       kubelet.extraOpts = "--fail-swap-on=false --resolv-conf=${corednsFile} --pod-infra-container-image=registry.k8s.io/pause:3.9"; # 解决集群内 DNS 解析失败的问题，见 issues.txt
     };
+  networking.firewall.enable = false;
 }
