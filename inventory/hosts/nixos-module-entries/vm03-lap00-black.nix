@@ -1,8 +1,5 @@
 {
   bee = {
-    address = "192.168.231.67/24";
-    gateway = "192.168.231.2";
-    dns = "192.168.231.2";
     tapId = "vm-black";
     mac = "52:54:00:aa:bb:03";
     volumes = [

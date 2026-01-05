@@ -3,6 +3,7 @@
   paths,
   lib,
   config,
+  inventory,
   ...
 }:
 let
@@ -11,16 +12,6 @@ in
 {
   options = {
     bee = {
-      interfaceMatchName = lib.mkOption {
-        type = lib.types.str;
-        default = "en*";
-        description = "The network interface name pattern to match for bee networking.";
-      };
-      interfaceConfigFilename = lib.mkOption {
-        type = lib.types.str;
-        default = "10-en";
-        description = "The systemd-networkd network config file name (without .network suffix) for bee networking.";
-      };
       address = lib.mkOption {
         type = lib.types.str;
         description = "The static IP address with CIDR notation for the bee networking interface.";
@@ -67,6 +58,10 @@ in
     "${osProfiles}/common"
     "${osProfiles}/preferences/tiny"
     "${osProfiles}/utils/tiny"
+    (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
+      interface = "en*";
+      networkdConfigname = "40-en";
+    })
   ];
   config = {
     services.openssh.settings.PermitRootLogin = "prohibit-password";
@@ -74,14 +69,6 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl8IkGvU1g8lv/r+RtRVXXmtlW0XNac5zQrRgZ3RCij ashenye@lap01-macm4-mume"
     ];
-    systemd.network.networks."${config.bee.interfaceConfigFilename}" = {
-      matchConfig.Name = config.bee.interfaceMatchName;
-      networkConfig = {
-        Address = [ config.bee.address ];
-        Gateway = [ config.bee.gateway ];
-        DNS = [ config.bee.dns ];
-      };
-    };
     fileSystems."/var".options = [
       "defaults"
       "noatime"
