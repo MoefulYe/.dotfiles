@@ -18,6 +18,10 @@ let
       ip = "192.168.231.5";
     };
     "nas00-8100t-xuanwu" = "192.168.231.6";
+    "vm00-lap00-azure" = "192.168.231.64";
+    "vm01-lap00-red" = "192.168.231.65";
+    "vm02-lap00-white" = "192.168.231.66";
+    "vm03-lap00-black" = "192.168.231.67";
   };
   getStaticMemberIp = ipInfo: if lib.isAttrs ipInfo then ipInfo.ip else ipInfo;
   dnsSuffix = "void";
@@ -82,6 +86,7 @@ rec {
     staticMemberNetworkdConfig =
       {
         interface,
+        networkdConfigname ? "40-${interface}",
         override ? { },
         ...
       }:
@@ -91,20 +96,17 @@ rec {
       }:
       let
         config = {
-          networking.interfaces.${interface} = {
-            useDHCP = false;
-            ipv4.addresses = [
-              {
-                address = getStaticMemberIp staticMembers.${hostInfo.hostname};
-                prefixLength = prefixLength;
-              }
-            ];
+          systemd.network.networks."${networkdConfigname}" = {
+            matchConfig.Name = interface;
+            networkConfig = {
+              Address = [
+                "${getStaticMemberIp staticMembers.${hostInfo.hostname}}/${builtins.toString prefixLength}"
+              ];
+              Gateway = [ sidecarGateway ];
+              DNS = [ dnsServer ];
+              DHCP = "no";
+            };
           };
-          networking.defaultGateway = {
-            address = sidecarGateway; # 默认指向旁路由网关
-            inherit interface;
-          };
-          networking.nameservers = [ dnsServer ];
         };
       in
       {

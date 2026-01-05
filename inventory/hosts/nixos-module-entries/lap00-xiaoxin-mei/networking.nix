@@ -8,9 +8,9 @@ let
 in
 {
   imports = [
-    # (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
-    #   interface = bridgeInterface;
-    # })
+    (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
+      interface = bridgeInterface;
+    })
   ];
   systemd.network.netdevs."20-${bridgeInterface}" = {
     netdevConfig = {
@@ -24,16 +24,16 @@ in
       Bridge = bridgeInterface;
     };
   };
-  systemd.network.networks."30-${bridgeInterface}" = {
-    matchConfig.Name = bridgeInterface;
-    networkConfig = {
-      DHCP = "no";
-      IPv6AcceptRA = "no";
-    };
-    address = [ "192.168.231.4/24" ];
-    gateway = [ "192.168.231.2" ];
-    dns = [ "192.168.231.2" ];
-  };
+  # systemd.network.networks."30-${bridgeInterface}" = {
+  #   matchConfig.Name = bridgeInterface;
+  #   networkConfig = {
+  #     DHCP = "no";
+  #     IPv6AcceptRA = "no";
+  #   };
+  #   address = [ "192.168.231.4/24" ];
+  #   gateway = [ "192.168.231.2" ];
+  #   dns = [ "192.168.231.2" ];
+  # };
   systemd.network.networks.wlp2s0 = {
     enable = true;
     matchConfig.Name = "wlp2s0";
