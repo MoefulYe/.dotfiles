@@ -19,6 +19,7 @@ let
   zjus = [
     "ubuntu@zju-zhang"
     "yu@zju-yu-sg"
+    "zhao@zju-zhao"
   ];
   voids = [
     "ashenye@lap00-xiaoxin-mei"
