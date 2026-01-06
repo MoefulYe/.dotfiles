@@ -18,7 +18,7 @@ in
       }
     ];
     vcpu = 4;
-    mem = 4096;
+    mem = 1024 * 5;
     vsock.cid = 6;
   };
 }

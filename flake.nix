@@ -36,11 +36,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils?shallow=1";
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
-    deploy-rs.url = "github:serokell/deploy-rs";
-    microvm.url = "github:microvm-nix/microvm.nix";
+    vscode-server.url = "github:nix-community/nixos-vscode-server?shallow=1";
+    deploy-rs.url = "github:serokell/deploy-rs?shallow=1";
+    microvm.url = "github:microvm-nix/microvm.nix?shallow=1";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence.url = "github:nix-community/impermanence?shallow=1";
   };
   nixConfig = {
     extra-substituters = [

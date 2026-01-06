@@ -46,6 +46,9 @@ in
     tags = [ "zju" ];
     sshConfig = ./ssh-configs + "/yu@zju-yu-sg.nix";
   };
+  "zhao@zju-zhao" = {
+    sshConfig = ./ssh-configs + "/zhao@zju-zhao.nix";
+  };
   "root@rutr00-k2p-zhuque" = {
     tags = [ "router" ];
     sshConfig = ./ssh-configs + "/root@rutr00-k2p-zhuque.nix";

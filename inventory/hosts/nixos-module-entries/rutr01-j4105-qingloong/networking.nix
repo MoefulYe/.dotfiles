@@ -1,6 +1,7 @@
 {
   paths,
   inventory,
+  lib,
   ...
 }:
 let
@@ -16,12 +17,7 @@ in
     inventory.topology.networks.void.nixosConfig.dnsmasqConfig
     (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
       interface = defaultIface;
-      override = {
-        networking.defaultGateway = {
-          address = "192.168.231.1";
-          interface = defaultIface;
-        };
-      };
+      networkdConfigname = "40-${defaultIface}";
     })
   ];
   osProfiles.features.tproxy = {
@@ -31,6 +27,13 @@ in
     smartdns = {
       enableAntiAD = true;
       staticRecords = inventory.topology.networks.void.smartdnsRecords;
+    };
+  };
+  systemd.network.networks."40-${defaultIface}" = {
+    networkConfig = {
+      Gateway = lib.mkForce [
+        "192.168.231.1"
+      ];
     };
   };
 }
