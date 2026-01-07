@@ -96,6 +96,7 @@ rec {
       }:
       let
         config = {
+          networking.domain = "void";
           systemd.network.networks."${networkdConfigname}" = {
             matchConfig.Name = interface;
             networkConfig = {
