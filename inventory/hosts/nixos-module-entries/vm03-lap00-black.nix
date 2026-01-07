@@ -1,4 +1,4 @@
-{ paths, ... }:
+{ paths, lib, ... }:
 let
   inherit (paths) osProfiles;
 in
@@ -6,6 +6,10 @@ in
   imports = [
     "${osProfiles}/features/virtualisation/k8s/slave.nix"
   ];
+  networking.hosts = {
+    "127.0.0.2" = lib.mkForce [ "vm03-lap00-black" ];
+    "192.168.231.67" = [ "vm03-lap00-black.void" "vm03-lap00-black" ];
+  };
   bee = {
     tapId = "vm-black";
     mac = "52:54:00:aa:bb:03";
