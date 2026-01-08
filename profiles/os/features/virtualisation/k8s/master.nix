@@ -26,6 +26,13 @@
       masterAddress = kubeMasterHostname;
       apiserverAddress = apiServerEndpoint;
       easyCerts = true;
+      pki.certs.kubeProxyClient.hosts = [ ];
+      pki.certs.kubeletClient.hosts = [ ];
+      pki.certs.schedulerClient.hosts = [ ];
+      pki.certs.serviceAccount.hosts = [ ];
+      pki.certs.addonManager.hosts = [ ];
+      pki.certs.apiserverKubeletClient.hosts = [ ];
+      pki.certs.controllerManagerClient.hosts = [ ];
       apiserver = {
         securePort = kubeMasterAPIServerPort;
         advertiseAddress = kubeMasterIP;

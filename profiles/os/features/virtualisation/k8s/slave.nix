@@ -18,6 +18,8 @@
       roles = [ "node" ]; # 角色为 "node"
       masterAddress = kubeMasterHostname;
       easyCerts = true; # 与主节点保持一致
+      pki.certs.kubeProxyClient.hosts = [ ];
+      pki.certs.kubeletClient.hosts = [ ];
       kubelet.kubeconfig.server = apiServerEndpoint;
       apiserverAddress = apiServerEndpoint;
       # use coredns
