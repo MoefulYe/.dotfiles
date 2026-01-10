@@ -34,16 +34,27 @@ let
     "ashenye@vps00-foxhk-citrus"
   ];
   deployeeSshConfig =
-    [
-      "lan"
-      "mei"
-      "mume"
-    ]
-    |> (lib.map (name: {
-      hostname = name;
-      domain = "${name}.void";
-      port = 2222;
-    }))
+    (
+      (
+        [
+          "lan"
+          "mei"
+          "mume"
+        ]
+        |> (lib.map (name: {
+          hostname = name;
+          domain = "${name}.void";
+          port = 2222;
+        }))
+      )
+      ++ [
+        {
+          hostname = "citrus";
+          domain = "45.192.104.103";
+          port = 2222;
+        }
+      ]
+    )
     |> (import ../../infra/remote-deploy/mkDeployeeSshConfig.nix);
   deployee = {
     sshConfig = deployeeSshConfig;
