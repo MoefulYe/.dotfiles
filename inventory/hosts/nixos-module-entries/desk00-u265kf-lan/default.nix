@@ -15,4 +15,7 @@ in
     ./users.nix
     ./fine-tuning.nix
   ];
+  config.boot.extraModprobeConfig = ''
+    options nvidia NVreg_RestrictProfilingToAdminUsers=0
+  '';
 }

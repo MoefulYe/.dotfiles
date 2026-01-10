@@ -59,6 +59,23 @@ in
         };
       };
     };
+    vps00-foxhk-citrus = {
+      hostname = "45.192.104.103";
+      profiles = {
+        system = {
+          user = "root";
+          sshUser = "deployee";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.vps00-foxhk-citrus;
+        };
+        ashenye = {
+          user = "ashenye";
+          sshUser = "ashenye";
+          path =
+            deploy-rs.lib.x86_64-linux.activate.home-manager
+              outputs.homeConfigurations."ashenye@vps00-foxhk-citrus";
+        };
+      };
+    };
     # lap01-macm4-mume = {
     #   hostname = "mume.void";
     #   remoteBuild = true;
