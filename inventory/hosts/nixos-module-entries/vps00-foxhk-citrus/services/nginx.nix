@@ -6,16 +6,31 @@
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
 
-    virtualHosts."rsshub.059867.yxz" = {
+    virtualHosts."rsshub.pippaye.top" = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
         proxyPass = "http://localhost:1200";
+      };
+    };
+    virtualHosts."miniflux.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:10080";
+      };
+    };
+    virtualHosts."n8n.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:5678";
         proxyWebsockets = true;
-        extraProxyHeaders = {
-          "Upgrade" = "$http_upgrade";
-          "Connection" = "upgrade";
-        };
+        extraConfig = ''
+          proxy_buffering off;
+          proxy_cache off;
+          client_max_body_size 50M;
+        '';
       };
     };
   };

@@ -61,7 +61,6 @@ in
     };
     vps00-foxhk-citrus = {
       hostname = "45.192.104.103";
-      remoteBuild = true;
       profiles = {
         system = {
           user = "root";

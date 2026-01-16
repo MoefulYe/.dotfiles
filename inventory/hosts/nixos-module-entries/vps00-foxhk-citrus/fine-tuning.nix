@@ -1,4 +1,4 @@
 {
-    zramSwap.enable = true;
-    osProfiles.common.bootloader = "grub";
+  # zramSwap.enable = true;
+  osProfiles.common.bootloader = "grub";
 }
