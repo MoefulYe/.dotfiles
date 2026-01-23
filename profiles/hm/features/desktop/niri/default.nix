@@ -371,6 +371,7 @@
         Mod+F10 { spawn "toggle-swayidle"; }
         Mod+F11 { spawn "toggle-waybar"; }
         Mod+F12 { spawn "change-wallpaper"; }
+        Mod+N { spawn "swaync-client" "-t" "-sw"; }
         Mod+Escape { toggle-overview; }
 
         // You can also use a shell. Do this if you need pipes, multiple commands, etc.
