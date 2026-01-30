@@ -81,7 +81,7 @@
         terminal = 13;
       };
     };
-    iconTheme = {
+    icons = {
       enable = true;
       package = pkgs.whitesur-icon-theme;
       dark = "WhiteSur-dark";

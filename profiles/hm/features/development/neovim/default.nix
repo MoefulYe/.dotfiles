@@ -31,11 +31,9 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     home.packages = [
-      (
-        if cfg.lite then outputs.packages.${pkgs.system}.nvim-lite else outputs.packages.${pkgs.system}.nvim
-      )
+      (if cfg.lite then pkgs.my-pkgs.nvim-lite else pkgs.my-pkgs.nvim)
     ];
   };
 }
