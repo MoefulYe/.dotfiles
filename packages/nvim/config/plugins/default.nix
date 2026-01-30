@@ -5,10 +5,13 @@
     ./treesitter.nix
     ./telescope.nix
   ] ++ lib.optionals (!lite) [
-    # Full mode: development tools
-    ./lsp.nix
-    ./cmp.nix
-    ./git.nix
-    ./ui.nix
+    # Full mode: all development tools
+    ./lsp
+    ./cmp
+    ./git
+    ./ui
+    ./editor
+    ./utils
+    ./snippet
   ];
 }
