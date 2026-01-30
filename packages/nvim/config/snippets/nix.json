@@ -1,0 +1,39 @@
+{
+  "flake-boilerplate": {
+    "prefix": "flake",
+    "body": [
+      "# see flake schema: https://nixos.wiki/wiki/flakes",
+      "{",
+      "  description = \"${1:description}\";",
+      "",
+      "  inputs = {",
+      "    nixpkgs.url = \"github:NixOS/nixpkgs/nixpkgs-unstable\";",
+      "    flake-utils.url = \"github:numtide/flake-utils\";",
+      "  };",
+      "",
+      "  outputs =",
+      "    {",
+      "      self,",
+      "      nixpkgs,",
+      "      flake-utils,",
+      "    }@inputs:",
+      "    flake-utils.lib.eachDefaultSystem (",
+      "      system:",
+      "      let",
+      "        pkgs = nixpkgs.legacyPackages.\"\\${system}\";",
+      "      in",
+      "      {",
+      "       formatter = pkgs.nixfmt-rfc-style;",
+      "       # pkgs.mkShell manual: https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-mkShell",
+      "       devShell = pkgs.mkShell {",
+      "         buildInputs = [];",
+      "         shellHook = ''",
+      "         ",
+      "         '';",
+      "       };",
+      "      }",
+      "    );",
+      "}"
+    ]
+  }
+}
