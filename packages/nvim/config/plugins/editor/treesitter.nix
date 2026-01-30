@@ -48,7 +48,7 @@
       jsdoc
       json
       json5
-      jsonc
+      # jsonc
       jsonnet
       just
       kconfig
