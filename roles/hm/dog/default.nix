@@ -15,4 +15,5 @@ in
     "${hmProfiles}/features/development/zsh"
     "${hmProfiles}/features/topology/ssh.nix"
   ];
+  hmProfiles.my-nvim.lite = false;
 }

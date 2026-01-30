@@ -40,4 +40,5 @@ in
     "${hmProfiles}/features/viewers/imv.nix"
     "${hmProfiles}/features/viewers/zathura.nix"
   ];
+  hmProfiles.my-nvim.lite = false;
 }

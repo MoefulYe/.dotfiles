@@ -26,4 +26,5 @@ in
     "${hmProfiles}/features/viewers/mpv"
     "${hmProfiles}/features/viewers/zathura.nix"
   ];
+  hmProfiles.my-nvim.lite = false;
 }

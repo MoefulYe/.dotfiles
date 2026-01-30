@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   fonts = pkgs.callPackage ./my-fonts.nix {
     url = "https://blob.desktop.nix.059867.xyz/fonts.zip";
@@ -17,4 +17,8 @@
   retro-crt = pkgs.callPackage ./retro-crt.nix { };
   downloader = pkgs.callPackage ./downloader { };
   ensure-exist = pkgs.callPackage ./ensure-exist { };
+
+  # Neovim packages
+  nvim = pkgs.callPackage ./nvim { inherit inputs; lite = false; };
+  nvim-lite = pkgs.callPackage ./nvim { inherit inputs; lite = true; };
 }
