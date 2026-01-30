@@ -90,7 +90,7 @@
     ];
   };
 
-  programs.nixvim.plugins.treesitter-textobjects = {
+  plugins.treesitter-textobjects = {
     enable = false;
     settings = {
       select = {
