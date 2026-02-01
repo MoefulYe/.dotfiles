@@ -779,11 +779,29 @@ jobs:
 
 ---
 
-最后更新：2026-01-30
+最后更新：2026-02-01
 
 ---
 
 ## 📝 更新日志
+
+### 2026-02-01
+
+#### ✅ 完成：替换 startup.nvim 为 alpha-nvim
+- [x] 移除 snacks.nvim 的 dashboard 配置
+- [x] 添加 alpha-nvim 配置
+- [x] 配置 ASCII art header（青色）
+- [x] 配置快捷键按钮（Find File, New File, Recent Files, Find Text, Config, Quit）
+- [x] 调整布局 padding
+- [ ] **待优化**：alpha-nvim 按钮缺少图标显示
+
+**问题**：
+- snacks.nvim 的 dashboard 依赖 lazy.nvim 的 `lazy.stats` 模块，在 nixvim 环境中不可用
+- 使用 `preset` 配置会自动添加 lazy.nvim 统计信息
+
+**解决方案**：
+- 完全替换为 alpha-nvim，避免 lazy.nvim 依赖
+- 保留 snacks.nvim 的其他功能（notifier, statuscolumn, bigfile, quickfile, words）
 
 ### 2026-01-30
 

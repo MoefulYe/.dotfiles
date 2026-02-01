@@ -5,7 +5,7 @@
 
   plugins.alpha = lib.mkIf (!lite) {
     enable = true;
-    layout = [
+    settings.layout = [
       {
         type = "padding";
         val = 2;
