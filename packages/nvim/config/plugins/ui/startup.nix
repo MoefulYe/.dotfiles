@@ -1,130 +1,201 @@
 { lib, lite, ... }:
 {
-  # snacks.nvim - 现代化的 Neovim 工具集
-  # 包含 dashboard, notifier, statuscolumn 等功能
-  # 参考：https://github.com/folke/snacks.nvim
+  # alpha-nvim - 启动画面
+  # 参考：https://github.com/goolord/alpha-nvim
 
-  plugins.snacks = lib.mkIf (!lite) {
+  plugins.alpha = lib.mkIf (!lite) {
     enable = true;
-
-    settings = {
-      # Dashboard - 启动画面
-      dashboard = {
-        enable = true;
-        preset = {
-          header = ''
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣡⣾⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣟⠻⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⣷⣿⣿⣿⣿⣿⣿⣿⣾⣯⣿⡿⢧⡚⢷⣌⣽⣿⣿⣿⣿⣿⣶⡌⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⠇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣇⣘⠿⢹⣿⣿⣿⣿⣿⣻⢿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⠀⢸⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⡟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣻⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⡇⠀⣬⠏⣿⡇⢻⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⠀⠈⠁⠀⣿⡇⠘⡟⣿⣿⣿⣿⣿⣿⣿⣿⡏⠿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣇⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⡏⠀⠀⠐⠀⢻⣇⠀⠀⠹⣿⣿⣿⣿⣿⣿⣩⡶⠼⠟⠻⠞⣿⡈⠻⣟⢻⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢿⠀⡆⠀⠘⢿⢻⡿⣿⣧⣷⢣⣶⡃⢀⣾⡆⡋⣧⠙⢿⣿⣿⣟⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⡥⠂⡐⠀⠁⠑⣾⣿⣿⣾⣿⣿⣿⡿⣷⣷⣿⣧⣾⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⡿⣿⣍⡴⠆⠀⠀⠀⠀⠀⠀⠀⠀⣼⣄⣀⣷⡄⣙⢿⣿⣿⣿⣿⣯⣶⣿⣿⢟⣾⣿⣿⢡⣿⣿⣿⣿⣿
-            ⣿⡏⣾⣿⣿⣿⣷⣦⠀⠀⠀⢀⡀⠀⠀⠠⣭⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣡⣾⣿⣿⢏⣾⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⡴⠀⠀⠀⠀⠀⠠⠀⠰⣿⣿⣿⣷⣿⠿⠿⣿⣿⣭⡶⣫⠔⢻⢿⢇⣾⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⡿⢫⣽⠟⣋⠀⠀⠀⠀⣶⣦⠀⠀⠀⠈⠻⣿⣿⣿⣾⣿⣿⣿⣿⡿⣣⣿⣿⢸⣾⣿⣿⣿⣿⣿⣿⣿
-            ⡿⠛⣹⣶⣶⣶⣾⣿⣷⣦⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠉⠛⠻⢿⣿⡿⠫⠾⠿⠋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣀⡆⣠⢀⣴⣏⡀⠀⠀⠀⠉⠀⠀⢀⣠⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⠿⠛⠛⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣯⣟⠷⢷⣿⡿⠋⠀⠀⠀⠀⣵⡀⢠⡿⠋⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⢿⣿⣿⠂⠀⠀⠀⠀⠀⢀⣽⣿⣿⣿⣿⣿⣿⣿⣍⠛⠿⣿⣿⣿⣿⣿⣿
-          '';
-
-          # 快捷键
-          keys = [
-            {
-              icon = " ";
-              key = "f";
-              desc = "Find File";
-              action = ":lua Snacks.dashboard.pick('files')";
-            }
-            {
-              icon = " ";
-              key = "n";
-              desc = "New File";
-              action = ":ene | startinsert";
-            }
-            {
-              icon = " ";
-              key = "r";
-              desc = "Recent Files";
-              action = ":lua Snacks.dashboard.pick('oldfiles')";
-            }
-            {
-              icon = " ";
-              key = "g";
-              desc = "Find Text";
-              action = ":lua Snacks.dashboard.pick('live_grep')";
-            }
-            {
-              icon = " ";
-              key = "c";
-              desc = "Config";
-              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})";
-            }
-            {
-              icon = " ";
-              key = "s";
-              desc = "Restore Session";
-              section = "session";
-            }
-            {
-              icon = "󰒲 ";
-              key = "l";
-              desc = "Lazy";
-              action = ":Lazy";
-              enabled = false;
-            }
-            {
-              icon = " ";
-              key = "q";
-              desc = "Quit";
-              action = ":qa";
-            }
-          ];
+    layout = [
+      {
+        type = "padding";
+        val = 2;
+      }
+      {
+        type = "text";
+        val = [
+          "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣡⣾⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣟⠻⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⣷⣿⣿⣿⣿⣿⣿⣿⣾⣯⣿⡿⢧⡚⢷⣌⣽⣿⣿⣿⣿⣿⣶⡌⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⠇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣇⣘⠿⢹⣿⣿⣿⣿⣿⣻⢿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⠀⢸⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⡟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣻⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⡇⠀⣬⠏⣿⡇⢻⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⠀⠈⠁⠀⣿⡇⠘⡟⣿⣿⣿⣿⣿⣿⣿⣿⡏⠿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣇⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⡏⠀⠀⠐⠀⢻⣇⠀⠀⠹⣿⣿⣿⣿⣿⣿⣩⡶⠼⠟⠻⠞⣿⡈⠻⣟⢻⣿⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢿⠀⡆⠀⠘⢿⢻⡿⣿⣧⣷⢣⣶⡃⢀⣾⡆⡋⣧⠙⢿⣿⣿⣟⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⡥⠂⡐⠀⠁⠑⣾⣿⣿⣾⣿⣿⣿⡿⣷⣷⣿⣧⣾⣿⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⡿⣿⣍⡴⠆⠀⠀⠀⠀⠀⠀⠀⠀⣼⣄⣀⣷⡄⣙⢿⣿⣿⣿⣿⣯⣶⣿⣿⢟⣾⣿⣿⢡⣿⣿⣿⣿⣿"
+          "⣿⡏⣾⣿⣿⣿⣷⣦⠀⠀⠀⢀⡀⠀⠀⠠⣭⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣡⣾⣿⣿⢏⣾⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⣿⣿⣿⣿⣿⡴⠀⠀⠀⠀⠀⠠⠀⠰⣿⣿⣿⣷⣿⠿⠿⣿⣿⣭⡶⣫⠔⢻⢿⢇⣾⣿⣿⣿⣿⣿⣿"
+          "⣿⣿⣿⡿⢫⣽⠟⣋⠀⠀⠀⠀⣶⣦⠀⠀⠀⠈⠻⣿⣿⣿⣾⣿⣿⣿⣿⡿⣣⣿⣿⢸⣾⣿⣿⣿⣿⣿⣿⣿"
+          "⡿⠛⣹⣶⣶⣶⣾⣿⣷⣦⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠉⠛⠻⢿⣿⡿⠫⠾⠿⠋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣀⡆⣠⢀⣴⣏⡀⠀⠀⠀⠉⠀⠀⢀⣠⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⠿⠛⠛⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣯⣟⠷⢷⣿⡿⠋⠀⠀⠀⠀⣵⡀⢠⡿⠋⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+          "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⢿⣿⣿⠂⠀⠀⠀⠀⠀⢀⣽⣿⣿⣿⣿⣿⣿⣿⣍⠛⠿⣿⣿⣿⣿⣿⣿"
+        ];
+        opts = {
+          position = "center";
+          hl = "Type";
         };
-      };
-
-      # Notifier - 通知系统
-      notifier = {
-        enable = true;
-        timeout = 3000;
-      };
-
-      # Statuscolumn - 状态列
-      statuscolumn = {
-        enable = true;
-      };
-
-      # Bigfile - 大文件优化
-      bigfile = {
-        enable = true;
-        size = 1024 * 1024; # 1MB
-      };
-
-      # Quickfile - 快速文件加载
-      quickfile = {
-        enable = true;
-      };
-
-      # Words - 单词高亮
-      words = {
-        enable = true;
-      };
-
-      # Styles - 样式配置
-      styles = {
-        notification = {
-          border = "rounded";
-          wo = {
-            wrap = true;
-          };
-        };
-      };
-    };
+      }
+      {
+        type = "padding";
+        val = 2;
+      }
+      {
+        type = "group";
+        val = [
+          {
+            type = "button";
+            val = "  Find File";
+            on_press = {
+              __raw = "function() require('telescope.builtin').find_files() end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "f"
+                ":Telescope find_files<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "f";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+          {
+            type = "button";
+            val = "  New File";
+            on_press = {
+              __raw = "function() vim.cmd[[ene]] end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "n"
+                ":ene <BAR> startinsert<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "n";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+          {
+            type = "button";
+            val = "  Recent Files";
+            on_press = {
+              __raw = "function() require('telescope.builtin').oldfiles() end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "r"
+                ":Telescope oldfiles<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "r";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+          {
+            type = "button";
+            val = "  Find Text";
+            on_press = {
+              __raw = "function() require('telescope.builtin').live_grep() end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "g"
+                ":Telescope live_grep<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "g";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+          {
+            type = "button";
+            val = "  Config";
+            on_press = {
+              __raw = "function() require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "c"
+                ":lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "c";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+          {
+            type = "button";
+            val = "  Quit";
+            on_press = {
+              __raw = "function() vim.cmd[[qa]] end";
+            };
+            opts = {
+              keymap = [
+                "n"
+                "q"
+                ":qa<CR>"
+                {
+                  noremap = true;
+                  silent = true;
+                }
+              ];
+              shortcut = "q";
+              position = "center";
+              cursor = 3;
+              width = 50;
+              align_shortcut = "right";
+              hl_shortcut = "Keyword";
+            };
+          }
+        ];
+      }
+      {
+        type = "padding";
+        val = 2;
+      }
+    ];
   };
+
 }
