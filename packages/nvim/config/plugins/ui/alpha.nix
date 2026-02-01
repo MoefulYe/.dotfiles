@@ -35,12 +35,12 @@
         ];
         opts = {
           position = "center";
-          hl = "Type";
+          hl = "Function";
         };
       }
       {
         type = "padding";
-        val = 2;
+        val = 4;
       }
       {
         type = "group";
@@ -70,6 +70,10 @@
             };
           }
           {
+            type = "padding";
+            val = 1;
+          }
+          {
             type = "button";
             val = "  New File";
             on_press = {
@@ -92,6 +96,11 @@
               align_shortcut = "right";
               hl_shortcut = "Keyword";
             };
+          }
+
+          {
+            type = "padding";
+            val = 1;
           }
           {
             type = "button";
@@ -116,6 +125,11 @@
               align_shortcut = "right";
               hl_shortcut = "Keyword";
             };
+          }
+
+          {
+            type = "padding";
+            val = 1;
           }
           {
             type = "button";
@@ -142,6 +156,10 @@
             };
           }
           {
+            type = "padding";
+            val = 1;
+          }
+          {
             type = "button";
             val = "  Config";
             on_press = {
@@ -164,6 +182,10 @@
               align_shortcut = "right";
               hl_shortcut = "Keyword";
             };
+          }
+          {
+            type = "padding";
+            val = 1;
           }
           {
             type = "button";

@@ -1,7 +1,7 @@
 {
-imports = [
-  ./bufferline.nix
-  ./lualine.nix
-  ./startup.nix
-];
+  imports = [
+    ./bufferline.nix
+    ./lualine.nix
+    ./alpha.nix
+  ];
 }
