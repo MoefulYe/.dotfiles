@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   plugins.dap-ui.settings.floating.mappings = {
     close = [
@@ -9,7 +9,8 @@
   plugins.dap-ui.enable = true;
   plugins.dap-virtual-text.enable = true;
   plugins = {
-    cmp-dap.enable = true;
+    # cmp-dap 依赖 nvim-cmp，已被 blink.cmp 替换，暂时禁用
+    cmp-dap.enable = lib.mkForce false;
     dap = {
       enable = true;
       extensions = {

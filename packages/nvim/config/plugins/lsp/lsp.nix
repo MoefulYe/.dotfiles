@@ -88,30 +88,5 @@
           require('lspconfig.ui.windows').default_options = {
             border = _border
           }
-          local cmp = require('cmp')
-
-    cmp.setup({
-      mapping = {
-        ['<Tab>'] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          else
-            fallback()
-          end
-        end, {"i", "s"}),
-        
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          else
-            fallback()
-          end
-        end, {'i', 's'}),
-        ["<C-CR>"] = cmp.mapping.confirm({
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
-        }, { "i" }),
-      }
-    })
   '';
 }

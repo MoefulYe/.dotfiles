@@ -1,1 +1,0 @@
-{ plugins.cmp.enable = true; }

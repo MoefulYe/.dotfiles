@@ -2,6 +2,14 @@ _: {
 
   plugins.copilot-chat = {
     enable = true;
+    settings = {
+      # 禁用 cmp 集成，因为我们使用 blink.cmp
+      mappings = {
+        complete = {
+          insert = "";
+        };
+      };
+    };
   };
 
   keymaps = [
