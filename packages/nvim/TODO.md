@@ -787,6 +787,38 @@ jobs:
 
 ### 2026-02-01
 
+#### ✅ 完成：Avante.nvim 配置
+- [x] 添加 avante.nvim 配置文件
+- [x] 配置 Claude API（Sonnet 4.5）
+- [x] 配置快捷键（<leader>aa, <leader>ae 等）
+- [x] 配置 UI 样式（rounded 边框，30% 宽度侧边栏）
+- [x] 创建使用指南文档（AVANTE_GUIDE.md）
+- [ ] **待测试**：AI 对话功能
+- [ ] **待测试**：代码编辑建议
+- [ ] **待测试**：多轮对话
+
+**配置位置**：
+- `packages/nvim/config/plugins/editor/avante.nix`
+- `packages/nvim/AVANTE_GUIDE.md`
+
+**快捷键**：
+- `<leader>aa` - 询问 AI
+- `<leader>ae` - AI 编辑
+- `<leader>at` - 切换 AI 窗口
+- `co/ct/cb` - 差异处理
+
+**注意事项**：
+- 需要设置环境变量 `ANTHROPIC_API_KEY`
+- 使用 Claude Sonnet 4.5 模型
+- 与 Copilot 互补使用
+
+#### ✅ 完成：blink.cmp Tab 键修复
+- [x] 修复 Tab 键快捷键配置
+- [x] 添加 `select_next` 到 Tab 键
+- [x] 添加 `select_prev` 到 Shift+Tab 键
+- [x] 添加 Enter 键接受补全
+- [x] 测试验证：Tab 键可以正常选择补全项
+
 #### ✅ 完成：替换 startup.nvim 为 alpha-nvim
 - [x] 移除 snacks.nvim 的 dashboard 配置
 - [x] 添加 alpha-nvim 配置

@@ -1,5 +1,6 @@
 {
 imports = [
+  ./avante.nix
   ./copilot-chat.nix
   ./illuminate.nix
   ./indent-blankline.nix
