@@ -9,6 +9,7 @@ let
     toggle-waybar = ./toggle-waybar.sh;
     change-wallpaper = ./change-wallpaper.sh;
     check-libs = ./check-libs.sh;
+    bark = ./bark.sh;
   };
 in
 {

@@ -1,4 +1,4 @@
-{ paths, ... }:
+{ paths, lib, ... }:
 let
   inherit (paths) hmProfiles hmQuirks;
 in
@@ -15,5 +15,5 @@ in
     "${hmProfiles}/features/development/zsh"
     "${hmProfiles}/features/topology/ssh.nix"
   ];
-  hmProfiles.my-nvim.lite = false;
+  hmProfiles.my-nvim.lite = lib.mkDefault false;
 }

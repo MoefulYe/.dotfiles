@@ -33,5 +33,12 @@
         '';
       };
     };
+    virtualHosts."bark.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:18080";
+      };
+    };
   };
 }

@@ -11,4 +11,5 @@ in
     ./users.nix
     ./services
   ];
+  hmProfiles.my-nvim.lite = true;
 }
