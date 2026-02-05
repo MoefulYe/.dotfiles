@@ -378,6 +378,8 @@ send_notification() {
         json_payload+=$'\n}'
         
         # Execute JSON request
+        echo "🚀 Sending JSON request..."
+        echo "📡 curl ${curl_opts[*]} '${api_url}' -d '${json_payload}'"
         local response
         response=$(curl "${curl_opts[@]}" "${api_url}" -d "${json_payload}" 2>&1) || true
         if [[ -z "${response}" ]]; then
@@ -403,6 +405,8 @@ send_notification() {
                 api_url+="?${query_string}"
             fi
             
+            echo "🚀 Sending GET request..."
+            echo "📡 curl ${curl_opts[*]} '${api_url}'"
             local response
             response=$(curl "${curl_opts[@]}" "${api_url}" 2>&1) || true
             if [[ -z "${response}" ]]; then
@@ -427,6 +431,8 @@ send_notification() {
             # Remove trailing ampersand
             post_data="${post_data%&}"
             
+            echo "🚀 Sending POST request..."
+            echo "📡 curl ${curl_opts[*]} '${api_url}' -d '${post_data}'"
             local response
             response=$(curl "${curl_opts[@]}" "${api_url}" -d "${post_data}" 2>&1) || true
             if [[ -z "${response}" ]]; then
@@ -438,10 +444,10 @@ send_notification() {
     
     # Check response
     if echo "${response}" | grep -q '"code":200'; then
-        info "Notification sent successfully"
+        info "✅ Notification sent successfully"
         return 0
     else
-        error "API returned error response: ${response}"
+        error "❌ API returned error response: ${response}"
         return 1
     fi
 }
