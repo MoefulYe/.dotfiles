@@ -14,8 +14,8 @@
       allow_hyperlinks yes
       hyperlink_modifier ctrl
       map ctrl+shift+enter new_window_with_cwd
-      map f1 launch --stdin-source=@screen_scrollback --stdin-add-formatting vim -R -
-      map f2 launch --stdin-source=@last_cmd_output --stdin-add-formatting vim -R -
+      map f1 launch --stdin-source=@screen_scrollback --stdin-add-formatting nvim -R -
+      map f2 launch --stdin-source=@last_cmd_output --stdin-add-formatting nvim -R -
     '';
   };
 }
