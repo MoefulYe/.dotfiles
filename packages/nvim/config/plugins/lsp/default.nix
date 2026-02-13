@@ -5,6 +5,7 @@
     ./conform.nix
     ./fidget.nix
     ./lsp.nix
+    ./lspsaga.nix
     ./langs
     ./dap.nix
   ];

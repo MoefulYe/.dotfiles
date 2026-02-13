@@ -30,11 +30,11 @@
 **原因**：性能提升 10-20 倍，用 Rust 编写，更智能的补全
 
 **任务**：
-- [ ] 添加 blink.cmp 插件配置
-- [ ] 迁移 nvim-cmp 的 sources 配置
-- [ ] 迁移快捷键配置
-- [ ] 测试补全功能
-- [ ] 移除旧的 nvim-cmp 配置
+- [x] 添加 blink.cmp 插件配置
+- [x] 迁移 nvim-cmp 的 sources 配置
+- [x] 迁移快捷键配置
+- [x] 测试补全功能
+- [x] 移除旧的 nvim-cmp 配置
 
 **配置示例**：
 ```nix
@@ -61,11 +61,11 @@ plugins.blink-cmp = {
 **原因**：当前配置已损坏，nixvim 格式已改变
 
 **选项 A：snacks.nvim（推荐）**
-- [ ] 添加 snacks.nvim 配置
-- [ ] 配置 dashboard
-- [ ] 配置 notifier
-- [ ] 配置 statuscolumn
-- [ ] 测试启动画面
+- [x] 添加 snacks.nvim 配置
+- [x] 配置 dashboard
+- [x] 配置 notifier
+- [x] 配置 statuscolumn
+- [x] 测试启动画面
 
 ```nix
 plugins.snacks = {
@@ -93,20 +93,20 @@ plugins.snacks = {
 };
 ```
 
-**选项 B：alpha.nvim**
-- [ ] 添加 alpha.nvim 配置
-- [ ] 配置启动画面布局
-- [ ] 配置快捷按钮
-- [ ] 测试启动画面
+<!-- **选项 B：alpha.nvim** -->
+<!-- - [ ] 添加 alpha.nvim 配置 -->
+<!-- - [ ] 配置启动画面布局 -->
+<!-- - [ ] 配置快捷按钮 -->
+<!-- - [ ] 测试启动画面 -->
 
-**选项 C：mini.starter**
-- [ ] 添加 mini.starter 配置
-- [ ] 配置启动项
-- [ ] 测试启动画面
+<!-- **选项 C：mini.starter** -->
+<!-- - [ ] 添加 mini.starter 配置 -->
+<!-- - [ ] 配置启动项 -->
+<!-- - [ ] 测试启动画面 -->
 
-**参考**：
-- https://github.com/folke/snacks.nvim
-- https://github.com/goolord/alpha-nvim
+<!-- **参考**： -->
+<!-- - https://github.com/folke/snacks.nvim -->
+<!-- - https://github.com/goolord/alpha-nvim -->
 
 ---
 
@@ -114,13 +114,13 @@ plugins.snacks = {
 **原因**：类似 Cursor 的 AI 编辑体验，支持多模型，内联对话和代码编辑
 
 **任务**：
-- [ ] 添加 avante.nvim 配置
-- [ ] 配置 Claude API（或其他 AI 提供商）
-- [ ] 配置快捷键
-- [ ] 配置 UI 样式
-- [ ] 测试 AI 对话功能
-- [ ] 测试代码编辑建议
-- [ ] 测试多轮对话
+- [x] 添加 avante.nvim 配置
+- [x] 配置 Claude API（或其他 AI 提供商）
+- [x] 配置快捷键
+- [x] 配置 UI 样式
+- [x] 测试 AI 对话功能
+- [x] 测试代码编辑建议
+- [x] 测试多轮对话
 
 **配置示例**：
 ```nix

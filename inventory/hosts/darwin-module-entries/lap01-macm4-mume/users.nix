@@ -4,4 +4,5 @@
     shell = pkgs.zsh;
     home = "/Users/ashenye";
   };
+  system.primaryUser = "ashenye";
 }
