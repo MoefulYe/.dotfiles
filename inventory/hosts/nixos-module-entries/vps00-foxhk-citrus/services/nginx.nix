@@ -50,31 +50,43 @@
         extraConfig = ''
           # 静态资源缓存优化
           expires 7d;
-          add_header Cache-Control "public, immutable";
+          add_header Cache-Control "public, immutable" always;
+
+          # 安全头部
+          add_header X-Frame-Options "SAMEORIGIN" always;
+          add_header X-Content-Type-Options "nosniff" always;
+          add_header X-XSS-Protection "1; mode=block" always;
+          add_header Referrer-Policy "no-referrer-when-downgrade" always;
         '';
       };
       locations."~* \\.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$" = {
         extraConfig = ''
           # 静态资源长期缓存
           expires 30d;
-          add_header Cache-Control "public, immutable";
+          add_header Cache-Control "public, immutable" always;
           access_log off;
+
+          # 安全头部
+          add_header X-Frame-Options "SAMEORIGIN" always;
+          add_header X-Content-Type-Options "nosniff" always;
+          add_header X-XSS-Protection "1; mode=block" always;
+          add_header Referrer-Policy "no-referrer-when-downgrade" always;
         '';
       };
       locations."~* \\.(html|xml|json)$" = {
         extraConfig = ''
           # HTML/XML/JSON 短期缓存
           expires 1h;
-          add_header Cache-Control "public, must-revalidate";
+          add_header Cache-Control "public, must-revalidate" always;
+
+          # 安全头部
+          add_header X-Frame-Options "SAMEORIGIN" always;
+          add_header X-Content-Type-Options "nosniff" always;
+          add_header X-XSS-Protection "1; mode=block" always;
+          add_header Referrer-Policy "no-referrer-when-downgrade" always;
         '';
       };
       extraConfig = ''
-        # 安全头部
-        add_header X-Frame-Options "SAMEORIGIN" always;
-        add_header X-Content-Type-Options "nosniff" always;
-        add_header X-XSS-Protection "1; mode=block" always;
-        add_header Referrer-Policy "no-referrer-when-downgrade" always;
-
         # 禁止访问隐藏文件
         location ~ /\. {
           deny all;
