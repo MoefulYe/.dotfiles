@@ -40,5 +40,48 @@
         proxyPass = "http://localhost:18080";
       };
     };
+    virtualHosts."blog.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/var/www/blog.pippaye.top";
+      locations."/" = {
+        index = "index.html";
+        tryFiles = "$uri $uri/ =404";
+        extraConfig = ''
+          # 静态资源缓存优化
+          expires 7d;
+          add_header Cache-Control "public, immutable";
+        '';
+      };
+      locations."~* \\.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$" = {
+        extraConfig = ''
+          # 静态资源长期缓存
+          expires 30d;
+          add_header Cache-Control "public, immutable";
+          access_log off;
+        '';
+      };
+      locations."~* \\.(html|xml|json)$" = {
+        extraConfig = ''
+          # HTML/XML/JSON 短期缓存
+          expires 1h;
+          add_header Cache-Control "public, must-revalidate";
+        '';
+      };
+      extraConfig = ''
+        # 安全头部
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "no-referrer-when-downgrade" always;
+
+        # 禁止访问隐藏文件
+        location ~ /\. {
+          deny all;
+          access_log off;
+          log_not_found off;
+        }
+      '';
+    };
   };
 }
