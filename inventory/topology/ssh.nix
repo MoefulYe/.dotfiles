@@ -32,6 +32,7 @@ let
   ];
   vpses = [
     "ashenye@vps00-foxhk-citrus"
+    "ashenye@vps01-hawk-lemon"
   ];
   deployeeSshConfig =
     (

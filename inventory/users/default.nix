@@ -68,4 +68,11 @@ in
     sshConfig = ./ssh-configs + "/ashenye@vps00-foxhk-citrus.nix";
     hmConfig = mkHmConfigEntry "ashenye@vps00-foxhk-citrus.nix";
   };
+  "ashenye@vps01-hawk-lemon" = {
+    description = "ashenye on vps01-hawk-lemon";
+    role = "dog";
+    tags = [ "vps" ];
+    sshConfig = ./ssh-configs + "/ashenye@vps01-hawk-lemon.nix";
+    hmConfig = mkHmConfigEntry "ashenye@vps01-hawk-lemon.nix";
+  };
 }
