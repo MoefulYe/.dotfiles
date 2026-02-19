@@ -54,6 +54,11 @@ let
           domain = "45.192.104.103";
           port = 2222;
         }
+        {
+          hostname = "lemon";
+          domain = "198.252.98.154";
+          port = 2222;
+        }
       ]
     )
     |> (import ../../infra/remote-deploy/mkDeployeeSshConfig.nix);

@@ -108,7 +108,7 @@ in
   sshOpts = [
     "-p"
     "2222"
-    # "-i"
-    # "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY"
+    "-i"
+    "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY"
   ];
 }
