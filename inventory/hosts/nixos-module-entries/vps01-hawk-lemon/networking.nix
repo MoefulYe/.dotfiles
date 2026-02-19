@@ -5,7 +5,10 @@
       "8.8.8.8"
       "8.8.4.4"
     ];
-    defaultGateway = "198.252.98.190";
+    defaultGateway = {
+      address = "198.252.98.190";
+      interface = "ens3";
+    };
     defaultGateway6 = {
       address = "";
       interface = "ens3";
