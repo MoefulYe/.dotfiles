@@ -159,4 +159,17 @@ in
     ];
     nixosConfig = ./nixos-module-entries/vps00-foxhk-citrus;
   };
+  vps01-hawk-lemon = {
+    system = "x86_64-linux";
+    aliases = [
+      "vps01"
+      "lemon"
+    ];
+    role = "dog";
+    tags = [
+      "nixos"
+    ];
+    description = "llm api proxy server";
+    nixosConfig = ./nixos-module-entries/vps01-hawk-lemon;
+  };
 }
