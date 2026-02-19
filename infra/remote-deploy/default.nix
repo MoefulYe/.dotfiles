@@ -76,6 +76,23 @@ in
         };
       };
     };
+    vps01-hawk-lemon = {
+      hostname = "198.252.98.154";
+      profiles = {
+        system = {
+          user = "root";
+          sshUser = "deployee";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.vps01-hawk-lemon;
+        };
+        ashenye = {
+          user = "ashenye";
+          sshUser = "ashenye";
+          path =
+            deploy-rs.lib.x86_64-linux.activate.home-manager
+              outputs.homeConfigurations."ashenye@vps01-hawk-lemon";
+        };
+      };
+    };
     # lap01-macm4-mume = {
     #   hostname = "mume.void";
     #   remoteBuild = true;
@@ -91,7 +108,7 @@ in
   sshOpts = [
     "-p"
     "2222"
-    "-i"
-    "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY"
+    # "-i"
+    # "~/.config/sops-nix/secrets/REMOTE_DEPLOY_PRIVKEY"
   ];
 }

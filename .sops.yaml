@@ -12,6 +12,7 @@ keys:
       - &ashenye-at-lap01-macm4-mume age1se6rw68dnwf6896j8r2v2vjf3kvm5l2x2220epdnm4k2xwzjee7qqj9hl8
       - &ashenye-at-rutr01-j4105-qingloong age1jywpjzcpcuruz405pwcfcyzqz0x9r90exxzq8qxljklamryhds9sszmyqy
       - &ashenye-at-vps00-foxhk-citrus age1j7p0u6gajhj267j0422k23knmyt9g8ff25aqats6qw4wcl5m85nq4flap8
+      - &ashenye-at-vps01-hawk-lemon age1g4l3g9c3vl3x70w6ja3ejtjw7qx0lpugyv9eksrrs8kcvxjmcsys85g4j3
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
@@ -43,6 +44,7 @@ creation_rules:
           - *ashenye-at-lap01-macm4-mume
           - *ashenye-at-rutr01-j4105-qingloong
           - *ashenye-at-vps00-foxhk-citrus
+          - *ashenye-at-vps01-hawk-lemon
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
