@@ -40,6 +40,21 @@
         proxyPass = "http://localhost:18080";
       };
     };
+    virtualHosts."bitwarden.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:8222";
+        proxyWebsockets = true;
+      };
+    };
+    virtualHosts."firefly.pippaye.top" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:8081";
+      };
+    };
     virtualHosts."blog.pippaye.top" = {
       forceSSL = true;
       enableACME = true;

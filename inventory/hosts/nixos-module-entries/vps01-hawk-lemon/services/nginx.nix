@@ -14,4 +14,14 @@
       };
     };
   };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "luren145@gmail.com";
+  };
+
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }
