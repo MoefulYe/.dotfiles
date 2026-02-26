@@ -7,5 +7,5 @@
     extensions = import ./extensions.nix inputs;
     settings = import ./settings.nix inputs;
   };
-  home.file.".zen/default-profile/zen-keyboard-shortcuts.json".source = ./shortcuts.json;
+  xdg.configFile."zen/default-profile/zen-keyboard-shortcuts.json".source = ./shortcuts.json;
 }

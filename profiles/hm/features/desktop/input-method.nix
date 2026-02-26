@@ -50,8 +50,8 @@
       };
       addons = {
         classicui.globalSection = {
-          Theme = lib.mkForce "kwinblur-mellow-youlan-dark"; # FluentDark-solid/mellow-youlan-dark
-          DarkTheme = lib.mkForce "kwinblur-mellow-youlan-dark"; # FluentDark-solid/mellow-youlan-dark
+          Theme = lib.mkForce "kwinblur-mellow-sakura-dark"; # FluentDark-solid/mellow-youlan-dark
+          DarkTheme = lib.mkForce "kwinblur-mellow-sakura-dark"; # FluentDark-solid/mellow-youlan-dark
           # UseDarkTheme = true; # 跟随系统浅色/深色设置
         };
         clipboard = {

@@ -36,6 +36,18 @@ in
       };
     });
   });
+  # FIXME jetbrains-mono: Failure on dependency with python313Packages.picosvg
+  workaround = (
+    final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (python-final: python-prev: {
+          picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
+            doCheck = false;
+          });
+        })
+      ];
+    }
+  );
   add-my-pkgs = final: prev: {
     pkgs-stable = import inputs.nixpkgs-stable {
       system = final.stdenv.hostPlatform.system;
@@ -64,5 +76,6 @@ in
     my-pkgs = self.packages."${final.stdenv.hostPlatform.system}" // {
       dingtalk = final.pkgs-stable-with-openssl_1_1_w.callPackage ../packages/dingtalk { };
     };
+
   };
 }

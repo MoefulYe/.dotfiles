@@ -1,9 +1,11 @@
-{ ... }:
+{ pkgs, ... }:
 {
   services.sunshine = {
     enable = true;
     capSysAdmin = true;
     openFirewall = true;
+    # FIXME
+    package = pkgs.pkgs-stable.sunshine;
   };
   networking.firewall = {
     allowedTCPPorts = [
