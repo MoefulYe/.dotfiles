@@ -25,23 +25,23 @@ in
         };
       };
     };
-    lap00-xiaoxin-mei = {
-      hostname = "mei.void";
-      profiles = {
-        system = {
-          user = "root";
-          sshUser = "deployee";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.lap00-xiaoxin-mei;
-        };
-        ashenye = {
-          user = "ashenye";
-          sshUser = "ashenye";
-          path =
-            deploy-rs.lib.x86_64-linux.activate.home-manager
-              outputs.homeConfigurations."ashenye@lap00-xiaoxin-mei";
-        };
-      };
-    };
+    # lap00-xiaoxin-mei = {
+    #   hostname = "mei.void";
+    #   profiles = {
+    #     system = {
+    #       user = "root";
+    #       sshUser = "deployee";
+    #       path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.lap00-xiaoxin-mei;
+    #     };
+    #     ashenye = {
+    #       user = "ashenye";
+    #       sshUser = "ashenye";
+    #       path =
+    #         deploy-rs.lib.x86_64-linux.activate.home-manager
+    #           outputs.homeConfigurations."ashenye@lap00-xiaoxin-mei";
+    #     };
+    #   };
+    # };
     rutr01-j4105-qingloong = {
       hostname = "qingloong.void";
       profiles = {
