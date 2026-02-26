@@ -16,7 +16,7 @@
         "a2dp_sink"
         "hfp_hf"
       ];
-      "bluez5.a2dp.ldac.quality" = "hq";
+      "bluez5.a2dp.ldac.quality" = "auto";
     };
   };
 }
