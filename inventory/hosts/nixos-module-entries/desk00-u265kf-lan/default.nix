@@ -5,6 +5,7 @@ in
 {
   imports = [
     "${osProfiles}/hardware/nvidia-daily.nix"
+    "${osProfiles}/hardware/xm5.nix"
     "${osProfiles}/features/streaming/sunshine.nix"
     "${osProfiles}/features/gaming/steam.nix"
     "${infra}/remote-builder/server.nix"
