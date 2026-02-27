@@ -15,6 +15,7 @@ in
     ./networking.nix
     ./users.nix
     ./fine-tuning.nix
+    ./nspawn.nix
   ];
   config.boot.extraModprobeConfig = ''
     options nvidia NVreg_RestrictProfilingToAdminUsers=0
