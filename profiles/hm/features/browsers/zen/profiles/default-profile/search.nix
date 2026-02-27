@@ -1,11 +1,11 @@
 { ... }:
 {
-  force = true;
-  default = "bing";
-  order = [
-    "bing"
-    "ddg"
-    "google"
-    "baidu"
-  ];
+  #force = true;
+  #default = "bing";
+  #order = [
+  #  "bing"
+  #  "ddg"
+  #  "google"
+  #  "baidu"
+  #];
 }
