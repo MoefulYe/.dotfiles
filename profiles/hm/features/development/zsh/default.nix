@@ -47,7 +47,8 @@
       de = "deactivate";
       zj = "zellij";
       tl = "tldr";
-      sshj = "SHELL=$(which bash) ssh";
+      jssh = "SHELL=$(which bash) ssh";
+      kssh = "kitten ssh";
     };
     initContent = builtins.readFile ./init_content.sh;
   };
