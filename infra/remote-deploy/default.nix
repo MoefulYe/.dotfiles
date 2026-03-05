@@ -8,23 +8,23 @@ let
 in
 {
   nodes = {
-    desk00-u265kf-lan = {
-      hostname = "lan.void";
-      profiles = {
-        system = {
-          sshUser = "deployee";
-          user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.desk00-u265kf-lan;
-        };
-        ashenye = {
-          sshUser = "ashenye";
-          user = "ashenye";
-          path =
-            deploy-rs.lib.x86_64-linux.activate.home-manager
-              outputs.homeConfigurations."ashenye@desk00-u265kf-lan";
-        };
-      };
-    };
+    # desk00-u265kf-lan = {
+    #   hostname = "lan.void";
+    #   profiles = {
+    #     system = {
+    #       sshUser = "deployee";
+    #       user = "root";
+    #       path = deploy-rs.lib.x86_64-linux.activate.nixos outputs.nixosConfigurations.desk00-u265kf-lan;
+    #     };
+    #     ashenye = {
+    #       sshUser = "ashenye";
+    #       user = "ashenye";
+    #       path =
+    #         deploy-rs.lib.x86_64-linux.activate.home-manager
+    #           outputs.homeConfigurations."ashenye@desk00-u265kf-lan";
+    #     };
+    #   };
+    # };
     # lap00-xiaoxin-mei = {
     #   hostname = "mei.void";
     #   profiles = {
