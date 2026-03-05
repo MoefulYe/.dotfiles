@@ -56,3 +56,8 @@ function append_path {
     fi
   done
 }
+
+function codexwt {
+  mkdir -p .codex/worktrees
+  git worktree add .codex/worktrees/$1 -b $1
+}

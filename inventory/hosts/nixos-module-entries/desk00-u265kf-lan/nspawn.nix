@@ -22,6 +22,7 @@
         "/dev/nvidia-modeset"
         "/dev/nvidia-uvm"
         "/dev/nvidia-uvm-tools"
+        # "/dev/nvidia-caps"
         "/dev/dri"
       ];
       BindReadOnly = [
@@ -59,6 +60,6 @@
         "/dev/dri/renderD128 rw"
       ];
     };
-    wantedBy = [ "multi-user.target" ];
+    # wantedBy = [ "multi-user.target" ];
   };
 }

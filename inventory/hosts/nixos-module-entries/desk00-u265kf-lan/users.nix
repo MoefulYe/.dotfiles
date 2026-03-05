@@ -8,6 +8,7 @@
       isNormalUser = true;
       createHome = true;
       extraGroups = [
+        "wpa_supplicant"
         "wheel"
         "video"
         "audio"

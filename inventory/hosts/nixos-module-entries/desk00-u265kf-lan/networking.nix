@@ -5,7 +5,7 @@
 }:
 let
   inherit (paths) osProfiles;
-  defaultIface = "enp131s0";
+  defaultIface = "enp130s0";
   macvlanIface = "mv-enp131s0";
 in
 {
