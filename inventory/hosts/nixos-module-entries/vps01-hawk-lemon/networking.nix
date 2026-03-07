@@ -18,13 +18,29 @@
     interfaces = {
       ens3 = {
         ipv4.addresses = [
-          { address = "198.252.98.154"; prefixLength = 26; }
+          {
+            address = "198.252.98.154";
+            prefixLength = 26;
+          }
         ];
         ipv6.addresses = [
-          { address = "fe80::245:4fff:fee0:e968"; prefixLength = 64; }
+          {
+            address = "fe80::245:4fff:fee0:e968";
+            prefixLength = 64;
+          }
         ];
-        ipv4.routes = [ { address = "198.252.98.190"; prefixLength = 32; } ];
-        ipv6.routes = [ { address = ""; prefixLength = 128; } ];
+        ipv4.routes = [
+          {
+            address = "198.252.98.190";
+            prefixLength = 32;
+          }
+        ];
+        ipv6.routes = [
+          {
+            address = "";
+            prefixLength = 128;
+          }
+        ];
       };
     };
   };

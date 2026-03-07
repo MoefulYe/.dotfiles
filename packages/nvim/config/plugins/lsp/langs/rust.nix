@@ -33,12 +33,12 @@
       server = {
         dap.adapters.lldb = {
           type = "server";
-          port = "${''$''}{port}";
+          port = "${"$"}{port}";
           executable = {
             command = "codelldb";
             args = [
               "--port"
-              "${''$''}{port}"
+              "${"$"}{port}"
             ];
           };
         };

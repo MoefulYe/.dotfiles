@@ -1,7 +1,8 @@
-{ pkgs, paths, ... }: {
+{ pkgs, paths, ... }:
+{
   environment.systemPackages = with pkgs; [
     aria2
-  ]; 
+  ];
   sops.secrets = {
     ARIA2_PASSWD = {
       mode = "0400";
@@ -13,8 +14,8 @@
     enable = true;
     rpcSecretFile = "/run/secrets/ARIA2_PASSWD";
     settings = {
-      rpc-allow-origin-all=true;
-      rpc-listen-all=true;
+      rpc-allow-origin-all = true;
+      rpc-listen-all = true;
     };
   };
 }

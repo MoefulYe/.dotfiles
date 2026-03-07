@@ -1,13 +1,13 @@
 {
-imports = [
-  ./avante.nix
-  ./copilot-chat.nix
-  ./illuminate.nix
-  ./indent-blankline.nix
-  ./neo-tree.nix
-  ./todo-comments.nix
-  ./navic.nix
-  ./undotree.nix
-  ./treesitter.nix
-];
+  imports = [
+    ./avante.nix
+    ./copilot-chat.nix
+    ./illuminate.nix
+    ./indent-blankline.nix
+    ./neo-tree.nix
+    ./todo-comments.nix
+    ./navic.nix
+    ./undotree.nix
+    ./treesitter.nix
+  ];
 }

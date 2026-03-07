@@ -1,6 +1,6 @@
 {
-imports = [
-  ./gitsigns.nix
-  ./lazygit.nix
-];
+  imports = [
+    ./gitsigns.nix
+    ./lazygit.nix
+  ];
 }

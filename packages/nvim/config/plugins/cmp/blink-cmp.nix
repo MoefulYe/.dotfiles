@@ -13,24 +13,56 @@
         preset = "default";
 
         # 自定义快捷键
-        "<C-space>" = [ "show" "show_documentation" "hide_documentation" ];
+        "<C-space>" = [
+          "show"
+          "show_documentation"
+          "hide_documentation"
+        ];
         "<C-e>" = [ "hide" ];
         "<C-y>" = [ "select_and_accept" ];
 
-        "<C-k>" = [ "select_prev" "fallback" ];
-        "<C-j>" = [ "select_next" "fallback" ];
+        "<C-k>" = [
+          "select_prev"
+          "fallback"
+        ];
+        "<C-j>" = [
+          "select_next"
+          "fallback"
+        ];
 
-        "<C-b>" = [ "scroll_documentation_up" "fallback" ];
-        "<C-f>" = [ "scroll_documentation_down" "fallback" ];
+        "<C-b>" = [
+          "scroll_documentation_up"
+          "fallback"
+        ];
+        "<C-f>" = [
+          "scroll_documentation_down"
+          "fallback"
+        ];
 
-        "<Tab>" = [ "select_next" "snippet_forward" "fallback" ];
-        "<S-Tab>" = [ "select_prev" "snippet_backward" "fallback" ];
-        "<CR>" = [ "accept" "fallback" ];
+        "<Tab>" = [
+          "select_next"
+          "snippet_forward"
+          "fallback"
+        ];
+        "<S-Tab>" = [
+          "select_prev"
+          "snippet_backward"
+          "fallback"
+        ];
+        "<CR>" = [
+          "accept"
+          "fallback"
+        ];
       };
 
       # 补全来源
       sources = {
-        default = [ "lsp" "path" "snippets" "buffer" ];
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+        ];
 
         # 命令行补全
         cmdline = [ ];
@@ -108,7 +140,10 @@
             treesitter = [ "lsp" ];
             columns = [
               [ "kind_icon" ]
-              [ "label" "label_description" ]
+              [
+                "label"
+                "label_description"
+              ]
               [ "kind" ]
             ];
           };
