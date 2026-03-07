@@ -1,0 +1,12 @@
+- [] 为项目添加文档与AGENT.md
+- [] vps onboard/offboard
+- [] 重新抽象remote-build,remote-deploy,ssh
+- [] 实现到cf的绑定
+- [] 代理
+    - 重构nftables
+    - 重构download脚本
+    - 重构mihomo
+- [] 桌面环境重构
+- [] gaming
+    - 换用cachyos内核
+- [] 音频重构
