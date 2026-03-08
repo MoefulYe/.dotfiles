@@ -11,47 +11,24 @@
     hmConfig = ./home-manager/mume.nix;
     sshConfig = ./ssh-configs/mume.nix;
   };
-  "ubuntu@zhang.zju" = {
-    username = "ubuntu";
-    hostname = "sv";
+  "ashenye@qingloong" = {
     role = "fox";
-    tags = [ "zju" ];
-    hmConfig = ./home-manager/zhang.zju.nix;
-    sshConfig = ./ssh-configs/zhang.zju.nix;
-  };
-  "yu@yu-sg.zju" = {
-    username = "jiongchiyu";
-    hostname = "XXF-GPU-00";
-    role = "fox";
-    tags = [ "zju" ];
-    sshConfig = ./ssh-configs/yu-sg.zju.nix;
-  };
-  "zhao@zju-zhao" = {
-    sshConfig = ./ssh-configs/zzm.zju.nix;
-  };
-  "root@zhuque" = {
-    sshConfig = ./ssh-configs + "/root@rutr00-k2p-zhuque.nix";
-  };
-  "ashenye@rutr01-j4105-qingloong" = {
-    description = "ashenye on rutr01-j4105-qingloong";
-    role = "fox";
-    tags = [ "router" ];
-    sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0h/Sw/GdJy8/Z88HIFwDWrhLg00/iw/X3gsBPBfSDM ashenye@rutr01-j4105-qingloong";
-    sshConfig = ./ssh-configs + "/ashenye@rutr01-j4105-qingloong.nix";
-    hmConfig = mkHmConfigEntry "ashenye@rutr01-j4105-qingloong.nix";
+    sshConfig = ./ssh-configs/qingloong.nix;
+    hmConfig = ./home-manager/qingloong.nix;
   };
   "ashenye@vps00-foxhk-citrus" = {
-    description = "ashenye on vps00-foxhk-citrus";
     role = "dog";
-    tags = [ "vps" ];
-    sshConfig = ./ssh-configs + "/ashenye@vps00-foxhk-citrus.nix";
-    hmConfig = mkHmConfigEntry "ashenye@vps00-foxhk-citrus.nix";
+    sshConfig = ./ssh-configs/citrus.nix;
+    hmConfig = ./ssh-configs/citrus.nix;
   };
-  "ashenye@vps01-hawk-lemon" = {
-    description = "ashenye on vps01-hawk-lemon";
+  "ashenye@lemon" = {
     role = "dog";
-    tags = [ "vps" ];
-    sshConfig = ./ssh-configs + "/ashenye@vps01-hawk-lemon.nix";
-    hmConfig = mkHmConfigEntry "ashenye@vps01-hawk-lemon.nix";
+    sshConfig = ./ssh-configs/lemon.nix;
+    hmConfig = ./home-manager/lemon.nix;
   };
+
+  "ubuntu@zhang.zju".sshConfig = ./ssh-configs/zhang.zju.nix;
+  "yu@yu-sg.zju".sshConfig = ./ssh-configs/yu-sg.zju.nix;
+  "zzm@zzm.zju".sshConfig = ./ssh-configs/zzm.zju.nix;
+  "root@zhuque".sshConfig = ./ssh-configs/zhuque.nix;
 }
