@@ -25,7 +25,7 @@ _: {
   };
   "ashenye@yuzu" = {
     role = "dog";
-    sshConfig = ./ssh-configs/lemon.nix;
+    sshConfig = ./ssh-configs/yuzu.nix;
   };
   "ubuntu@zhang.zju".sshConfig = ./ssh-configs/zhang.zju.nix;
   "yu@yu-sg.zju".sshConfig = ./ssh-configs/yu-sg.zju.nix;

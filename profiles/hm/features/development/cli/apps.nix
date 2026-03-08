@@ -24,10 +24,10 @@ in
         bat
         tlrc
         delta
+        fzf
       ]
       ++ (lib.optionals (!cfg.lite) [
         yazi
-        fzf
         lazygit
         devenv
         awscli2

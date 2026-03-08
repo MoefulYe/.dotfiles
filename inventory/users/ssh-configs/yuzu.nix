@@ -1,6 +1,6 @@
 {
   programs.ssh.matchBlocks = {
-    "lemon" = {
+    "yuzu" = {
       hostname = "43.130.59.57";
       user = "ashenye";
       port = 2222;
