@@ -7,11 +7,11 @@
   ...
 }:
 hosts
-|> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "darwin" (hostInfo.tags or [ ]))
+# |> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "darwin" (hostInfo.tags or [ ]))
 |> builtins.mapAttrs (
   hostname: hostInfo:
   nix-darwin.lib.darwinSystem {
-    system = hostInfo.system;
+    system = hostInfo.system ? "aarch64-darwin";
     specialArgs = specialArgs // {
       hostInfo = {
         inherit hostname;

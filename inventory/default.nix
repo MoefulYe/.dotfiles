@@ -1,5 +1,5 @@
 inputs: {
-  hosts = import ./hosts;
-  users = import ./users;
+  hosts = import ./hosts inputs;
+  users = import ./users inputs;
   topology = import ./topology inputs;
 }

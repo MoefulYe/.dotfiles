@@ -6,11 +6,11 @@
   ...
 }:
 hosts
-|> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "nixos" (hostInfo.tags or [ ]))
+# |> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "nixos" (hostInfo.tags or [ ]))
 |> builtins.mapAttrs (
   hostname: hostInfo:
   nixpkgs.lib.nixosSystem {
-    system = hostInfo.system;
+    system = hostInfo.system ? "x86_64-linux";
     specialArgs = specialArgs // {
       hostInfo = {
         inherit hostname;
