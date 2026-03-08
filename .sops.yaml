@@ -1,59 +1,77 @@
 keys:
   - hosts:
+      - &lap00-xiaoxin-mei age1jycrhjpfpw2n9rszq6056zqt3552pr38d3vz2mk8udetglrk0pfqhfhtnx
       - &lan age1xdlmmj7gvvmvpl7n28yv6l9zsrrlazyunesyrzhzy37n59zexepsp4gpxn
       - &mume age18gjva8lxepd4gc5whz73q39xjerphtm6nmfaax9ye9f2dzsj293qgg7xw5
       - &qingloong age1jlsr9ff6adssdjqdtqxuwr0vxszj9sz4pmg47gygktjfes47lsfq7ff4zm
+      - &citrus age1wk2gfxngsx73vcrftevqua0kjhlcpmcyuj55twhng38em38exeksyqhwgc
   - users:
-      - &ashenye@lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5
-      - &ashenye@mume age1se6rw68dnwf6896j8r2v2vjf3kvm5l2x2220epdnm4k2xwzjee7qqj9hl8
-      - &ashenye@qingloong age1jywpjzcpcuruz405pwcfcyzqz0x9r90exxzq8qxljklamryhds9sszmyqy
-      - &ashenye@citrus age1j7p0u6gajhj267j0422k23knmyt9g8ff25aqats6qw4wcl5m85nq4flap8
-      - &ashenye@lemon age1g4l3g9c3vl3x70w6ja3ejtjw7qx0lpugyv9eksrrs8kcvxjmcsys85g4j3
+      - &ashenye_at_lap00-xiaoxin-mei age1l87qwdwrfne2mrln99qnek0yl72xecg5lrgkqps9cpz7z356kf2s4hsplc # ashenye@lap00-xiaoxin-mei
+      - &ashenye_at_lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5 # ashenye@lan
+      - &ubuntu_at_zhang_zju age1uk9g8km8mjvkuca5yyjn7rkxektrydtan6w6k3mf3dwpnl859fdq7z599p # ubuntu@zhang.zju
+      - &ashenye_at_mume age1se6rw68dnwf6896j8r2v2vjf3kvm5l2x2220epdnm4k2xwzjee7qqj9hl8 # ashenye@mume
+      - &ashenye_at_qingloong age1jywpjzcpcuruz405pwcfcyzqz0x9r90exxzq8qxljklamryhds9sszmyqy # ashenye@qingloong
+      - &ashenye_at_citrus age1j7p0u6gajhj267j0422k23knmyt9g8ff25aqats6qw4wcl5m85nq4flap8 # ashenye@citrus
+      - &ashenye_at_lemon age1g4l3g9c3vl3x70w6ja3ejtjw7qx0lpugyv9eksrrs8kcvxjmcsys85g4j3 # ashenye@lemon
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
       - age:
+          - *lap00-xiaoxin-mei
           - *lan
           - *mume
-          - *ashenye@lan
-          - *ashenye@mume
+          - *ashenye_at_lap00-xiaoxin-mei
+          - *ashenye_at_lan
+          - *ashenye_at_mume
   - path_regex: ^secrets/zju\.yaml$
     key_groups:
       - age:
+          - *lap00-xiaoxin-mei
           - *lan
           - *mume
-          - *ashenye@lan
-          - *ashenye@mume
+          - *ashenye_at_lap00-xiaoxin-mei
+          - *ashenye_at_lan
+          - *ashenye_at_mume
   - path_regex: ^secrets/api-tokens\.yaml$
     key_groups:
       - age:
           - *lap00-xiaoxin-mei
           - *lan
           - *mume
-          - *ashenye@lan
-          - *ashenye@mume
-          - *ashenye@qingloong
-          - *ashenye@citrus
-          - *ashenye@lemon
+          - *ashenye_at_lan
+          - *ashenye_at_lap00-xiaoxin-mei
+          - *ubuntu_at_zhang_zju
+          - *ashenye_at_mume
+          - *ashenye_at_qingloong
+          - *ashenye_at_citrus
+          - *ashenye_at_lemon
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
+          - *lap00-xiaoxin-mei
           - *lan
           - *mume
           - *qingloong
   - path_regex: ^secrets/app-secrets\.yaml$
     key_groups:
       - age:
+          - *lap00-xiaoxin-mei
           - *lan
           - *mume
   - path_regex: ^secrets/infra\.yaml$
     key_groups:
       - age:
+          - *lap00-xiaoxin-mei
           - *lan
           - *mume
           - *qingloong
-          - *ashenye@lan
-          - *ashenye@mume
+          - *ashenye_at_lap00-xiaoxin-mei
+          - *ashenye_at_lan
+          - *ashenye_at_mume
+  - path_regex: ^secrets/per-host/lap00-xiaoxin-mei/.*\.yaml$
+    key_groups:
+      - age:
+          - *lap00-xiaoxin-mei
   - path_regex: ^secrets/per-host/desk00-u265kf-lan/.*\.yaml$
     key_groups:
       - age:
