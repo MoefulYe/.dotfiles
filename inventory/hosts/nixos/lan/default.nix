@@ -10,6 +10,7 @@ in
     "${osProfiles}/features/gaming/steam.nix"
     "${infra}/remote-builder/server.nix"
     "${infra}/remote-deploy/deployee.nix"
+    ./cachyos.nix
     ./disko.nix
     ./hardware-configuration.nix
     ./networking.nix

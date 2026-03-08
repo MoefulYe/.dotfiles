@@ -41,6 +41,7 @@
     microvm.url = "github:microvm-nix/microvm.nix?shallow=1";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence?shallow=1";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel?shallow=1";
   };
   nixConfig = {
     extra-substituters = [

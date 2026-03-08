@@ -10,5 +10,6 @@
     - dns污染
 - [] 桌面环境重构
 - [] gaming
-    - 换用cachyos内核
+    - [] 换用cachyos内核
+    - [] 微调cachyos配置
 - [] 音频重构
