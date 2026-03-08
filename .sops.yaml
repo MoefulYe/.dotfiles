@@ -33,11 +33,11 @@ creation_rules:
           - *lan
           - *mume
           - *ashenye_at_lan
-          - *ubuntu_at_zhang_zju
           - *ashenye_at_mume
           - *ashenye_at_qingloong
           - *ashenye_at_citrus
           - *ashenye_at_lemon
+          - *ashenye_at_yuzu
   - path_regex: ^secrets/mihomo\.yaml$
     key_groups:
       - age:
