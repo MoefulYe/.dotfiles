@@ -10,7 +10,7 @@ hosts
 |> builtins.mapAttrs (
   hostname: hostInfo:
   nixpkgs.lib.nixosSystem {
-    system = hostInfo.system ? "x86_64-linux";
+    system = hostInfo.system or "x86_64-linux";
     specialArgs = specialArgs // {
       hostInfo = {
         inherit hostname;

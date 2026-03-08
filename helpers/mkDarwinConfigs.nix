@@ -11,7 +11,7 @@ hosts
 |> builtins.mapAttrs (
   hostname: hostInfo:
   nix-darwin.lib.darwinSystem {
-    system = hostInfo.system ? "aarch64-darwin";
+    system = hostInfo.system or "aarch64-darwin";
     specialArgs = specialArgs // {
       hostInfo = {
         inherit hostname;

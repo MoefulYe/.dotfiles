@@ -64,7 +64,8 @@
     }@inputs:
     let
       me = import ./me;
-      helpers = import ./helpers;
+      helpers = import ./helpers inputs;
+      inventory = import ./inventory inputs;
       paths = rec {
         root = "${self}";
         secrets = "${root}/secrets";
@@ -80,15 +81,6 @@
         osQuirks = "${root}/quirks/os";
         hmQuirks = "${root}/quirks/hm";
         infra = "${root}/infra";
-      };
-      inventory = import ./inventory {
-        inherit (nixpkgs) lib;
-        inherit
-          paths
-          helpers
-          me
-          inventory
-          ;
       };
       specialArgs = {
         inherit
@@ -133,5 +125,6 @@
         inherit (inventory) users;
       };
       deploy = import ./infra/remote-deploy specialArgs;
+      dnsctl = { };
     };
 }
