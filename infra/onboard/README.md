@@ -88,8 +88,6 @@ sops updatekeys ${SECRETS_FILE}
 - [ ] Enable user-side SOPS (via HM profile import or by adding `profiles/hm/nix/sops.nix`).
 - [ ] User SOPS key pipeline (copy/paste):
 ```bash
-ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config"
-ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config/sops"
 ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config/sops/age"
 ssh root@${HOST_IP} "age-keygen -o /home/${USER}/.config/sops/age/keys.txt"
 ssh root@${HOST_IP} "chown ${USER}:users /home/${USER}/.config/sops/age/keys.txt"
@@ -101,8 +99,15 @@ sops updatekeys ${SECRETS_FILE}
 - [ ] Apply remotely: `ssh ${USER}@${HOST_IP} 'home-manager switch --flake ".#${USER}@${HOST_ID}" -b bak'`.
 
 ## Stage 4: Validation
+- [ ] Cleanup: remove temporary convenience settings from `infra/onboard/template/finetune.nix` after onboarding (e.g. root login, password auth, SSH port 22, extra packages).
 - [ ] Validate services, networking, and SSH access.
 - [ ] Optional: `nix flake check`.
+
+## Stage 5: Infra Integration
+- [ ] SSH topology: update `inventory/topology/ssh.nix` to wire the new host into the graph.
+- [ ] deploy-rs: update `infra/remote-deploy/default.nix` (when re-enabled).
+- [ ] DNS binding: update the relevant inventory topology DNS records (e.g. `inventory/topology/networks/void.nix`).
+- [ ] Remote build: add/remove builders under `infra/remote-builder` and any host config imports that enable it.
 
 ## Notes
 - This repo often uses SSH port `2222`; adjust if your host differs.
