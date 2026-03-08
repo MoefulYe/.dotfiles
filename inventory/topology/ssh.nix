@@ -18,22 +18,22 @@ let
     inherit nodes;
   };
   zjus = [
-    "ubuntu@zju-zhang"
-    "yu@zju-yu-sg"
-    "zhao@zju-zhao"
+    "ubuntu@zhang.zju"
+    "yu@yu-sg.zju"
+    "zzm@zzm.zju"
   ];
   voids = [
-    "ashenye@lap00-xiaoxin-mei"
-    "root@rutr00-k2p-zhuque"
-    "ashenye@rutr01-j4105-qingloong"
+    "root@zhuque"
+    "ashenye@qingloong"
   ];
   dailies = [
-    "ashenye@desk00-u265kf-lan"
-    "ashenye@lap01-macm4-mume"
+    "ashenye@lan"
+    "ashenye@mume"
   ];
   vpses = [
-    "ashenye@vps00-foxhk-citrus"
-    "ashenye@vps01-hawk-lemon"
+    "ashenye@citrus"
+    "ashenye@lemon"
+    "ashenye@yuzu"
   ];
   deployeeSshConfig =
     (

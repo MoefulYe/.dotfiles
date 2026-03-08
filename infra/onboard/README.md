@@ -85,7 +85,18 @@ sops updatekeys ${SECRETS_FILE}
 - [ ] Add user entry to `inventory/users/default.nix`.
 - [ ] Create `inventory/users/home-manager/${HOST_ID}.nix` if needed.
 - [ ] Add SSH config stub at `inventory/users/ssh-configs/${HOST_ID}.nix`.
-- [ ] Apply: `just deploy-home` (or `home-manager switch --flake ".#${USER}@${HOST}" -b bak`).
+- [ ] Enable user-side SOPS (via HM profile import or by adding `profiles/hm/nix/sops.nix`).
+- [ ] User SOPS key pipeline (copy/paste):
+```bash
+ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g ${USER} /home/${USER}/.config/sops/age"
+ssh root@${HOST_IP} "age-keygen -o /home/${USER}/.config/sops/age/keys.txt"
+ssh root@${HOST_IP} "chown ${USER}:${USER} /home/${USER}/.config/sops/age/keys.txt"
+ssh root@${HOST_IP} "chmod 0400 /home/${USER}/.config/sops/age/keys.txt"
+ssh root@${HOST_IP} "age-keygen -y /home/${USER}/.config/sops/age/keys.txt"
+# add the public key into .sops.yaml under users as ${USER}@${HOST_ID}
+sops updatekeys ${SECRETS_FILE}
+```
+- [ ] Apply remotely: `ssh ${USER}@${HOST_IP} 'home-manager switch --flake ".#${USER}@${HOST_ID}" -b bak'`.
 
 ## Stage 4: Validation
 - [ ] Validate services, networking, and SSH access.

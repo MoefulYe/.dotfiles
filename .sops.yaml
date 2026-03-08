@@ -7,11 +7,11 @@ keys:
       - &yuzu age1mhfrq0rzz69m5t50xmeylp33s46pmva2vtytqlj7v2x3hc5a75jsqen6rf
   - users:
       - &ashenye_at_lan age18cwlfuth4jpz03u9wzwq5rxxxx50w9e0me9sjqt29dtra0xh33ss7xtfs5 # ashenye@lan
-      - &ubuntu_at_zhang_zju age1uk9g8km8mjvkuca5yyjn7rkxektrydtan6w6k3mf3dwpnl859fdq7z599p # ubuntu@zhang.zju
       - &ashenye_at_mume age1se6rw68dnwf6896j8r2v2vjf3kvm5l2x2220epdnm4k2xwzjee7qqj9hl8 # ashenye@mume
       - &ashenye_at_qingloong age1jywpjzcpcuruz405pwcfcyzqz0x9r90exxzq8qxljklamryhds9sszmyqy # ashenye@qingloong
       - &ashenye_at_citrus age1j7p0u6gajhj267j0422k23knmyt9g8ff25aqats6qw4wcl5m85nq4flap8 # ashenye@citrus
       - &ashenye_at_lemon age1g4l3g9c3vl3x70w6ja3ejtjw7qx0lpugyv9eksrrs8kcvxjmcsys85g4j3 # ashenye@lemon
+      - &ashenye_at_yuzu age16plad9tfl99f0t8veh9u660lagg28krknjgtu0ukkjutqmjy3cdquwy7uu
 creation_rules:
   - path_regex: ^secrets/default\.yaml$
     key_groups:
