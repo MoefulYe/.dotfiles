@@ -38,7 +38,7 @@
     nixosConfig = ./nixos/lemon;
   };
   yuzu = {
-    # role = "dog";
+    role = "dog";
     alias = [
       "vps02"
     ];
