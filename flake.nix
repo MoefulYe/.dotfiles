@@ -84,7 +84,7 @@
           infra = "${root}/infra";
         };
         helpers = import ./helpers specialArgs;
-        me = import ./me.nix;
+        me = import ./me;
         inventory = import ./inventory specialArgs;
         outputs = self;
         inherit specialArgs;

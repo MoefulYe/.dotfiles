@@ -1,4 +1,4 @@
-{
+_: {
   "ashenye@lan" = {
     role = "cat";
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvnf1TDq7kpCwOMFK0Vn6x7zjMEiGGIVhknGN+kC3n0 ashenye@desk00-u265kf-lan";

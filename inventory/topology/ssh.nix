@@ -1,5 +1,6 @@
-{ lib, ... }:
+{ inputs, ... }:
 let
+  lib = inputs.nixpkgs.lib;
   mkEdge = from: to: {
     type = "edge";
     inherit from to;
