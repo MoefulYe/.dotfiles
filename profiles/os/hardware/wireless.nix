@@ -6,7 +6,7 @@
   networking.useDHCP = lib.mkDefault true;
   networking.wireless = {
     enable = true;
-    userControlled.enable = true;
+    userControlled = true;
     networks = {
       "ZJUNB" = { };
       "ZJUNB-GUEST" = { };
