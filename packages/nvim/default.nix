@@ -5,7 +5,7 @@
   lite ? true,
 }:
 let
-  nixvim = inputs.nixvim.legacyPackages.${pkgs.system};
+  nixvim = inputs.nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
   nvimConfig = {
     inherit pkgs;

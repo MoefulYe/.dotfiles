@@ -9,11 +9,11 @@
   plugins.conform-nvim = {
     settings = {
       formatters_by_ft = {
-        nix = [ "nixfmt-rfc-style" ];
+        nix = [ "nixfmt" ];
       };
       formatters = {
-        nixfmt-rfc-style = {
-          command = "${lib.getExe pkgs.nixfmt-rfc-style}";
+        nixfmt = {
+          command = "${lib.getExe pkgs.nixfmt}";
         };
       };
     };

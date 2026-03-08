@@ -23,7 +23,7 @@
       "        pkgs = nixpkgs.legacyPackages.\"\\${system}\";",
       "      in",
       "      {",
-      "       formatter = pkgs.nixfmt-rfc-style;",
+      "       formatter = pkgs.nixfmt;",
       "       # pkgs.mkShell manual: https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-mkShell",
       "       devShell = pkgs.mkShell {",
       "         buildInputs = [];",
