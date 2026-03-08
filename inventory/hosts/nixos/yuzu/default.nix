@@ -1,7 +1,8 @@
 {
   imports = [
+    ./finetune.nix
     ./networking.nix
-    ./configuration.nix
+    ./users.nix
     ./disko.nix
     ./hardware-configuration.nix
     ./networking.nix

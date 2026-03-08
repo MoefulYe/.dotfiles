@@ -30,10 +30,4 @@
       };
     };
   };
-  # boot.loader.grub = {
-  # enable = true;
-  # device = "/dev/vda";
-  # };
-
-  # boot.loader.systemd-boot.enable = false;
 }
