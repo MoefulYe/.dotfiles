@@ -33,21 +33,30 @@ users
     modules = [
       {
         imports =
-          if !(userInfo ? hmConfig) then
-            [
-              "${paths.hmRoles}/${userInfo.role}"
-            ]
-          else if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
-            [
-              userInfo.hmConfig
-              "${paths.hmRoles}/${userInfo.role}"
-            ]
-          else
-            userInfo.hmConfig.extra
-            ++ [
-              "${paths.hmRoles}/${userInfo.role}"
-              userInfo.hmConfig.main
-            ];
+          let
+            roleConfigs =
+              if userInfo ? role then
+                [
+                  "${paths.hmRoles}/${userInfo.role}"
+                ]
+              else
+                [ ];
+            hmConfigs =
+              if !(userInfo ? hmConfig) then
+                roleConfigs
+              else if builtins.isPath userInfo.hmConfig || builtins.isString userInfo.hmConfig then
+                [
+                  userInfo.hmConfig
+                ]
+                ++ roleConfigs
+              else
+                userInfo.hmConfig.extra
+                ++ roleConfigs
+                ++ [
+                  userInfo.hmConfig.main
+                ];
+          in
+          hmConfigs;
         home.username = username;
       }
     ];

@@ -28,21 +28,23 @@ hosts
         { hostInfo, ... }:
         {
           imports =
-            if !(hostInfo ? nixosConfig) then
-              [
-                "${paths.osRoles}/${hostInfo.role}"
-              ]
-            else if builtins.isPath hostInfo.nixosConfig || builtins.isString hostInfo.nixosConfig then
-              [
-                hostInfo.nixosConfig
-                "${paths.osRoles}/${hostInfo.role}"
-              ]
-            else
-              hostInfo.nixosConfig.extra
-              ++ [
-                hostInfo.nixosConfig.main
-                "${paths.osRoles}/${hostInfo.role}"
-              ];
+            let
+
+              nixosConfigs =
+                if !(hostInfo ? nixosConfig) then
+                  [ ]
+                else if builtins.isPath hostInfo.nixosConfig || builtins.isString hostInfo.nixosConfig then
+                  [
+                    hostInfo.nixosConfig
+                  ]
+                else
+                  hostInfo.nixosConfig.extra
+                  ++ [
+                    hostInfo.nixosConfig.main
+                  ];
+              roleConfigs = if hostInfo ? role then [ "${paths.osRoles}/${hostInfo.role}" ] else [ ];
+            in
+            nixosConfigs ++ roleConfigs;
           config.networking.hostName = hostInfo.hostname;
         }
       )

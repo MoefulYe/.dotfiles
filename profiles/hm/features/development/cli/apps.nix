@@ -1,16 +1,37 @@
-{ pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    yazi
-    fzf
-    cloc
-    lazygit
-    devenv
-    lsd
-    bat
-    tlrc
-    awscli2
-    delta
-    deploy-rs
-  ];
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.hmProfiles.dev;
+in
+{
+  options.hmProfiles.dev = {
+    lite = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
+  };
+
+  config = {
+    home.packages =
+      with pkgs;
+      [
+        lsd
+        cloc
+        bat
+        tlrc
+        delta
+      ]
+      ++ (lib.optionals (!cfg.lite) [
+        yazi
+        fzf
+        lazygit
+        devenv
+        awscli2
+        deploy-rs
+      ]);
+  };
 }

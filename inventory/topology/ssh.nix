@@ -33,6 +33,7 @@ let
   vpses = [
     "ashenye@citrus"
     "ashenye@lemon"
+    "ashenye@yuzu"
   ];
   deployeeSshConfig =
     (

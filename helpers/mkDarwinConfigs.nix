@@ -28,21 +28,22 @@ hosts
         { hostInfo, ... }:
         {
           imports =
-            if hostInfo ? darwinConfig then
-              [
-                "${paths.osRoles}/${hostInfo.role}"
-              ]
-            else if builtins.isPath hostInfo.darwinConfig || builtins.isString hostInfo.darwinConfig then
-              [
-                hostInfo.darwinConfig
-                "${paths.osRoles}/${hostInfo.role}"
-              ]
-            else
-              hostInfo.darwinConfig.extra
-              ++ [
-                hostInfo.darwinConfig.main
-                "${paths.osRoles}/${hostInfo.role}"
-              ];
+            let
+              roleConfigs = if hostInfo ? role then [ "${paths.osRoles}/${hostInfo.role}" ] else [ ];
+              darwinConfigs =
+                if !(hostInfo ? darwinConfig) then
+                  [ ]
+                else if builtins.isPath hostInfo.darwinConfig || builtins.isString hostInfo.darwinConfig then
+                  [
+                    hostInfo.darwinConfig
+                  ]
+                else
+                  hostInfo.darwinConfig.extra
+                  ++ [
+                    hostInfo.darwinConfig.main
+                  ];
+            in
+            darwinConfigs ++ roleConfigs;
           config.networking.hostName = hostInfo.hostname;
         }
       )
