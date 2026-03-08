@@ -61,7 +61,32 @@ Notes:
 - [ ] Add primary users (if needed) in `inventory/hosts/nixos/<host-id>/users.nix`.
 - [ ] Adjust `inventory/hosts/nixos/<host-id>/configuration.nix` (services, users, bootloader).
 - [ ] Adjust `networking.nix` if the provider requires static config.
+- [ ] Enable host-side SOPS (via role or by importing `profiles/os/common/nix-settings/sops.nix`).
+- [ ] Generate host age key locally: `just gen-age-key ~/.config/sops/age/<host-id>.txt`.
+- [ ] Push key to host: `scp ~/.config/sops/age/<host-id>.txt root@<ip>:/var/lib/sops-nix/keys.txt`.
+- [ ] Fix permissions on host: `ssh root@<ip> 'chmod 0400 /var/lib/sops-nix/keys.txt'`.
+- [ ] Add the host age key to `.sops.yaml` under the right groups.
+- [ ] Rekey secrets with `just update-sops` (per file).
 - [ ] Apply: `sudo nixos-rebuild switch --flake .#<host-id>`.
+
+### Stage 2 key options (VPS-focused)
+These are defined in profiles and are commonly adjusted for VPS installs:
+
+- `profiles/os/common/services/openssh.nix`: `services.openssh.settings.PermitRootLogin` (default `no`), `services.openssh.settings.PasswordAuthentication` (default `false`), `services.openssh.ports` (default `[ 2222 ]`).
+- `profiles/os/common/services/firewall.nix`: `networking.nftables.enable` and `networking.firewall.enable` (both default `true`); add host-specific `networking.firewall.allowedTCPPorts` / `allowedUDPPorts` as needed.
+- `profiles/os/common/services/networkd.nix`: `networking.useNetworkd = true; systemd.network.enable = true;` (define `systemd.network.networks.<name>` in `inventory/hosts/nixos/<host-id>/networking.nix` for static IPs).
+- `profiles/os/common/services/resolved.nix`: `services.resolved.enable` (default `true`).
+- `profiles/os/common/services/timesyncd.nix`: `services.timesyncd.servers` (default CN NTP servers).
+- `profiles/os/common/base-system/bootloader.nix`: `osProfiles.common.bootloader` (`systemd-boot` / `grub` / `none`).
+- `profiles/os/common/base-system/i18n.nix`: set `time.timeZone` explicitly for VPS; common values: `Asia/Shanghai`, `Asia/Hong_Kong`, `Asia/Singapore`, `Asia/Tokyo`, `Asia/Seoul`, `Asia/Kolkata`, `Europe/London`, `Europe/Berlin`, `Europe/Amsterdam`, `Europe/Paris`, `Europe/Moscow`, `America/New_York`, `America/Chicago`, `America/Denver`, `America/Los_Angeles`, `America/Toronto`, `Australia/Sydney`.
+- `profiles/os/common/nix-settings/nix.nix`: `nix.optimise.automatic`, `nix.channel.enable`, `nix.settings.trusted-users`, `system.stateVersion`.
+- `profiles/shared/nix-settings/nix-conf-settings.nix`: `nix.settings.experimental-features`, `nix.settings.substituters`, `nix.settings.trusted-public-keys`.
+- `profiles/os/nix/garbage-collector.nix`: `nix.gc` weekly, `--delete-older-than 7d`.
+- `profiles/os/common/nix-settings/sops.nix`: `sops.age.generateKey = true` and `sops.age.keyFile = "/var/lib/sops-nix/keys.txt"`.
+
+Time zone lookup helpers:
+- `timedatectl list-timezones | rg -i '<city|region>'`
+- `timedatectl list-timezones | rg -i '<country|continent>'`
 
 ## Stage 3: Home Manager
 - [ ] Add user entry to `inventory/users/default.nix`.
@@ -69,10 +94,7 @@ Notes:
 - [ ] Add SSH config stub at `inventory/users/ssh-configs/<host-id>.nix`.
 - [ ] Apply: `just deploy-home` (or `home-manager switch --flake ".#<user>@<host>" -b bak`).
 
-## Stage 4: SOPS + Validation
-- [ ] Fetch the host SOPS key with `just get-host-age-key`.
-- [ ] Add the host key to `.sops.yaml` under the right groups.
-- [ ] Rekey secrets with `just update-sops`.
+## Stage 4: Validation
 - [ ] Validate services, networking, and SSH access.
 - [ ] Optional: `nix flake check`.
 

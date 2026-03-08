@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   system.stateVersion = "25.11";
@@ -15,4 +20,7 @@
     htop
   ];
 
+  services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
+  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
+  services.openssh.ports = [ 22 ];
 }
