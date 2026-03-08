@@ -1,6 +1,7 @@
-{ inventory, lib, ... }:
+{ inventory, inputs, ... }:
 let
   inherit (inventory) hosts;
+  inherit (inputs.nixpkgs) lib;
   # 1-63静态分配物理机器
   # 64-127静态分配虚拟机
   # 128-254动态分配
@@ -8,20 +9,14 @@ let
   # | { type = "dhcp"; mac = "xx:xx:xx:xx:xx:xx"; ip = "192.168.231.xxx"; }
   # | { type = "static"; ip = "192.168.231.xxx"; }
   staticMembers = {
-    "rutr00-k2p-zhuque" = "192.168.231.1";
-    "rutr01-j4105-qingloong" = "192.168.231.2";
-    "desk00-u265kf-lan" = "192.168.231.3";
-    "lap00-xiaoxin-mei" = "192.168.231.4";
-    "lap01-macm4-mume" = {
+    "zhuque" = "192.168.231.1";
+    "qingloong" = "192.168.231.2";
+    "lan" = "192.168.231.3";
+    "mume" = {
       type = "dhcp";
       mac = "68:5e:dd:0e:99:08";
       ip = "192.168.231.5";
     };
-    "nas00-8100t-xuanwu" = "192.168.231.6";
-    "vm00-lap00-azure" = "192.168.231.64";
-    "vm01-lap00-red" = "192.168.231.65";
-    "vm02-lap00-white" = "192.168.231.66";
-    "vm03-lap00-black" = "192.168.231.67";
   };
   getStaticMemberIp = ipInfo: if lib.isAttrs ipInfo then ipInfo.ip else ipInfo;
   dnsSuffix = "void";
@@ -32,7 +27,7 @@ let
         name: ipInfo:
         let
           ip = getStaticMemberIp ipInfo;
-          aliases = hosts.${name}.aliases or [ ];
+          alias = hosts.${name}.alias or [ ];
         in
         [
           {
@@ -42,7 +37,7 @@ let
           }
         ]
         ++ (
-          aliases
+          alias
           |> lib.map (alias: {
             type = "CNAME";
             name = "${alias}.${dnsSuffix}";

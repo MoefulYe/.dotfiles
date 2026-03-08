@@ -1,16 +1,18 @@
 {
-  hosts,
-  nixpkgs,
-  specialArgs,
   paths,
-  nix-darwin,
+  inputs,
+  ...
+}:
+{
+  hosts,
+  specialArgs,
   ...
 }:
 hosts
-# |> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "darwin" (hostInfo.tags or [ ]))
+|> inputs.nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "darwin" (hostInfo.tags or [ ]))
 |> builtins.mapAttrs (
   hostname: hostInfo:
-  nix-darwin.lib.darwinSystem {
+  inputs.nix-darwin.lib.darwinSystem {
     system = hostInfo.system or "aarch64-darwin";
     specialArgs = specialArgs // {
       hostInfo = {
@@ -26,7 +28,11 @@ hosts
         { hostInfo, ... }:
         {
           imports =
-            if builtins.isPath hostInfo.darwinConfig || builtins.isString hostInfo.darwinConfig then
+            if hostInfo ? darwinConfig then
+              [
+                "${paths.osRoles}/${hostInfo.role}"
+              ]
+            else if builtins.isPath hostInfo.darwinConfig || builtins.isString hostInfo.darwinConfig then
               [
                 hostInfo.darwinConfig
                 "${paths.osRoles}/${hostInfo.role}"

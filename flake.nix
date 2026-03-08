@@ -63,36 +63,33 @@
       ...
     }@inputs:
     let
-      me = import ./me;
-      helpers = import ./helpers inputs;
-      inventory = import ./inventory inputs;
-      paths = rec {
-        root = "${self}";
-        secrets = "${root}/secrets";
-        osModules = "${root}/modules/os";
-        hmModules = "${root}/modules/hm";
-        myPackages = "${root}/packages";
-        osProfiles = "${root}/profiles/os";
-        hmProfiles = "${root}/profiles/hm";
-        sharedProfiles = "${root}/profiles/shared";
-        myOverlays = "${root}/overlays";
-        osRoles = "${root}/roles/os";
-        hmRoles = "${root}/roles/hm";
-        osQuirks = "${root}/quirks/os";
-        hmQuirks = "${root}/quirks/hm";
-        infra = "${root}/infra";
-      };
-      specialArgs = {
+      specialArgs = rec {
         inherit
           inputs
-          inventory
-          me
-          helpers
-          paths
           ;
+        paths = rec {
+          root = "${self}";
+          secrets = "${root}/secrets";
+          osModules = "${root}/modules/os";
+          hmModules = "${root}/modules/hm";
+          myPackages = "${root}/packages";
+          osProfiles = "${root}/profiles/os";
+          hmProfiles = "${root}/profiles/hm";
+          sharedProfiles = "${root}/profiles/shared";
+          myOverlays = "${root}/overlays";
+          osRoles = "${root}/roles/os";
+          hmRoles = "${root}/roles/hm";
+          osQuirks = "${root}/quirks/os";
+          hmQuirks = "${root}/quirks/hm";
+          infra = "${root}/infra";
+        };
+        helpers = import ./helpers specialArgs;
+        me = import ./me.nix;
+        inventory = import ./inventory specialArgs;
         outputs = self;
         inherit specialArgs;
       };
+      inherit (specialArgs) helpers inventory;
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -107,21 +104,15 @@
     // {
       overlays = import ./overlays { inherit inputs self; };
       nixosConfigurations = helpers.mkNixosConfigs {
-        inherit nixpkgs specialArgs paths;
+        inherit specialArgs;
         inherit (inventory) hosts;
       };
       darwinConfigurations = helpers.mkDarwinConfigs {
-        inherit nixpkgs specialArgs paths;
+        inherit specialArgs;
         inherit (inventory) hosts;
-        inherit (inputs) nix-darwin;
       };
       homeConfigurations = helpers.mkHmConfigs {
-        inherit
-          nixpkgs
-          specialArgs
-          home-manager
-          paths
-          ;
+        inherit specialArgs;
         inherit (inventory) users;
       };
       deploy = import ./infra/remote-deploy specialArgs;

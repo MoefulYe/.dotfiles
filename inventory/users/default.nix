@@ -16,14 +16,14 @@
     sshConfig = ./ssh-configs/qingloong.nix;
     hmConfig = ./home-manager/qingloong.nix;
   };
-  "ashenye@vps00-foxhk-citrus" = {
+  "ashenye@citrus" = {
     role = "dog";
     sshConfig = ./ssh-configs/citrus.nix;
-    hmConfig = ./ssh-configs/citrus.nix;
   };
   "ashenye@lemon" = {
     role = "dog";
     sshConfig = ./ssh-configs/lemon.nix;
+    # TODO
     hmConfig = ./home-manager/lemon.nix;
   };
 
