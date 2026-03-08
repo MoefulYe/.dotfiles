@@ -23,10 +23,13 @@ _: {
   "ashenye@lemon" = {
     role = "dog";
     sshConfig = ./ssh-configs/lemon.nix;
-    # TODO
     hmConfig = ./home-manager/lemon.nix;
   };
-
+  "ashenye@yuzu" = {
+    role = "dog";
+    sshConfig = ./ssh-configs/lemon.nix;
+    hmConfig = ./home-manager/lemon.nix;
+  };
   "ubuntu@zhang.zju".sshConfig = ./ssh-configs/zhang.zju.nix;
   "yu@yu-sg.zju".sshConfig = ./ssh-configs/yu-sg.zju.nix;
   "zzm@zzm.zju".sshConfig = ./ssh-configs/zzm.zju.nix;

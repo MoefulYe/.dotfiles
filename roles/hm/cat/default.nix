@@ -41,4 +41,5 @@ in
     "${hmProfiles}/features/viewers/zathura.nix"
   ];
   hmProfiles.my-nvim.lite = false;
+  hmProfiles.dev.lite = false;
 }

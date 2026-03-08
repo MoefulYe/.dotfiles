@@ -16,4 +16,7 @@
   services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
   services.openssh.settings.PasswordAuthentication = lib.mkForce true;
   services.openssh.ports = [ 22 ];
+
+  services.timesyncd.servers = lib.mkForce null;
+  time.timeZone = "America/Los_Angeles";
 }
