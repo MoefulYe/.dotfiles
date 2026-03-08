@@ -61,6 +61,11 @@ Notes:
 - [ ] Add primary users (if needed) in `inventory/hosts/nixos/${HOST_ID}/users.nix`.
 - [ ] Adjust `inventory/hosts/nixos/${HOST_ID}/configuration.nix` (services, users, bootloader).
 - [ ] Adjust `networking.nix` if the provider requires static config.
+- [ ] Finetune default options:
+    - `profiles/os/common/services/timesyncd.nix`: `services.timesyncd.servers` (default CN NTP servers).
+    - `profiles/os/common/base-system/i18n.nix`: set `time.timeZone` explicitly for VPS; common values: `Asia/Shanghai`, `Asia/Hong_Kong`, `Asia/Singapore`, `Asia/Tokyo`, `Asia/Seoul`, `Asia/Kolkata`, `Europe/London`, `Europe/Berlin`, `Europe/Amsterdam`, `Europe/Paris`, `Europe/Moscow`, `America/New_York`, `America/Chicago`, `America/Denver`, `America/Los_Angeles`, `America/Toronto`, `Australia/Sydney`.
+    - Time zone lookup helpers: `timedatectl list-timezones | rg -i '<city|region>'`, `timedatectl list-timezones | rg -i '<country|continent>'`
+    - ...
 - [ ] Enable host-side SOPS (via role or by importing `profiles/os/common/nix-settings/sops.nix`).
 - [ ] SOPS host key pipeline (copy/paste):
 ```bash
@@ -73,13 +78,8 @@ awk '/public key:/{print $4}' /tmp/age.key
 sops updatekeys ${SECRETS_FILE}
 ```
 - [ ] Apply: `sudo nixos-rebuild switch --flake .#${HOST_ID} --target-host root@${HOST_IP}`.
+- [ ] Set passwords on the target: `ssh root@${HOST_IP} 'passwd root'` and `ssh root@${HOST_IP} 'passwd ashenye'`.
 
-### Stage 2 key options (VPS-focused)
-These are defined in profiles and are commonly adjusted for VPS installs:
-
-- `profiles/os/common/services/timesyncd.nix`: `services.timesyncd.servers` (default CN NTP servers).
-- `profiles/os/common/base-system/i18n.nix`: set `time.timeZone` explicitly for VPS; common values: `Asia/Shanghai`, `Asia/Hong_Kong`, `Asia/Singapore`, `Asia/Tokyo`, `Asia/Seoul`, `Asia/Kolkata`, `Europe/London`, `Europe/Berlin`, `Europe/Amsterdam`, `Europe/Paris`, `Europe/Moscow`, `America/New_York`, `America/Chicago`, `America/Denver`, `America/Los_Angeles`, `America/Toronto`, `Australia/Sydney`.
-    - Time zone lookup helpers: `timedatectl list-timezones | rg -i '<city|region>'`, `timedatectl list-timezones | rg -i '<country|continent>'`
 
 ## Stage 3: Home Manager
 - [ ] Add user entry to `inventory/users/default.nix`.
