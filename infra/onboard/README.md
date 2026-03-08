@@ -88,9 +88,11 @@ sops updatekeys ${SECRETS_FILE}
 - [ ] Enable user-side SOPS (via HM profile import or by adding `profiles/hm/nix/sops.nix`).
 - [ ] User SOPS key pipeline (copy/paste):
 ```bash
-ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g ${USER} /home/${USER}/.config/sops/age"
+ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config"
+ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config/sops"
+ssh root@${HOST_IP} "install -d -m 0700 -o ${USER} -g users /home/${USER}/.config/sops/age"
 ssh root@${HOST_IP} "age-keygen -o /home/${USER}/.config/sops/age/keys.txt"
-ssh root@${HOST_IP} "chown ${USER}:${USER} /home/${USER}/.config/sops/age/keys.txt"
+ssh root@${HOST_IP} "chown ${USER}:users /home/${USER}/.config/sops/age/keys.txt"
 ssh root@${HOST_IP} "chmod 0400 /home/${USER}/.config/sops/age/keys.txt"
 ssh root@${HOST_IP} "age-keygen -y /home/${USER}/.config/sops/age/keys.txt"
 # add the public key into .sops.yaml under users as ${USER}@${HOST_ID}
