@@ -35,7 +35,6 @@ in
     "${hmProfiles}/features/remote-desktop/vnc.nix"
     "${hmProfiles}/features/streaming/obs.nix"
     "${hmProfiles}/features/streaming/moonlight.nix"
-    "${hmProfiles}/features/topology/ssh.nix"
     "${hmProfiles}/features/viewers/mpv"
     "${hmProfiles}/features/viewers/imv.nix"
     "${hmProfiles}/features/viewers/zathura.nix"

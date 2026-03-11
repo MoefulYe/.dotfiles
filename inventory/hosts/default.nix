@@ -7,6 +7,9 @@
       "desk00"
       "u265kf"
     ];
+    tags = [
+      "nixos"
+    ];
     nixosConfig = {
       main = ./nixos/lan;
       extra = [
@@ -17,14 +20,24 @@
   };
   mume = {
     role = "hermit";
+    tags = [
+      "darwin"
+    ];
     darwinConfig = ./darwin/mume;
   };
   qingloong = {
     role = "dog";
+    tags = [
+      "nixos"
+    ];
     nixosConfig = ./nixos/qingloong;
   };
   citrus = {
     role = "dog";
+    tags = [
+      "nixos"
+      "vps"
+    ];
     alias = [
       "vps00"
     ];
@@ -32,6 +45,10 @@
   };
   lemon = {
     role = "dog";
+    tags = [
+      "nixos"
+      "vps"
+    ];
     alias = [
       "vps01"
     ];
@@ -39,6 +56,10 @@
   };
   yuzu = {
     role = "dog";
+    tags = [
+      "nixos"
+      "vps"
+    ];
     alias = [
       "vps02"
     ];

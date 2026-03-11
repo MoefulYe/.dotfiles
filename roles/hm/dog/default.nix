@@ -13,6 +13,5 @@ in
     "${hmProfiles}/features/development/neovim"
     "${hmProfiles}/features/development/ssh"
     "${hmProfiles}/features/development/zsh"
-    "${hmProfiles}/features/topology/ssh.nix"
   ];
 }

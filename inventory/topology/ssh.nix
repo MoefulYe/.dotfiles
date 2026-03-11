@@ -1,21 +1,9 @@
 { inputs, ... }:
 let
   lib = inputs.nixpkgs.lib;
-  mkEdge = from: to: {
-    type = "edge";
-    inherit from to;
-  };
   mkCartesianProduct = froms: tos: {
     type = "cert-prod";
     inherit froms tos;
-  };
-  mkCompleteGraph = nodes: {
-    type = "complete-graph";
-    inherit nodes;
-  };
-  mkEgo = nodes: {
-    type = "ego";
-    inherit nodes;
   };
   zjus = [
     "ubuntu@zhang.zju"
