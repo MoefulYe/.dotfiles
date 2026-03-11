@@ -1,6 +1,6 @@
 { paths, lib, ... }:
 let
-  inherit (paths) hmProfiles hmQuirks;
+  inherit (paths) hmProfiles hmQuirks infra;
 in
 {
   imports = [
@@ -13,5 +13,6 @@ in
     "${hmProfiles}/features/development/neovim"
     "${hmProfiles}/features/development/ssh"
     "${hmProfiles}/features/development/zsh"
+    "${infra}/ssh"
   ];
 }

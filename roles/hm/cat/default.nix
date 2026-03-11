@@ -1,6 +1,6 @@
 { paths, ... }:
 let
-  inherit (paths) hmProfiles hmQuirks;
+  inherit (paths) hmProfiles hmQuirks infra;
 in
 {
   imports = [
@@ -38,6 +38,7 @@ in
     "${hmProfiles}/features/viewers/mpv"
     "${hmProfiles}/features/viewers/imv.nix"
     "${hmProfiles}/features/viewers/zathura.nix"
+    "${infra}/ssh"
   ];
   hmProfiles.my-nvim.lite = false;
   hmProfiles.dev.lite = false;

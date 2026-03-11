@@ -6,12 +6,13 @@
 }:
 let
   inherit (userInfo) userid;
+  topology = import ./topology.nix inventory;
   allowIn =
-    inventory.topology.ssh
+    topology
     |> lib.concatMap ({ froms, tos, ... }: lib.optionals (lib.elem userid tos) froms)
     |> lib.unique;
   allowOut =
-    inventory.topology.ssh
+    topology
     |> lib.concatMap ({ froms, tos, ... }: lib.optionals (lib.elem userid froms) tos)
     |> lib.unique;
 in
