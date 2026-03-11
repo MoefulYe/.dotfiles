@@ -6,7 +6,28 @@
 }:
 let
   inherit (userInfo) userid;
-  topology = import ./topology.nix inventory;
+  topology =
+    let
+      mkCart = froms: tos: {
+        inherit froms tos;
+      };
+      mkEdge = from: to: (mkCart [ from ] [ to ]);
+      dailies = [
+        "ashenye@mume"
+        "ashenye@lan"
+      ];
+      vpses =
+        inventory.users |> lib.filterAttrs (name: { tags, ... }: lib.elem "vps" tags) |> lib.attrNames;
+      csts =
+        inventory.users |> lib.filterAttrs (name: { tags, ... }: lib.elem "cst" tags) |> lib.attrNames;
+      zjus = [ { sshConfig = ./zju.nix; } ];
+    in
+    [
+      (mkEdge "ashenye@mume" "ashenye@lan")
+      (mkCart dailies vpses)
+      (mkCart dailies csts)
+      (mkCart dailies zjus)
+    ];
   allowIn =
     topology
     |> lib.concatMap ({ froms, tos, ... }: lib.optionals (lib.elem userid tos) froms)
