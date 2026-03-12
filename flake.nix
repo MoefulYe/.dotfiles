@@ -2,8 +2,10 @@
   description = "just dotfiles";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable?shallow=1";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/master?shallow=1";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11?shallow=1";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master?shallow=1";
     nixvim = {
@@ -38,10 +40,16 @@
     flake-utils.url = "github:numtide/flake-utils?shallow=1";
     vscode-server.url = "github:nix-community/nixos-vscode-server?shallow=1";
     deploy-rs.url = "github:serokell/deploy-rs?shallow=1";
-    microvm.url = "github:microvm-nix/microvm.nix?shallow=1";
-    microvm.inputs.nixpkgs.follows = "nixpkgs";
+    microvm = {
+      url = "github:microvm-nix/microvm.nix?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence?shallow=1";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel?shallow=1";
+    dnsctl-nix = {
+      url = "github:MoefulYe/dnsctl.nix?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   nixConfig = {
     extra-substituters = [

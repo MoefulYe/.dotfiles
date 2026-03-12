@@ -1,5 +1,13 @@
 {
-  programs.kitty = {
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.hmProfiles.dev;
+in
+{
+  programs.kitty = lib.mkIf cfg.daily {
     enable = true;
     shellIntegration.enableZshIntegration = true;
     extraConfig = ''

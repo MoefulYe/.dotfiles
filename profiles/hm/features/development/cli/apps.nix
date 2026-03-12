@@ -8,13 +8,6 @@ let
   cfg = config.hmProfiles.dev;
 in
 {
-  options.hmProfiles.dev = {
-    lite = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-    };
-  };
-
   config = {
     home.packages =
       with pkgs;
