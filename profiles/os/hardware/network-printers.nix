@@ -9,4 +9,9 @@
     nssmdns4 = true;
     openFirewall = true;
   };
+  systemd.services."cups-browsed" = {
+    serviceConfig = {
+      TimeoutStopSec = 5;
+    };
+  };
 }
