@@ -12,13 +12,7 @@ in
     "${hmProfiles}/features/cool"
     "${hmProfiles}/features/desktop"
     "${hmProfiles}/features/daily-scripts"
-    "${hmProfiles}/features/development/cli"
-    "${hmProfiles}/features/development/code"
-    "${hmProfiles}/features/development/git"
-    "${hmProfiles}/features/development/kitty"
-    "${hmProfiles}/features/development/neovim"
-    "${hmProfiles}/features/development/ssh"
-    "${hmProfiles}/features/development/zsh"
+    "${hmProfiles}/features/development"
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/downloading/aria2.nix"
     "${hmProfiles}/features/editors/gimp.nix"
@@ -40,6 +34,6 @@ in
     "${hmProfiles}/features/viewers/zathura.nix"
     "${infra}/ssh"
   ];
-  hmProfiles.my-nvim.lite = false;
+  hmProfiles.dev.daily = true;
   hmProfiles.dev.lite = false;
 }
