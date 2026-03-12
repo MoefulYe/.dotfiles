@@ -64,6 +64,9 @@
       ...
     }@inputs:
     let
+      collectDnsctl = import ./infra/dnsctl/collector.nix {
+        lib = nixpkgs.lib;
+      };
       specialArgs = rec {
         inherit
           inputs
@@ -91,6 +94,10 @@
         inherit specialArgs;
       };
       inherit (specialArgs) helpers inventory;
+      nixosConfigurations = helpers.mkNixosConfigs {
+        inherit specialArgs;
+        inherit (inventory) hosts;
+      };
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -104,10 +111,7 @@
     ))
     // {
       overlays = import ./overlays { inherit inputs self; };
-      nixosConfigurations = helpers.mkNixosConfigs {
-        inherit specialArgs;
-        inherit (inventory) hosts;
-      };
+      inherit nixosConfigurations;
       darwinConfigurations = helpers.mkDarwinConfigs {
         inherit specialArgs;
         inherit (inventory) hosts;
@@ -117,6 +121,8 @@
         inherit (inventory) users;
       };
       deploy = import ./infra/remote-deploy specialArgs;
-      dnsctl = { };
+      dnsctl = collectDnsctl {
+        inherit nixosConfigurations;
+      };
     };
 }
