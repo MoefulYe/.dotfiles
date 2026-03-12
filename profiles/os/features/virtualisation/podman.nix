@@ -11,7 +11,7 @@
     podman = {
       enable = true;
       # Required for containers under podman-compose to be able to talk to each other.
-      dockerCompat = true;
+      # dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
   };
