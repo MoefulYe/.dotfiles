@@ -34,24 +34,46 @@ in
   specialisation =
     let
       boot = {
-        # 1. 必须开启的调度器相关内核参数
         kernelParams = [
           "quiet"
           "loglevel=3"
-          "nmi_watchdog=0" # 减少内核观测器的干扰，提高调度测量精度
-          "intel_idle.max_cstate=1" # 禁用深层节能模式（C-states），防止 CPU 频率切换导致的测量偏差
+
+          # 降噪
+          "nowatchdog"
+          "intel_idle.max_cstate=1"
           "processor.max_cstate=1"
-          "cpufreq.default_governor=performance" # 强制性能模式，消除频率波动
-          "nokaslr"
+          "cpufreq.default_governor=performance"
+          "noautogroup"
+
+          # 做 isolated-core latency 实验时再开
+          # "nohz_full=2-15"
+          # "rcu_nocbs=2-15"
+          # "irqaffinity=0-1"
+
+          # 只在需要稳定地址做符号化时再开
+          # "nokaslr"
+
+          # 这两个要么固定为开，要么固定为关，并在论文里披露
+          # "nosmt"
+          # "mitigations=off"
         ];
 
-        # 2. Sysctl 配置：加强可观测性与性能可预测性
         kernel.sysctl = {
-          "kernel.sched_rt_runtime_us" = -1; # 如果有实时任务，避免被强制限制
-          "kernel.perf_event_paranoid" = -1; # 允许非 root 用户使用 perf 进行分析（这对你的数据抓取至关重要）
-          "kernel.kptr_restrict" = 0; # 允许内核符号访问，便于 eBPF 追踪
-          "vm.swappiness" = 10; # 降低 swap 倾向，避免内存回收干扰调度测量
-          "kernel.sched_child_runs_first" = 0; # 保持可预测的父子进程调度顺序
+          # 观测权限
+          "kernel.perf_event_paranoid" = -1;
+          # "kernel.kptr_restrict" = 0;
+          # "kernel.unprivileged_bpf_disabled" = 0;
+
+          # 内存噪声控制
+          "vm.swappiness" = 0;
+          # "kernel.numa_balancing" = 0;
+
+          # 只在 RT/DL 论文里再考虑
+          # "kernel.sched_rt_runtime_us" = -1;
+
+          # 只在 tracing runs 打开
+          # "kernel.sched_schedstats" = 1;
+          # "kernel.task_delayacct" = 1;
         };
       };
     in
