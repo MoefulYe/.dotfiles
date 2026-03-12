@@ -44,11 +44,7 @@ hosts
                   ];
               roleConfigs = if hostInfo ? role then [ "${paths.osRoles}/${hostInfo.role}" ] else [ ];
             in
-            [
-              "${paths.infra}/dnsctl"
-            ]
-            ++ nixosConfigs
-            ++ roleConfigs;
+            nixosConfigs ++ roleConfigs;
           config.networking.hostName = hostInfo.hostname;
         }
       )
