@@ -1,5 +1,10 @@
+{ paths, ... }:
+let
+  inherit (paths) osProfiles;
+in
 {
   imports = [
+    "${osProfiles}/vps"
     ./finetune.nix
     ./networking.nix
     ./users.nix

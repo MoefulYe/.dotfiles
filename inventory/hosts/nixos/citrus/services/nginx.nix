@@ -1,11 +1,5 @@
 {
   services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-
     virtualHosts."rsshub.pippaye.top" = {
       forceSSL = true;
       enableACME = true;

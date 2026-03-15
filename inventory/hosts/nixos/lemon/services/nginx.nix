@@ -1,11 +1,5 @@
 {
   services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-
     virtualHosts."one.pippaye.top" = {
       forceSSL = true;
       enableACME = true;
@@ -19,9 +13,4 @@
     acceptTerms = true;
     defaults.email = "luren145@gmail.com";
   };
-
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 }

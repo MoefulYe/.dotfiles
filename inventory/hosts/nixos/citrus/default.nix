@@ -1,10 +1,11 @@
 { paths, ... }:
 let
-  inherit (paths) infra;
+  inherit (paths) infra osProfiles;
 in
 {
   imports = [
     "${infra}/remote-deploy/deployee.nix"
+    "${osProfiles}/vps"
     ./hardware-configuration.nix
     ./fine-tuning.nix
     ./networking.nix
