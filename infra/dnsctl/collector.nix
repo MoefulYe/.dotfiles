@@ -54,7 +54,9 @@ let
     |> foldl' (
       acc: zoneName:
       let
-        records = mergeRecordLists ((hostRecordsByZone.${zoneName} or [ ]) ++ (extraRecords.${zoneName} or [ ]));
+        records = mergeRecordLists (
+          (hostRecordsByZone.${zoneName} or [ ]) ++ (extraRecords.${zoneName} or [ ])
+        );
       in
       if records == [ ] then
         acc

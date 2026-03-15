@@ -131,6 +131,15 @@
       deploy = import ./infra/remote-deploy specialArgs;
       dnsctl = collectDnsctl {
         inherit nixosConfigurations;
+        providers = {
+          pippaye = {
+            type = "cloudflare";
+            tokenFile = "~/.config/sops-nix/secrets/CF_PIPPAYE_ZONE_EDIT_TOKEN";
+          };
+        };
+        zoneProviders = {
+          "pippaye.top" = "pippaye";
+        };
       };
     };
 }

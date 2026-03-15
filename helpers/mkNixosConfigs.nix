@@ -9,7 +9,7 @@
   ...
 }:
 hosts
-# |> nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "nixos" (hostInfo.tags or [ ]))
+|> inputs.nixpkgs.lib.filterAttrs (_: hostInfo: builtins.elem "nixos" (hostInfo.tags or [ ]))
 |> builtins.mapAttrs (
   hostname: hostInfo:
   inputs.nixpkgs.lib.nixosSystem {
