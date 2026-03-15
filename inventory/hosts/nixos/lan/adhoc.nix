@@ -2,6 +2,7 @@
   inputs,
   pkgs,
   lib,
+  paths,
   ...
 }:
 let
@@ -24,6 +25,13 @@ let
   };
 in
 {
+  imports = [
+    "${paths.infra}/dnsctl"
+  ];
+  infra.dnsctl = {
+    ipv4 = "192.168.231.3";
+    domain = "pippaye.top";
+  };
   virtualisation.docker.enable = true;
   users.users.ashenye.extraGroups = [ "docker" ];
   nixpkgs.overlays = [

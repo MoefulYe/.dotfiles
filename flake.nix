@@ -140,6 +140,15 @@
         zoneProviders = {
           "pippaye.top" = "pippaye";
         };
+        extraRecords = {
+          "pippaye.top" = [
+            {
+              name = "test";
+              type = "A";
+              values = [ "1.2.3.4" ];
+            }
+          ];
+        };
       };
     };
 }

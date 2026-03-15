@@ -25,8 +25,7 @@ let
     types
     ;
 
-  cfg = config.infra;
-  dnsCfg = cfg.dnsctl;
+  cfg = config.infra.dnsctl;
 
   normalizeAddressList =
     value:
@@ -40,22 +39,24 @@ let
   ipv4Values = normalizeAddressList cfg.ipv4;
   ipv6Values = normalizeAddressList cfg.ipv6;
 
-  domain = if dnsCfg.domain == null || dnsCfg.domain == "" then null else dnsCfg.domain;
+  domain = if cfg.domain == null || cfg.domain == "" then null else cfg.domain;
 
   hostName = config.networking.hostName;
   hostFqdn = if domain == null then null else "${hostName}.${domain}";
 
   nginxVirtualHostElemType = options.services.nginx.virtualHosts.type.nestedTypes.elemType;
 
-  nginxVirtualHostType = types.attrsOf (types.submodule {
-    freeformType = nginxVirtualHostElemType.freeformType;
-    options = nginxVirtualHostElemType.getSubOptions [ ] // {
-      dnsRecordExt = mkOption {
-        type = types.attrsOf types.anything;
-        default = { };
+  nginxVirtualHostType = types.attrsOf (
+    types.submodule {
+      freeformType = nginxVirtualHostElemType.freeformType;
+      options = nginxVirtualHostElemType.getSubOptions [ ] // {
+        dnsRecordExt = mkOption {
+          type = types.attrsOf types.anything;
+          default = { };
+        };
       };
-    };
-  });
+    }
+  );
 
   toAddressRecords =
     name: extra:
@@ -132,7 +133,8 @@ let
       let
         recordExtra = {
           proxied = true;
-        } // getVirtualHostDnsExt name;
+        }
+        // getVirtualHostDnsExt name;
       in
       if domain == null then
         [ ]
@@ -163,7 +165,7 @@ let
   };
 in
 {
-  options.infra = {
+  options.infra.dnsctl = {
     ipv4 = mkOption {
       type = types.nullOr (types.either types.str (types.listOf types.str));
       default = null;
@@ -179,23 +181,21 @@ in
       default = { };
     };
 
-    dnsctl = {
-      domain = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
+    domain = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
 
-      extraRecords = mkOption {
-        type = types.listOf dnsRecordType;
-        default = [ ];
-      };
+    extraRecords = mkOption {
+      type = types.listOf dnsRecordType;
+      default = [ ];
+    };
 
-      records = mkOption {
-        type = types.listOf dnsRecordType;
-        default = [ ];
-        readOnly = true;
-        internal = true;
-      };
+    records = mkOption {
+      type = types.listOf dnsRecordType;
+      default = [ ];
+      readOnly = true;
+      internal = true;
     };
   };
 
@@ -203,29 +203,29 @@ in
     networking.domain = mkDefault domain;
 
     assertions =
-      optionals (dnsCfg.extraRecords != [ ]) [
+      optionals (cfg.extraRecords != [ ]) [
         {
           assertion = domain != null;
           message = "infra.dnsctl.extraRecords requires infra.dnsctl.domain to be set";
         }
       ]
-      ++
-      cfg.nginxVirtualHosts
+      ++ cfg.nginxVirtualHosts
       |> builtins.attrNames
-      |> builtins.map (name: {
-        assertion = !(hasPrefix "~" name);
-        message = "infra.nginxVirtualHosts only accepts '@' or relative names, regex names are not supported: ${name}";
-      })
-      ++ optionals (domain != null) (
-        cfg.nginxVirtualHosts
-        |> builtins.attrNames
-        |> builtins.map (name: {
-          assertion = name == "@" || !(name == domain || hasSuffix ".${domain}" name);
-          message = "infra.nginxVirtualHosts must use '@' or relative names, not FQDNs: ${name}";
+      |>
+        builtins.map (name: {
+          assertion = !(hasPrefix "~" name);
+          message = "infra.nginxVirtualHosts only accepts '@' or relative names, regex names are not supported: ${name}";
         })
-      );
+        ++ optionals (domain != null) (
+          cfg.nginxVirtualHosts
+          |> builtins.attrNames
+          |> builtins.map (name: {
+            assertion = name == "@" || !(name == domain || hasSuffix ".${domain}" name);
+            message = "infra.nginxVirtualHosts must use '@' or relative names, not FQDNs: ${name}";
+          })
+        );
 
     services.nginx.virtualHosts = mkIf (cfg.nginxVirtualHosts != { }) expandedNginxVirtualHosts;
-    infra.dnsctl.records = collectedRecords ++ dnsCfg.extraRecords;
+    infra.dnsctl.records = collectedRecords ++ cfg.extraRecords;
   };
 }
