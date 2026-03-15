@@ -71,6 +71,25 @@ DNS 主域名来源。
 
 也就是说通常只需要设置 `infra.dnsctl.domain`。
 
+### `infra.dnsctl.bindHostnameToIp`
+
+类型：`bool`
+
+默认值：`true`
+
+是否由本模块为主机名和 apex `@` 自动导出 `A` / `AAAA` 记录。
+
+- 为 `true` 时：
+  - 导出 `hostName.<domain>` 的 `A` / `AAAA`
+  - `nginxVirtualHosts."@"` 也会导出 apex `A` / `AAAA`
+- 为 `false` 时：
+  - 不导出 `hostName.<domain>` 的 `A` / `AAAA`
+  - 不导出 `@` 的 `A` / `AAAA`
+  - 仍然保留 alias 记录
+  - 仍然保留普通 nginx 站点到 `hostName.<domain>` 的 `CNAME`
+
+这个选项适合把主机主记录交给 DDNS 等外部机制维护，而让本模块只负责 alias 和站点别名建模。
+
 ### `infra.dnsctl.extraRecords`
 
 类型：`[ attrs ]`
@@ -126,6 +145,19 @@ DNS 主域名来源。
 
 - `citrus.example.com` -> `A` / `AAAA`，默认 `proxied = false`
 - `vps00.example.com` -> `CNAME citrus.example.com`，默认 `proxied = false`
+
+如果设置：
+
+- `infra.dnsctl.bindHostnameToIp = false`
+
+那么不会导出：
+
+- `citrus.example.com` 的 `A` / `AAAA`
+
+但仍会导出：
+
+- `vps00.example.com` -> `CNAME citrus.example.com`
+- `blog.example.com` / `api.admin.example.com` 这类 nginx 站点对主机名的 `CNAME`
 
 对于 nginx 站点：
 

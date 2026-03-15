@@ -93,6 +93,8 @@ let
     proxied = false;
   };
 
+  bindHostnameToIp = cfg.bindHostnameToIp;
+
   aliasRecordExtra = {
     proxied = false;
   };
@@ -137,14 +139,16 @@ let
       in
       if domain == null then
         [ ]
-      else if hostFqdn == null || name == "@" then
+      else if name == "@" then
+        optionals bindHostnameToIp (toAddressRecords name recordExtra)
+      else if hostFqdn == null then
         toAddressRecords name recordExtra
       else
         [ (toCnameRecord name hostFqdn recordExtra) ]
     );
 
   collectedRecords =
-    optionals (domain != null) (toAddressRecords hostName hostRecordExtra)
+    optionals (bindHostnameToIp && domain != null) (toAddressRecords hostName hostRecordExtra)
     ++ aliasRecords
     ++ virtualHostRecords;
 
@@ -183,6 +187,11 @@ in
     domain = mkOption {
       type = types.nullOr types.str;
       default = null;
+    };
+
+    bindHostnameToIp = mkOption {
+      type = types.bool;
+      default = true;
     };
 
     extraRecords = mkOption {
