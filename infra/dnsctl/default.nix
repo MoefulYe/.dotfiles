@@ -48,8 +48,7 @@ let
 
   nginxVirtualHostType = types.attrsOf (
     types.submodule {
-      freeformType = nginxVirtualHostElemType.freeformType;
-      options = nginxVirtualHostElemType.getSubOptions [ ] // {
+      options = builtins.removeAttrs (nginxVirtualHostElemType.getSubOptions [ ]) [ "_module" ] // {
         dnsRecordExt = mkOption {
           type = types.attrsOf types.anything;
           default = { };
@@ -193,7 +192,6 @@ in
 
     records = mkOption {
       type = types.listOf dnsRecordType;
-      default = [ ];
       readOnly = true;
       internal = true;
     };
