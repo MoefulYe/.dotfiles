@@ -1,46 +1,37 @@
 {
+  virtualisation.docker.enable = true;
+  users.users.ashenye.extraGroups = [ "docker" ];
+
   infra.dnsctl.nginxVirtualHosts = {
-    rsshub = {
-      locations."/" = {
-        proxyPass = "http://localhost:1200";
-      };
+    rsshub.locations."/" = {
+      proxyPass = "http://localhost:1200";
     };
 
-    miniflux = {
-      locations."/" = {
-        proxyPass = "http://localhost:10080";
-      };
+    miniflux.locations."/" = {
+      proxyPass = "http://localhost:10080";
     };
 
-    n8n = {
-      locations."/" = {
-        proxyPass = "http://localhost:5678";
-        proxyWebsockets = true;
-        extraConfig = ''
-          proxy_buffering off;
-          proxy_cache off;
-          client_max_body_size 50M;
-        '';
-      };
+    n8n.locations."/" = {
+      proxyPass = "http://localhost:5678";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_buffering off;
+        proxy_cache off;
+        client_max_body_size 50M;
+      '';
     };
 
-    bark = {
-      locations."/" = {
-        proxyPass = "http://localhost:18080";
-      };
+    bark.locations."/" = {
+      proxyPass = "http://localhost:18080";
     };
 
-    bitwarden = {
-      locations."/" = {
-        proxyPass = "http://localhost:8222";
-        proxyWebsockets = true;
-      };
+    bitwarden.locations."/" = {
+      proxyPass = "http://localhost:8222";
+      proxyWebsockets = true;
     };
 
-    firefly = {
-      locations."/" = {
-        proxyPass = "http://localhost:8081";
-      };
+    firefly.locations."/" = {
+      proxyPass = "http://localhost:8081";
     };
 
     blog = {

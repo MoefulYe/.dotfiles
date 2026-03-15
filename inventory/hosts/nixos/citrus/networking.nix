@@ -13,4 +13,9 @@
     interface = "ens17";
   };
   networking.nameservers = [ "8.8.8.8" ];
+
+  infra.dnsctl = {
+    ipv4 = "45.192.104.103";
+    domain = "pippaye.top";
+  };
 }

@@ -1,4 +1,16 @@
 {
+  paths,
+  me,
+  ...
+}:
+let
+  inherit (paths) infra;
+in
+{
+  imports = [
+    "${infra}/dnsctl"
+  ];
+
   services.fail2ban.enable = true;
 
   zramSwap = {
@@ -9,6 +21,11 @@
   };
 
   nix.optimise.automatic = false;
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = me.email;
+  };
 
   boot.kernel.sysctl = {
     "net.core.default_qdisc" = "fq";
@@ -23,6 +40,14 @@
     recommendedTlsSettings = true;
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
+
+    virtualHosts."_" = {
+      default = true;
+      rejectSSL = true;
+      extraConfig = ''
+        return 404;
+      '';
+    };
   };
 
   networking.firewall.allowedTCPPorts = [

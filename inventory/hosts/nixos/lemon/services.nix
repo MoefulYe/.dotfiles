@@ -12,4 +12,7 @@
       max-file = "3";
     };
   };
+  infra.dnsctl.nginxVirtualHosts.one.locations."/" = {
+    proxyPass = "http://localhost:8080";
+  };
 }

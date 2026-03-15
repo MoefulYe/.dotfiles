@@ -10,6 +10,6 @@ in
     ./fine-tuning.nix
     ./networking.nix
     ./users.nix
-    ./services
+    ./services.nix
   ];
 }

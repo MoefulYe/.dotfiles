@@ -44,6 +44,12 @@
       };
     };
   };
+
+  infra.dnsctl = {
+    ipv4 = "198.252.98.154";
+    domain = "pippaye.top";
+  };
+
   services.udev.extraRules = ''
     ATTR{address}=="00:45:4f:e0:e9:68", NAME="ens3"
   '';
