@@ -14,6 +14,7 @@ let
     hasPrefix
     hasSuffix
     listToAttrs
+    mapAttrs'
     mkDefault
     mkIf
     mkOption
@@ -45,10 +46,19 @@ let
   hostFqdn = if domain == null then null else "${hostName}.${domain}";
 
   nginxVirtualHostElemType = options.services.nginx.virtualHosts.type.nestedTypes.elemType;
+  nginxVirtualHostSubOptions = builtins.removeAttrs (nginxVirtualHostElemType.getSubOptions [ ]) [
+    "_module"
+  ];
 
   nginxVirtualHostType = types.attrsOf (
     types.submodule {
-      options = builtins.removeAttrs (nginxVirtualHostElemType.getSubOptions [ ]) [ "_module" ] // {
+      options = nginxVirtualHostSubOptions // {
+        forceSSL = nginxVirtualHostSubOptions.forceSSL // {
+          default = true;
+        };
+        enableACME = nginxVirtualHostSubOptions.enableACME // {
+          default = true;
+        };
         dnsRecordExt = mkOption {
           type = types.attrsOf types.anything;
           default = { };
@@ -116,10 +126,14 @@ let
 
   expandedNginxVirtualHosts =
     cfg.nginxVirtualHosts
-    |> builtins.mapAttrs' (
+    |> mapAttrs' (
       name: value: {
         name = expandVirtualHostName name;
-        value = builtins.removeAttrs value [ "dnsRecordExt" ];
+        value = {
+          forceSSL = true;
+          enableACME = true;
+        }
+        // builtins.removeAttrs value [ "dnsRecordExt" ];
       }
     );
 

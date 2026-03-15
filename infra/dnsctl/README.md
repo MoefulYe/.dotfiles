@@ -125,6 +125,13 @@ DNS 主域名来源。
 
 `dnsRecordExt` 不会转发给 nginx，只会注入到导出的 DNS record 中。
 
+另外，通过 `infra.dnsctl.nginxVirtualHosts` 定义的站点会默认带上：
+
+- `forceSSL = true`
+- `enableACME = true`
+
+如果某个站点需要例外，可以在该站点里显式覆盖。
+
 可用于：
 
 - 覆盖默认 `proxied = true`

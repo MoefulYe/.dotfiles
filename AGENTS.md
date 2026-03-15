@@ -22,3 +22,8 @@
   - `nix flake check` for flake evaluation.
   - `just deploy-nixos` / `just deploy-home` on a target host or VM.
 - For package updates, use `nix build .#packages.<system>.<name>` to verify builds.
+
+## Nix CLI
+- Any command that uses the Nix CLI (`nix build`, `nix develop`, `nix shell`, `nix run`, `nix flake`, etc.) must request escalated permissions from the user before execution.
+- Reason: Nix commands in this environment may need to write outside the workspace (for example under the shared Nix store / worktree metadata / cache paths), and sandboxed execution can fail with misleading read-only or cache permission errors.
+- When asking for escalation, explain briefly that the goal is to avoid sandbox-related cache or store write failures during Nix operations.
