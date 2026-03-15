@@ -25,21 +25,6 @@ let
   };
 in
 {
-  imports = [
-    "${paths.infra}/dnsctl"
-  ];
-  services.nginx.enable = true;
-  infra.dnsctl = {
-    ipv4 = "192.168.231.3";
-    domain = "pippaye.top";
-    nginxVirtualHosts."abc" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://localhost:10080";
-      };
-    };
-  };
   virtualisation.docker.enable = true;
   users.users.ashenye.extraGroups = [ "docker" ];
   nixpkgs.overlays = [
