@@ -5,7 +5,7 @@
     - [] 主机侧使用module注入
     - [] flake侧提取信息
 - [-] 删除vps02的手脚架配置
-- [-] 实现到cf的绑定
+- [x] 实现到cf的绑定
 - [] node_exporter
 - [] 代理
     - 重构nftables
