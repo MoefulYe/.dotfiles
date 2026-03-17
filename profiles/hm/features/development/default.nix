@@ -28,5 +28,6 @@ in
     ./ssh
     ./zsh
     ./dnsctl
+    ./scripts
   ];
 }

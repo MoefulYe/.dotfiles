@@ -8,7 +8,6 @@ in
     "${hmProfiles}/common"
     "${hmProfiles}/nix/sops.nix"
     "${hmProfiles}/features/browsers/zen"
-    "${hmProfiles}/features/daily-scripts"
     "${hmProfiles}/features/development"
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/downloading/aria2.nix"

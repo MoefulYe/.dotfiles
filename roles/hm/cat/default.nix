@@ -11,7 +11,6 @@ in
     "${hmProfiles}/features/browsers/zen"
     "${hmProfiles}/features/cool"
     "${hmProfiles}/features/desktop"
-    "${hmProfiles}/features/daily-scripts"
     "${hmProfiles}/features/development"
     "${hmProfiles}/features/downloading/bittorrent.nix"
     "${hmProfiles}/features/downloading/aria2.nix"
