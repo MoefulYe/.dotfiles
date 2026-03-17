@@ -2,7 +2,7 @@
 {
   systemd.nspawn."ubuntu-ml" = {
     networkConfig = {
-      MACVLAN = "enp131s0:eth0";
+      MACVLAN = "enp130s0:eth0";
     };
     execConfig = {
       Boot = true;

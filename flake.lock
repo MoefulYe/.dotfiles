@@ -148,11 +148,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773586078,
-        "narHash": "sha256-YVv8A6Anrk4VPyP4xYjRLBqIctuVAs9IW/0r5WAUV7Y=",
+        "lastModified": 1773638115,
+        "narHash": "sha256-ZYcZLVsgTrmLzESAq5dwUaQN4T/Zr4TmDQk0AO+uIx4=",
         "owner": "MoefulYe",
         "repo": "dnsctl.nix",
-        "rev": "28f6d7aff3131a80fc8f3e84983e604aca45554f",
+        "rev": "6846ac1a911fd28d73d3740bf1c1b4e68fe37f34",
         "type": "github"
       },
       "original": {
