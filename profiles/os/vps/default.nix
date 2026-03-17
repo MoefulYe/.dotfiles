@@ -45,7 +45,7 @@ in
       default = true;
       rejectSSL = true;
       extraConfig = ''
-        return 404;
+        return 444;
       '';
     };
   };
