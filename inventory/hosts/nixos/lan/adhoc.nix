@@ -18,11 +18,11 @@ let
     };
   };
   linuxPackages_6_18_3 = pkgs.linuxPackagesFor kernel_6_18_3;
-  cachyosKernel = pkgs.cachyosKernels.linux-cachyos-bore-lto.override {
-    pname = "my-cachyos";
-    processorOpt = "x86_64-v3";
-    lto = "thin";
-  };
+  # cachyosKernel = pkgs.cachyosKernels.linux-cachyos-bore-lto.override {
+  #   pname = "my-cachyos";
+  #   processorOpt = "x86_64-v3";
+  #   lto = "thin";
+  # };
 in
 {
   virtualisation.docker.enable = true;
@@ -31,7 +31,7 @@ in
     inputs.nix-cachyos-kernel.overlays.pinned
   ];
 
-  boot.kernelPackages = lib.mkDefault (pkgs.linuxKernel.packagesFor cachyosKernel);
+  #boot.kernelPackages = lib.mkDefault (pkgs.linuxKernel.packagesFor cachyosKernel);
   specialisation =
     let
       boot = {
@@ -80,11 +80,11 @@ in
     in
     {
 
-      "nsdi-eevdf-6.18.3".configuration = {
-        boot = boot // {
-          kernelPackages = linuxPackages_6_18_3;
-        };
-      };
+      # "nsdi-eevdf-6.18.3".configuration = {
+      #   boot = boot // {
+      #     kernelPackages = linuxPackages_6_18_3;
+      #   };
+      # };
       "nsdi-bore-6.18.3".configuration = {
         boot = boot // {
           kernelPackages = linuxPackages_6_18_3;
@@ -102,8 +102,8 @@ in
           ];
         };
       };
-      "nixos-lts".configuration = {
-        boot.kernelPackages = pkgs.linuxPackages;
-      };
+      # "nixos-lts".configuration = {
+      #   boot.kernelPackages = pkgs.linuxPackages;
+      # };
     };
 }

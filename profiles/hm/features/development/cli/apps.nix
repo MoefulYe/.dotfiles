@@ -25,6 +25,7 @@ in
         devenv
         awscli2
         deploy-rs
+        lazydocker
       ]);
   };
 }
