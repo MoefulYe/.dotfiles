@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    pkgs-stable.wechat
+    pkgs.wechat
     # FIXME
     # (pkgs-stable.wechat.overrideAttrs (_: {
     #   src = pkgs.fetchurl {
@@ -9,8 +9,8 @@
     #     hash = "sha256-St+iY31Kd5aRosFxFGMl5C0FsoqL5d+v2bH/3mOuNWQ=";
     #   };
     # }))
-    pkgs-stable.qq
-    pkgs-stable.wemeet
-    my-pkgs.dingtalk
+    pkgs.qq
+    pkgs.wemeet
+    # my-pkgs.dingtalk
   ];
 }
