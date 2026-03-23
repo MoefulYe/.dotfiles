@@ -35,7 +35,7 @@ let
         port: ${builtins.toString cfg.socks5PortForSmartDnsResolving}
         listen: 127.0.0.1
         udp: true
-        proxy: DNS
+        proxy: DNS-PROXY
       - name: for-tproxy-bypass
         type: mixed
         port: ${builtins.toString cfg.tproxyBypassSocks5Port}
@@ -74,8 +74,14 @@ let
       ipv6: false
       enhanced-mode: fake-ip
       fake-ip-range: 198.18.0.1/16
+      default-nameserver:
+        - 223.5.5.5
+        - 119.29.29.29
       nameserver:
         - 127.0.0.1:${builtins.toString smartdnsCfg.foreignDnsPort}
+      fallback:
+        - https://dns.alidns.com/dns-query
+        - https://doh.pub/dns-query
       nameserver-policy:
         'geosite:cn':
           - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
@@ -558,14 +564,14 @@ let
         ++ regions;
       }
       {
-        name = "DNS";
+        name = "DNS-PROXY";
         type = "fallback";
+        url = "https://www.gstatic.com/generate_204";
+        interval = 120;
         proxies = [
           "universal"
           "DIRECT"
         ];
-        url = "https://www.gstatic.com/generate_204";
-        interval = 300;
       }
       {
         name = "AI";
