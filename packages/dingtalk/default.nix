@@ -143,10 +143,10 @@ in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dingtalk";
   src = fetchurl {
-    url = "https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Release/com.alibabainc.dingtalk_7.6.45.5041701_amd64.deb";
-    hash = "sha256-HXvVkIrQgXWA5NKvcVgJeOtK+kSD6a3yXJB5nyLNqzU=";
+    url = "https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Release/com.alibabainc.dingtalk_8.1.0.6021101_amd64.deb";
+    hash = "sha256-7EkvEv6r7ONHAupH48/BoWSuLo2r3umwXnSjpeTeIdU=";
   };
-  version = "7.6.45.5041701";
+  version = "8.1.0.6021101";
 
   nativeBuildInputs = [
     autoPatchelfHook

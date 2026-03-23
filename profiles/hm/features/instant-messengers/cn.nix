@@ -11,6 +11,6 @@
     # }))
     pkgs.qq
     pkgs.wemeet
-    # my-pkgs.dingtalk
+    my-pkgs.dingtalk
   ];
 }

@@ -23,12 +23,11 @@ in
       # }
     ];
 
-    events = [
-      {
-        event = "before-sleep";
+    events = {
+      before-sleep = {
         command = "${lib.getExe config.programs.swaylock.package} -fF";
-      }
-    ];
+      };
+    };
   };
   programs.swaylock.enable = true;
   programs.swaylock.settings = {
