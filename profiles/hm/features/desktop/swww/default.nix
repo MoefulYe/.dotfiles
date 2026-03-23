@@ -14,7 +14,7 @@
     Service = {
       Type = "oneshot";
       Environment = "PATH=${pkgs.swww}/bin:${pkgs.bash}/bin:${pkgs.coreutils}/bin";
-      ExecStart = "${../../daily-scripts/change-wallpaper.sh}";
+      ExecStart = "${../../development/scripts/change-wallpaper.sh}";
     };
   };
   systemd.user.timers.change-wallpaper = {
