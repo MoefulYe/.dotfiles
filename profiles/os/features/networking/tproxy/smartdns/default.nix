@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.osProfiles.features.tproxy.smartdns;
-  mihomoSocks5Port = config.osProfiles.features.tproxy.mihomo.socks5Port;
+  mihomoSocks5Port = config.osProfiles.features.tproxy.mihomo.socks5PortForSmartDnsResolving;
   tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
   antiAdFilePath = "/var/lib/smartdns/anti-ad-smartdns.conf";
   antiAdUrl = "https://anti-ad.net/anti-ad-for-smartdns.conf";
