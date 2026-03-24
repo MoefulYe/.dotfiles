@@ -42,13 +42,12 @@
       pdc = "podman compose";
       pdv = "podman volume";
       run = "systemd-run --user";
-      icat = "kitty +kitten icat";
+      iat = "kitty +kitten icat";
       ac = "source .venv/bin/activate";
       de = "deactivate";
       zj = "zellij";
       tl = "tldr";
-      jssh = "SHELL=$(which bash) ssh";
-      kssh = "kitten ssh";
+      ksh = "kitten ssh";
     };
     initContent = builtins.readFile ./init_content.sh;
   };

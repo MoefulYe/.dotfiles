@@ -61,3 +61,13 @@ function codexwt {
   mkdir -p .codex/worktrees
   git worktree add .codex/worktrees/$1 -b $1
 }
+
+function psh {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: pssh proxy-ip:proxy-port [ssh args...]"
+    return 1
+  fi
+  local proxy="$1"
+  shift
+  ssh -o "ProxyCommand=nc -x ${proxy} %h %p" "$@"
+}
