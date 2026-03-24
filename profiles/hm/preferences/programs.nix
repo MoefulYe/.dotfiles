@@ -56,6 +56,7 @@ in
     BROWSER = preferences.browser.binname;
     TERMINAL = preferences.terminal.binname;
     # SHELL = preferences.shell.binname;
+    # TODO
     SHELL = "$HOME/.nix-profile/bin/zsh";
     # XDG Base Directory Specification
     # XDG_BIN_HOME = "$HOME/.local/bin";
