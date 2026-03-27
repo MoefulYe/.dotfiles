@@ -102,10 +102,6 @@
         inherit specialArgs;
       };
       inherit (specialArgs) helpers inventory;
-      nixosConfigurations = helpers.mkNixosConfigs {
-        inherit specialArgs;
-        inherit (inventory) hosts;
-      };
     in
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -117,9 +113,12 @@
         packages = import ./packages { inherit pkgs inputs; };
       }
     ))
-    // {
+    // rec {
       overlays = import ./overlays { inherit inputs self; };
-      inherit nixosConfigurations;
+      nixosConfigurations = helpers.mkNixosConfigs {
+        inherit specialArgs;
+        inherit (inventory) hosts;
+      };
       darwinConfigurations = helpers.mkDarwinConfigs {
         inherit specialArgs;
         inherit (inventory) hosts;

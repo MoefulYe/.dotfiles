@@ -7,7 +7,7 @@ function ns {
 }
 
 function nd {
-  nix develop ${1:=.} -c $SHELL
+  nix develop ${1:=.}
 }
 
 function nsh {
@@ -57,12 +57,12 @@ function append_path {
   done
 }
 
-function codexwt {
+function cwt {
   mkdir -p .codex/worktrees
   git worktree add .codex/worktrees/$1 -b $1
 }
 
-function psh {
+function xs {
   if [[ $# -lt 1 ]]; then
     echo "Usage: pssh proxy-ip:proxy-port [ssh args...]"
     return 1
@@ -70,4 +70,14 @@ function psh {
   local proxy="$1"
   shift
   ssh -o "ProxyCommand=nc -x ${proxy} %h %p" "$@"
+}
+
+function kxs {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: pssh proxy-ip:proxy-port [ssh args...]"
+    return 1
+  fi
+  local proxy="$1"
+  shift
+  kitten ssh -o "ProxyCommand=nc -x ${proxy} %h %p" "$@"
 }
