@@ -34,6 +34,11 @@
       j = "just";
       s = "ssh";
       sc = "systemctl";
+      scs = "systemctl status";
+      sce = "systemctl edit";
+      scsta = "systemctl start";
+      scsto = "systemctl stop";
+      scc = "systemctl cat";
       jc = "journalctl";
       jcu = "journalctl -u";
       jcfu = "journalctl -fu";
@@ -49,9 +54,12 @@
       iat = "kitty +kitten icat";
       ac = "source .venv/bin/activate";
       de = "deactivate";
-      zj = "zellij";
+      zl = "zellij";
       tl = "tldr";
       ks = "kitten ssh";
+      cx = "codex";
+      cxr = "codex resume";
+      cxy = "codex --yolo";
     };
     initContent = builtins.readFile ./init_content.sh;
   };

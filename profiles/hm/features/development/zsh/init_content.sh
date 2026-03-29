@@ -22,6 +22,10 @@ function nr {
   nix run nixpkgs#$@
 }
 
+function np {
+  nix build --print-out-paths --no-link nixpkgs#$1
+}
+
 # nbu <format> <drivation>
 # <format> ::= arx | rpm | deb | dockerimage | appimage
 function nbu {
@@ -81,3 +85,4 @@ function kxs {
   shift
   kitten ssh -o "ProxyCommand=nc -x ${proxy} %h %p" "$@"
 }
+
