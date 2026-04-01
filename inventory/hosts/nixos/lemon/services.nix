@@ -13,10 +13,10 @@
     };
   };
   infra.dnsctl.nginxVirtualHosts = {
-    one.locations."/" = {
+    sub2api.locations."/" = {
       proxyPass = "http://localhost:8080";
     };
-    new.locations."/" = {
+    new-api.locations."/" = {
       proxyPass = "http://localhost:3000";
     };
   };

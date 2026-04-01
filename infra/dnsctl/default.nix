@@ -224,27 +224,25 @@ in
     networking.domain = mkDefault domain;
 
     assertions =
+      let
+        nginxVirtualHostNames = builtins.attrNames cfg.nginxVirtualHosts;
+      in
       optionals (cfg.extraRecords != [ ]) [
         {
           assertion = domain != null;
           message = "infra.dnsctl.extraRecords requires infra.dnsctl.domain to be set";
         }
       ]
-      ++ cfg.nginxVirtualHosts
-      |> builtins.attrNames
-      |>
+      ++ builtins.map (name: {
+        assertion = !(hasPrefix "~" name);
+        message = "infra.nginxVirtualHosts only accepts '@' or relative names, regex names are not supported: ${name}";
+      }) nginxVirtualHostNames
+      ++ optionals (domain != null) (
         builtins.map (name: {
-          assertion = !(hasPrefix "~" name);
-          message = "infra.nginxVirtualHosts only accepts '@' or relative names, regex names are not supported: ${name}";
-        })
-        ++ optionals (domain != null) (
-          cfg.nginxVirtualHosts
-          |> builtins.attrNames
-          |> builtins.map (name: {
-            assertion = name == "@" || !(name == domain || hasSuffix ".${domain}" name);
-            message = "infra.nginxVirtualHosts must use '@' or relative names, not FQDNs: ${name}";
-          })
-        );
+          assertion = name == "@" || !(name == domain || hasSuffix ".${domain}" name);
+          message = "infra.nginxVirtualHosts must use '@' or relative names, not FQDNs: ${name}";
+        }) nginxVirtualHostNames
+      );
 
     services.nginx.virtualHosts = mkIf (cfg.nginxVirtualHosts != { }) expandedNginxVirtualHosts;
     infra.dnsctl.records = collectedRecords ++ cfg.extraRecords;
