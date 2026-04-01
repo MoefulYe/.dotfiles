@@ -3,7 +3,7 @@
   osProfiles.common.bootloader = "grub";
 
   boot.loader.grub = {
-    device = "nodev";
+    device = lib.mkForce "nodev";
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
