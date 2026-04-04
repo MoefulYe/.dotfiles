@@ -39,7 +39,7 @@ Usage:
   ${SCRIPT_NAME} -h | --help
 
 Store tokens under:
-  \${XDG_STATE_DIR:-${HOME}/.local/state}/tokens
+  \${XDG_STATE_DIR:-\$HOME/.local/state}/tokens
 
 Commands:
   add              Add or replace a token. If TOKEN_VAL is omitted, read from stdin or prompt.
