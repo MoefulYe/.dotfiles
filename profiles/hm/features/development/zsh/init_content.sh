@@ -86,3 +86,15 @@ function kxs {
   kitten ssh -o "ProxyCommand=nc -x ${proxy} %h %p" "$@"
 }
 
+function up {
+  local d=""
+  local limit=${1:-1}
+  for ((i=0; i<limit; i++)); do
+    d+="../"
+  done
+  cd "$d"
+}
+
+function weather {
+  curl -s "wttr.in/${CITY:-ningbo}?m2&lang=zh-cn" | bat -p
+}

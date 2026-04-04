@@ -74,6 +74,9 @@
       rsd = "rsync -avzhP --dry-run";
       rsm = "rsync -avzhP --delete";
       rsf = "rsync -avhP";
+      pj = "cd ~/repo/$(ls ~/repo | fzf)";
+      pj_new = "mkdir ~/repo/$1 && cd ~/repo/$1";
+      cl = "python3";
     };
     initContent = builtins.readFile ./init_content.sh;
   };
