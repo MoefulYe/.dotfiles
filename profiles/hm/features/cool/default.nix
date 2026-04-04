@@ -7,5 +7,6 @@
     cmatrix
     aalib
     asciiquarium
+    my-pkgs.fuck
   ];
 }

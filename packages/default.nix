@@ -17,6 +17,7 @@
   retro-crt = pkgs.callPackage ./retro-crt.nix { };
   downloader = pkgs.callPackage ./downloader { };
   ensure-exist = pkgs.callPackage ./ensure-exist { };
+  fuck = pkgs.callPackage ./fuck { };
   # Neovim packages
   nvim = pkgs.callPackage ./nvim {
     inherit inputs;
