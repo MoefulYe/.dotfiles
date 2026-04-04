@@ -10,6 +10,7 @@ let
     change-wallpaper = ./change-wallpaper.sh;
     check-libs = ./check-libs.sh;
     bark = ./bark.sh;
+    tokenctl = ./tokenctl.sh;
   };
 in
 {
