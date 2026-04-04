@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Dependencies: cat mktemp mv rm rsync
+# Dependencies: cat find mktemp mv rm rsync
 
 set -eEuo pipefail
 shopt -s failglob
@@ -15,7 +15,7 @@ cleanup() {
 
   for temp_path in "${TEMP_PATHS[@]}"; do
     if [[ -n "${temp_path}" && -e "${temp_path}" ]]; then
-      command rm -f "${temp_path}"
+      command rm -rf "${temp_path}"
     fi
   done
 }
@@ -28,7 +28,12 @@ Usage:
   ${SCRIPT_NAME} [--show-rsync-output] <SOURCE>
   ${SCRIPT_NAME} -h | --help
 
-Copy a single rsync source into a local temporary file and print the final path.
+Copy a single rsync source into a local temporary path and print the final path.
+
+If the source resolves to a single file, prints a temp file path.
+If the source resolves to a single directory, prints a temp directory path.
+If the source resolves to multiple top-level entries (for example a directory
+source with a trailing /), prints the temp directory containing those entries.
 
 Options:
   -v, --show-rsync-output  Print the wrapped rsync output instead of hiding it
@@ -36,7 +41,8 @@ Options:
 
 Examples:
   ${SCRIPT_NAME} user@example.com:/path/to/file
-  ${SCRIPT_NAME} --show-rsync-output user@example.com:/path/to/file
+  ${SCRIPT_NAME} user@example.com:/path/to/directory
+  ${SCRIPT_NAME} --show-rsync-output user@example.com:/path/to/directory/
 EOF
 }
 
@@ -58,6 +64,7 @@ usage_error() {
 check_dependencies() {
   local required_commands=(
     cat
+    find
     mktemp
     mv
     rm
@@ -94,12 +101,42 @@ make_temp_file() {
   printf '%s\n' "${temp_path}"
 }
 
+make_temp_dir() {
+  local dir_tag="$1"
+  local base_dir="${TMPDIR:-/tmp}"
+  local temp_path
+
+  temp_path="$(mktemp -d "${base_dir%/}/${dir_tag}.XXXXXX")"
+  register_temp_path "${temp_path}"
+  printf '%s\n' "${temp_path}"
+}
+
+count_top_level_entries() {
+  local path="$1"
+  local count=0
+
+  while IFS= read -r -d '' _; do
+    ((count += 1))
+  done < <(find "${path}" -mindepth 1 -maxdepth 1 -print0)
+
+  printf '%s\n' "${count}"
+}
+
+resolve_single_entry_path() {
+  local path="$1"
+
+  find "${path}" -mindepth 1 -maxdepth 1 -print -quit
+}
+
 main() {
   local show_rsync_output=false
   local source_path
+  local source_copies_contents=false
   local final_path
   local partial_path
   local rsync_log_path
+  local entry_count
+  local single_entry_path
   local -a rsync_args=(
     -a
     -v
@@ -138,20 +175,38 @@ main() {
   fi
 
   source_path="$1"
-  final_path="$(make_temp_file "stash")"
-  partial_path="$(make_temp_file "stash.partial")"
+  if [[ "${source_path}" == */ ]]; then
+    source_copies_contents=true
+  fi
+  partial_path="$(make_temp_dir "stash.partial")"
   rsync_log_path="$(make_temp_file "stash.log")"
 
   if [[ "${show_rsync_output}" == true ]]; then
-    command rsync "${rsync_args[@]}" -- "${source_path}" "${partial_path}"
+    command rsync "${rsync_args[@]}" -- "${source_path}" "${partial_path}/"
   else
-    if ! command rsync "${rsync_args[@]}" -- "${source_path}" "${partial_path}" >"${rsync_log_path}" 2>&1; then
+    if ! command rsync "${rsync_args[@]}" -- "${source_path}" "${partial_path}/" >"${rsync_log_path}" 2>&1; then
       command cat "${rsync_log_path}" >&2
       exit 1
     fi
   fi
 
-  command mv -f "${partial_path}" "${final_path}"
+  entry_count="$(count_top_level_entries "${partial_path}")"
+  if [[ "${source_copies_contents}" == false && "${entry_count}" == "1" ]]; then
+    single_entry_path="$(resolve_single_entry_path "${partial_path}")"
+    if [[ -d "${single_entry_path}" ]]; then
+      final_path="$(make_temp_dir "stash")"
+      command rm -rf "${final_path}"
+    else
+      final_path="$(make_temp_file "stash")"
+    fi
+    command mv -f "${single_entry_path}" "${final_path}"
+    command rm -rf "${partial_path}"
+  else
+    final_path="$(make_temp_dir "stash")"
+    command rm -rf "${final_path}"
+    command mv -f "${partial_path}" "${final_path}"
+  fi
+
   command rm -f "${rsync_log_path}"
   trap - EXIT INT TERM
   printf '%s\n' "${final_path}"
