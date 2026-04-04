@@ -11,6 +11,7 @@ let
     check-libs = ./check-libs.sh;
     bark = ./bark.sh;
     tokenctl = ./tokenctl.sh;
+    stash = ./stash.sh;
   };
 in
 {
