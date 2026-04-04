@@ -75,8 +75,9 @@
       rsm = "rsync -avzhP --delete";
       rsf = "rsync -avhP";
       pj = "cd ~/repo/$(ls ~/repo | fzf)";
-      pj_new = "mkdir ~/repo/$1 && cd ~/repo/$1";
-      cl = "python3";
+      calc = "python3 -ic 'import math; from math import *'";
+      cl = "claude";
+      b = "bat";
     };
     initContent = builtins.readFile ./init_content.sh;
   };

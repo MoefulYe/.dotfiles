@@ -95,6 +95,14 @@ function up {
   cd "$d"
 }
 
-function weather {
+function wttr {
   curl -s "wttr.in/${CITY:-ningbo}?m2&lang=zh-cn" | bat -p
+}
+
+function pj_new {
+  mkdir ~/repo/$1 && cd ~/repo/$1
+}
+
+function iv {
+  fd --type=file | fzf --multi --preview 'bat --color=always --style=numbers --line-range=:100 {}' | xargs vim
 }
