@@ -96,7 +96,8 @@ function up {
 }
 
 function wttr {
-  curl -s "wttr.in/${CITY:-ningbo}?m2&lang=zh-cn" | bat -p
+  CITY=$(curl -s "https://r.inews.qq.com/api/ip2city" | jq '.city' -r)
+  curl -s "wttr.in/${CITY}?lang=zh-cn" | bat
 }
 
 function pj_new {

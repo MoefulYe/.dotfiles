@@ -11,6 +11,7 @@
       # Disable keyboard-interactive features to reduce focus stealing.
       "keyboard-shortcuts" = false;
       "notification-inline-replies" = false;
+      "notification-2fa-action" = false;
       "layer-shell-cover-screen" = false;
     };
 
