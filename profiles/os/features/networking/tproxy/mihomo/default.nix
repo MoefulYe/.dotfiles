@@ -270,6 +270,7 @@ let
         "IP-CIDR,192.168.231.0/24"
         "IP-CIDR,192.168.232.0/24"
         "DOMAIN-SUFFIX,void"
+        "DOMAIN-SUFFIX,zjucst.pippaye.top"
       ];
     };
     github = {
