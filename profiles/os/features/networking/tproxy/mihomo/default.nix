@@ -11,7 +11,24 @@ let
   cfg = config.osProfiles.features.tproxy.mihomo;
   zjuCfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
   tproxyBypassUserCfg = config.osProfiles.features.tproxy.tproxyBypassUser;
-  smartdnsCfg = config.osProfiles.features.tproxy.smartdns;
+  domesticDns = [
+    "223.5.5.5"
+    "119.29.29.29"
+  ];
+  foreignDoh = [
+    "'https://cloudflare-dns.com/dns-query#RULES'"
+    "'https://dns.google/dns-query#RULES'"
+    "'https://doh.opendns.com/dns-query#RULES'"
+    "'https://dns.quad9.net/dns-query#RULES'"
+    "'https://doh.mullvad.net/dns-query#RULES'"
+    "'https://dns.adguard-dns.com/dns-query#RULES'"
+    "'https://dns-family.adguard.com/dns-query#RULES'"
+    "'https://freedns.controld.com/p0#RULES'"
+    "'https://dns.nextdns.io#RULES'"
+  ];
+  dnsNameserver = foreignDoh;
+  dnsDirectResolvers = domesticDns;
+  dnsProxyServerResolvers = domesticDns;
 
   mkConfig = import ./mkConfig.nix;
   keywordFilters = import ./regionKeywords.nix;
@@ -24,85 +41,94 @@ let
   mmdb-url = "https://hub.gitmirror.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb";
   bypass-fake-ip-url = "https://cdn.jsdelivr.net/gh/juewuy/ShellCrash@dev/public/fake_ip_filter.list";
 
-  basic-config = ''
-    mode: rule
-    ipv6: false
-    socks-port: ${builtins.toString cfg.socks5Port}
-    tproxy-port: ${builtins.toString cfg.tproxyPort}
-    listeners:
-      - name: for-smartdns-resolve
-        type: mixed
-        port: ${builtins.toString cfg.socks5PortForSmartDnsResolving}
-        listen: 127.0.0.1
-        udp: true
-        proxy: DNS-PROXY
-      - name: for-tproxy-bypass
-        type: mixed
-        port: ${builtins.toString cfg.tproxyBypassSocks5Port}
-        listen: 0.0.0.0
-        udp: true
-        proxy: DIRECT
-      - name: load-balance
-        type: mixed
-        port: 7910
-        listen: 0.0.0.0
-        udp: true
-        proxy: load-balance
-    allow-lan: true
-    log-level: ${cfg.logLevel}
-    bind-address: "*"
-    unified-delay: true
-    tcp-concurrent: true
-    external-controller: ":${builtins.toString cfg.externalController}"
-    secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}
-    global-client-fingerprint: firefox
-    geodata-mode: true
-    geox-url:
-      geoip: "${geoip-url}"
-      geosite: "${geosite-url}"
-      mmdb: "${mmdb-url}"
-  '';
+  basic-config = lib.concatStringsSep "\n" ([
+    "mode: rule"
+    "ipv6: false"
+    "socks-port: ${builtins.toString cfg.socks5Port}"
+    "tproxy-port: ${builtins.toString cfg.tproxyPort}"
+    "listeners:"
+    "  - name: for-tproxy-bypass"
+    "    type: mixed"
+    "    port: ${builtins.toString cfg.tproxyBypassSocks5Port}"
+    "    listen: 0.0.0.0"
+    "    udp: true"
+    "    proxy: DIRECT"
+    "  - name: load-balance"
+    "    type: mixed"
+    "    port: 7910"
+    "    listen: 0.0.0.0"
+    "    udp: true"
+    "    proxy: load-balance"
+    "allow-lan: true"
+    "log-level: ${cfg.logLevel}"
+    "bind-address: \"*\""
+    "unified-delay: true"
+    "tcp-concurrent: true"
+    "external-controller: \":${builtins.toString cfg.externalController}\""
+    "secret: ${config.sops.placeholder.MIHOMO_WEB_UI_PASSWD}"
+    "global-client-fingerprint: firefox"
+    "geodata-mode: true"
+    "geox-url:"
+    "  geoip: \"${geoip-url}\""
+    "  geosite: \"${geosite-url}\""
+    "  mmdb: \"${mmdb-url}\""
+  ]);
 
-  dns-config = ''
-    dns:
-      enable: true
-      cache-algorithm: arc
-      prefer-h3: false
-      use-hosts: true
-      use-system-hosts: true
-      listen: :${builtins.toString cfg.dnsPort}
-      ipv6: false
-      enhanced-mode: fake-ip
-      fake-ip-range: 198.18.0.1/16
-      default-nameserver:
-        - 223.5.5.5
-        - 119.29.29.29
-      nameserver:
-        - 127.0.0.1:${builtins.toString smartdnsCfg.foreignDnsPort}
-      fallback:
-        - https://dns.alidns.com/dns-query
-        - https://doh.pub/dns-query
-      nameserver-policy:
-        'geosite:cn':
-          - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
-        'geosite:private':
-          - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
-        'rule-set:zju-intranet-domain':
-          - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
-        'rule-set:bypass-fake-ip':
-          - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
-      proxy-server-nameserver:
-          - 127.0.0.1:${builtins.toString smartdnsCfg.domesticDnsPort}
-      fake-ip-filter:
-        - 'geosite:cn'
-        - 'geosite:private'
-        - 'rule-set:zju-intranet-domain'
-        - 'rule-set:bypass-fake-ip'
-        - 'rule-set:mynet'
-      # fallback:
-      #   - https://doh.pub/dns-query
-      #   - https://dns.alidns.com/dns-query
-  '';
+  dns-config = lib.concatStringsSep "\n" (
+    [
+      "dns:"
+      "  enable: true"
+      "  cache-algorithm: arc"
+      "  prefer-h3: false"
+      "  use-hosts: true"
+      "  use-system-hosts: true"
+      "  listen: :${builtins.toString cfg.dnsPort}"
+      "  ipv6: false"
+      "  enhanced-mode: fake-ip"
+      "  fake-ip-range: 198.18.0.1/16"
+      "  default-nameserver:"
+      "    - 223.5.5.5"
+      "    - 119.29.29.29"
+      "  nameserver:"
+    ]
+    ++ lib.map (value: "    - ${value}") dnsNameserver
+    ++ [
+      "  fallback:"
+      "    - tls://8.8.4.4"
+      "    - tls://1.1.1.1"
+      "  nameserver-policy:"
+      "    'geosite:cn':"
+    ]
+    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ [
+      "    'geosite:private':"
+    ]
+    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ [
+      "    'rule-set:zju-intranet-domain':"
+    ]
+    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ [
+      "    'rule-set:bypass-fake-ip':"
+    ]
+    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ [
+      "    'rule-set:mynet':"
+    ]
+    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ [
+      "  proxy-server-nameserver:"
+    ]
+    ++ lib.map (value: "    - ${value}") dnsProxyServerResolvers
+    ++ [
+      "  fake-ip-filter:"
+      "    - 'geosite:cn'"
+      "    - 'geosite:private'"
+      "    - 'rule-set:zju-intranet-domain'"
+      "    - 'rule-set:bypass-fake-ip'"
+      "    - 'rule-set:mynet'"
+    ]
+  );
 
   proxy-providers = [
     # "ikuuu"
@@ -564,16 +590,6 @@ let
         ++ regions;
       }
       {
-        name = "DNS-PROXY";
-        type = "fallback";
-        url = "https://www.gstatic.com/generate_204";
-        interval = 120;
-        proxies = [
-          "universal"
-          "DIRECT"
-        ];
-      }
-      {
         name = "AI";
         type = "select";
         proxies = [
@@ -617,6 +633,7 @@ in
   imports = [
     ./nftables
   ];
+  services.resolved.enable = false;
   sops.secrets = {
     MIHOMO_WEB_UI_PASSWD = {
       sopsFile = "${paths.secrets}/per-host/${hostInfo.hostname}/default.yaml";

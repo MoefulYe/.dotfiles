@@ -20,9 +20,6 @@ in
     nftables = {
       outbounds = [ wanIface ];
     };
-    smartdns = {
-      enableAntiAD = true;
-    };
   };
   # services.resolved.enable = true;
   networking.useNetworkd = true;

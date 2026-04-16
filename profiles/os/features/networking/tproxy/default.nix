@@ -39,10 +39,6 @@ with lib;
         default = 7905;
         description = "这个sock5s端口什么都不做仅仅转发请求, 用于实现按需绕过的功能";
       };
-      socks5PortForSmartDnsResolving = mkOption {
-        type = types.int;
-        default = 7896;
-      };
       externalController = mkOption {
         type = types.int;
         default = 9090;
@@ -90,30 +86,6 @@ with lib;
         default = "*-*-* 04:00:00";
       };
     };
-    smartdns = {
-      enableAntiAD = mkEnableOption "enable anti ad";
-      antiAdUpdateSchedule = mkOption {
-        type = types.str;
-        default = "*-*-* 04:00:00";
-      };
-      staticRecords = mkOption {
-        type = types.lines;
-        default = "";
-      };
-      extraSettings = mkOption {
-        type = types.lines;
-        default = "";
-      };
-      # 在代理未运行的情况下也是默认的系统dns
-      domesticDnsPort = mkOption {
-        type = types.int;
-        default = 53;
-      };
-      foreignDnsPort = mkOption {
-        type = types.int;
-        default = 7898;
-      };
-    };
     extraProxies = {
       zju-connect = {
         enable = mkEnableOption "enable zju connect proxy";
@@ -127,7 +99,6 @@ with lib;
   imports = [
     ./tproxy-bypass-user.nix
     ./sys-fw.nix
-    ./smartdns
     ./mihomo
     ./extra-proxies
   ];

@@ -24,10 +24,6 @@ in
     nftables = {
       inherit outbounds;
     };
-    smartdns = {
-      enableAntiAD = true;
-      staticRecords = inventory.topology.networks.void.smartdnsRecords;
-    };
   };
   systemd.network.networks."40-${defaultIface}" = {
     networkConfig = {
