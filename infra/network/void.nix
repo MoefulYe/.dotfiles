@@ -19,9 +19,12 @@ rec {
       }:
       let
         config = {
-          infra.dnsctl.nginxVirtualHostsProxied = false;
-          infra.dnsctl.nginxVirtualHostsUseSSL = false;
-          infra.dnsctl.ipv4 = address;
+          infra.dnsctl = {
+            nginxVirtualHostsUseSSL = false;
+            nginxVirtualHostsProxied = false;
+            domain = "pippaye.top";
+            ipv4 = address;
+          };
           systemd.network.networks."${networkdConfigname}" = {
             matchConfig.Name = interface;
             networkConfig = {
@@ -51,8 +54,11 @@ rec {
       }:
       let
         config = {
-          infra.dnsctl.nginxVirtualHostsProxied = false;
-          infra.dnsctl.nginxVirtualHostsUseSSL = false;
+          infra.dnsctl = {
+            nginxVirtualHostsProxied = false;
+            nginxVirtualHostsUseSSL = false;
+            domain = "pippaye.top";
+          };
           # infra.dnsctl.ipv4 = address;  网关手动配置域名映射
           systemd.network.networks."${networkdConfigname}" = {
             matchConfig.Name = lanInterface;
