@@ -104,6 +104,8 @@ let
   };
 
   bindHostnameToIp = cfg.bindHostnameToIp;
+  nginxVirtualHostsProxied = cfg.nginxVirtualHostsProxied;
+  nginxVirtualHostsUseSSL = cfg.nginxVirtualHostsUseSSL;
 
   aliasRecordExtra = {
     proxied = false;
@@ -130,8 +132,8 @@ let
       name: value: {
         name = expandVirtualHostName name;
         value = {
-          forceSSL = true;
-          enableACME = true;
+          forceSSL = nginxVirtualHostsUseSSL;
+          enableACME = nginxVirtualHostsUseSSL;
         }
         // builtins.removeAttrs value [ "dnsRecordExt" ];
       }
@@ -147,7 +149,7 @@ let
       name:
       let
         recordExtra = {
-          proxied = true;
+          proxied = nginxVirtualHostsProxied;
         }
         // getVirtualHostDnsExt name;
       in
@@ -204,6 +206,16 @@ in
     };
 
     bindHostnameToIp = mkOption {
+      type = types.bool;
+      default = true;
+    };
+
+    nginxVirtualHostsProxied = mkOption {
+      type = types.bool;
+      default = true;
+    };
+
+    nginxVirtualHostsUseSSL = mkOption {
       type = types.bool;
       default = true;
     };
