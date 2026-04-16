@@ -7,12 +7,12 @@ let
   inherit (paths) osProfiles;
   defaultIface = "enp130s0";
   macvlanIface = "mv-enp131s0";
-  void = import "${paths.infra}/network/void.nix" input;
+  zjucst = import "${paths.infra}/network/zjucst.nix" input;
 in
 {
   imports = [
     "${osProfiles}/hardware/wireless.nix"
-    (void.nixosConfig.default {
+    (zjucst.nixosConfig.default {
       interface = macvlanIface;
       address = "192.168.231.2";
     })

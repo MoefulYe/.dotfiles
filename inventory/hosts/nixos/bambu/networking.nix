@@ -5,11 +5,11 @@ let
   macvlanIface = "mvlan";
   wanMac = "e4:3a:6e:83:65:38";
   lanMac = "e4:3a:6e:83:65:39";
-  void = import "${paths.infra}/network/void.nix" input;
+  zjucst = import "${paths.infra}/network/zjucst.nix" input;
 in
 {
   imports = [
-    (void.nixosConfig.gateway {
+    (zjucst.nixosConfig.gateway {
       lanInterface = macvlanIface;
       lanAddress = "192.168.231.1";
     })

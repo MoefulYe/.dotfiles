@@ -23,6 +23,7 @@ rec {
             nginxVirtualHostsUseSSL = false;
             nginxVirtualHostsProxied = false;
             domain = "pippaye.top";
+            subdomain = "zjucst";
             ipv4 = address;
           };
           systemd.network.networks."${networkdConfigname}" = {
@@ -58,6 +59,7 @@ rec {
             nginxVirtualHostsProxied = false;
             nginxVirtualHostsUseSSL = false;
             domain = "pippaye.top";
+            subdomain = "zjucst";
           };
           # infra.dnsctl.ipv4 = address;  网关手动配置域名映射
           systemd.network.networks."${networkdConfigname}" = {

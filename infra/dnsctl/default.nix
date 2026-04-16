@@ -41,9 +41,27 @@ let
   ipv6Values = normalizeAddressList cfg.ipv6;
 
   domain = if cfg.domain == null || cfg.domain == "" then null else cfg.domain;
+  subdomain = if cfg.subdomain == null || cfg.subdomain == "" then null else cfg.subdomain;
+  fqdnDomain =
+    if domain == null then
+      null
+    else if subdomain == null then
+      domain
+    else
+      "${subdomain}.${domain}";
+
+  qualifyRecordName =
+    name:
+    if subdomain == null then
+      name
+    else if name == "@" then
+      subdomain
+    else
+      "${name}.${subdomain}";
 
   hostName = config.networking.hostName;
-  hostFqdn = if domain == null then null else "${hostName}.${domain}";
+  hostRecordName = qualifyRecordName hostName;
+  hostFqdn = if domain == null then null else "${hostRecordName}.${domain}";
 
   nginxVirtualHostElemType = options.services.nginx.virtualHosts.type.nestedTypes.elemType;
   nginxVirtualHostSubOptions = builtins.removeAttrs (nginxVirtualHostElemType.getSubOptions [ ]) [
@@ -115,16 +133,17 @@ let
     if hostFqdn == null then
       [ ]
     else
-      hostInfo.alias or [ ] |> builtins.map (alias: toCnameRecord alias hostFqdn aliasRecordExtra);
+      hostInfo.alias or [ ]
+      |> builtins.map (alias: toCnameRecord (qualifyRecordName alias) hostFqdn aliasRecordExtra);
 
   expandVirtualHostName =
     name:
-    if domain == null then
+    if fqdnDomain == null then
       name
     else if name == "@" then
-      domain
+      fqdnDomain
     else
-      "${name}.${domain}";
+      "${name}.${fqdnDomain}";
 
   expandedNginxVirtualHosts =
     cfg.nginxVirtualHosts
@@ -156,15 +175,15 @@ let
       if domain == null then
         [ ]
       else if name == "@" then
-        optionals bindHostnameToIp (toAddressRecords name recordExtra)
+        optionals bindHostnameToIp (toAddressRecords (qualifyRecordName name) recordExtra)
       else if hostFqdn == null then
-        toAddressRecords name recordExtra
+        toAddressRecords (qualifyRecordName name) recordExtra
       else
-        [ (toCnameRecord name hostFqdn recordExtra) ]
+        [ (toCnameRecord (qualifyRecordName name) hostFqdn recordExtra) ]
     );
 
   collectedRecords =
-    optionals (bindHostnameToIp && domain != null) (toAddressRecords hostName hostRecordExtra)
+    optionals (bindHostnameToIp && domain != null) (toAddressRecords hostRecordName hostRecordExtra)
     ++ aliasRecords
     ++ virtualHostRecords;
 
@@ -205,6 +224,11 @@ in
       default = null;
     };
 
+    subdomain = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
+
     bindHostnameToIp = mkOption {
       type = types.bool;
       default = true;
@@ -233,7 +257,7 @@ in
   };
 
   config = {
-    networking.domain = mkDefault domain;
+    networking.domain = mkDefault fqdnDomain;
 
     assertions =
       let
