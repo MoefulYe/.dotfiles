@@ -2,17 +2,19 @@
   paths,
   inventory,
   ...
-}:
+}@input:
 let
   inherit (paths) osProfiles;
   defaultIface = "enp130s0";
   macvlanIface = "mv-enp131s0";
+  void = import "${paths.infra}/network/void.nix" input;
 in
 {
   imports = [
     "${osProfiles}/hardware/wireless.nix"
-    (inventory.topology.networks.void.nixosConfig.staticMemberNetworkdConfig {
+    (void.nixosConfig.default {
       interface = macvlanIface;
+      address = "192.168.231.2";
     })
   ];
   networking.interfaces.wlp128s20f3.useDHCP = true;
