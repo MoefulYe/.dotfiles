@@ -65,4 +65,11 @@
     ];
     nixosConfig = ./nixos/yuzu;
   };
+  bambu = {
+    role = "dog";
+    tags = [
+      "nixos"
+    ];
+    nixosConfig = ./nixos/bambu;
+  };
 }

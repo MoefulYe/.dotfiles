@@ -36,4 +36,10 @@ _: {
     tags = [ "vps" ];
     sshConfig = ./ssh-configs/yuzu.nix;
   };
+  "ashenye@bambu" = {
+    role = "dog";
+    tags = [ "router" ];
+    # TODO fix it
+    sshConfig = ./ssh-configs/yuzu.nix;
+  };
 }

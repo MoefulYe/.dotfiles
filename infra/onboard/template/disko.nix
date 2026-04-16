@@ -1,4 +1,5 @@
 {
-  # use templates under ./disko-templates
-
+  imports = [
+    ./disko-templates/physical-gpt-btrfs-lvm.nix
+  ];
 }
