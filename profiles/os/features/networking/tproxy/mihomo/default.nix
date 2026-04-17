@@ -28,6 +28,7 @@ let
   ];
   dnsNameserver = foreignDoh;
   dnsDirectResolvers = domesticDns;
+  dnsMynetResolvers = foreignDoh;
   dnsProxyServerResolvers = domesticDns;
 
   mkConfig = import ./mkConfig.nix;
@@ -115,7 +116,7 @@ let
     ++ [
       "    'rule-set:mynet':"
     ]
-    ++ lib.map (value: "      - ${value}") dnsDirectResolvers
+    ++ lib.map (value: "      - ${value}") dnsMynetResolvers
     ++ [
       "  proxy-server-nameserver:"
     ]
