@@ -21,6 +21,12 @@ in
       outbounds = [ wanIface ];
     };
   };
+
+  networking.nat = {
+    enable = true;
+    externalInterface = wanIface;
+    internalInterfaces = [ macvlanIface ];
+  };
   # services.resolved.enable = true;
   networking.useNetworkd = true;
   systemd.network.enable = true;
