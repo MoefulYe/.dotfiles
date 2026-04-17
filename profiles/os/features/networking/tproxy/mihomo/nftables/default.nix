@@ -7,12 +7,12 @@
 let
   cfg = config.osProfiles.features.tproxy.nftables;
   mihomoCfg = config.osProfiles.features.tproxy.mihomo;
-  tproxyBypassUser = config.osProfiles.features.tproxy.tproxyBypassUser.name;
+  bypassCfg = config.osProfiles.features.tproxy.tproxyBypass;
   table = pkgs.callPackage ./table.nix {
     inherit
       config
       mihomoCfg
-      tproxyBypassUser
+      bypassCfg
       cfg
       ;
   };
@@ -58,8 +58,9 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${updateChinaIpList}";
-          User = tproxyBypassUser;
-          Group = tproxyBypassUser;
+          User = mihomoCfg.user;
+          Group = mihomoCfg.user;
+          Slice = bypassCfg.sliceName;
           StandardOutput = "journal";
           StandardError = "journal";
           AmbientCapabilities = "CAP_NET_ADMIN";

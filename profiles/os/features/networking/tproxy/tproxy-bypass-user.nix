@@ -1,15 +1,18 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
-  cfg = config.osProfiles.features.tproxy.tproxyBypassUser;
-  inherit (cfg) name uid;
+  bypassCfg = config.osProfiles.features.tproxy.tproxyBypass;
+  mihomoCfg = config.osProfiles.features.tproxy.mihomo;
+  sliceAttr = lib.removeSuffix ".slice" bypassCfg.sliceName;
 in
 {
   users = {
-    users."${name}" = {
-      group = name;
-      isNormalUser = true;
-      inherit uid;
+    users."${mihomoCfg.user}" = {
+      group = mihomoCfg.user;
+      isSystemUser = true;
+      uid = mihomoCfg.uid;
     };
-    groups."${name}" = { };
+    groups."${mihomoCfg.user}" = { };
   };
+
+  systemd.slices."${sliceAttr}" = { };
 }

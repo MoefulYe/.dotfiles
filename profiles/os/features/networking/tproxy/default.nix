@@ -11,17 +11,25 @@ with lib;
   # https://www.aloxaf.com/2025/04/how_to_use_geosite/
   # https://evine.win/p/我的家庭网络设计思路开启debian的旁路由之路四
   options.osProfiles.features.tproxy = {
-    tproxyBypassUser = {
-      name = mkOption {
+    tproxyBypass = {
+      sliceName = mkOption {
         type = types.str;
-        default = "tproxy-bypass";
+        default = "system-tproxy_bypass.slice";
       };
-      uid = mkOption {
+      cgroupName = mkOption {
+        type = types.str;
+        default = "system.slice/system-tproxy_bypass.slice";
+      };
+      cgroupLevel = mkOption {
         type = types.int;
-        default = 61382;
+        default = 2;
       };
     };
     mihomo = {
+      user = mkOption {
+        type = types.str;
+        default = "mihomo";
+      };
       dnsPort = mkOption {
         type = types.int;
         default = 7893;
@@ -86,20 +94,10 @@ with lib;
         default = "*-*-* 04:00:00";
       };
     };
-    extraProxies = {
-      zju-connect = {
-        enable = mkEnableOption "enable zju connect proxy";
-        socks5Port = mkOption {
-          type = types.int;
-          default = 7899;
-        };
-      };
-    };
   };
   imports = [
     ./tproxy-bypass-user.nix
     ./sys-fw.nix
     ./mihomo
-    ./extra-proxies
   ];
 }

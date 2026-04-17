@@ -9,8 +9,7 @@
 
 let
   cfg = config.osProfiles.features.tproxy.mihomo;
-  zjuCfg = config.osProfiles.features.tproxy.extraProxies.zju-connect;
-  tproxyBypassUserCfg = config.osProfiles.features.tproxy.tproxyBypassUser;
+  bypassCfg = config.osProfiles.features.tproxy.tproxyBypass;
   domesticDns = [
     "223.5.5.5"
     "119.29.29.29"
@@ -158,16 +157,7 @@ let
     };
   });
 
-  proxies = builtins.concatLists [
-    (lib.lists.optionals zjuCfg.enable [
-      {
-        name = "zju-connect";
-        type = "socks5";
-        server = "localhost";
-        port = zjuCfg.socks5Port;
-      }
-    ])
-  ];
+  proxies = [ ];
 
   rule-providers = {
     bypass-fake-ip = {
@@ -511,16 +501,6 @@ let
     ];
 
   proxy-groups = builtins.concatLists [
-    (lib.lists.optionals zjuCfg.enable [
-      {
-        name = "ZJU";
-        type = "select";
-        proxies = [
-          "DIRECT"
-          "zju-connect"
-        ];
-      }
-    ])
     [
       {
         name = "all";
@@ -611,9 +591,6 @@ let
     proxy-groups-by-region
   ];
   rules = builtins.concatLists [
-    (lib.lists.optionals zjuCfg.enable [
-      "RULE-SET,zju-intranet,ZJU"
-    ])
     [
       "GEOSITE,private,DIRECT,no-resolve"
       "GEOIP,private,DIRECT,no-resolve"
@@ -664,7 +641,7 @@ in
       proxy-providers = proxy-providers';
       rule-providers = rule-providers';
     };
-    owner = "tproxy-bypass";
+    owner = cfg.user;
     mode = "0400";
   };
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
@@ -694,8 +671,9 @@ in
         "-ext-ui ${pkgs.metacubexd}"
       ];
       StateDirectory = [ "mihomo" ];
-      User = tproxyBypassUserCfg.name;
-      Group = tproxyBypassUserCfg.name;
+      User = cfg.user;
+      Group = cfg.user;
+      Slice = bypassCfg.sliceName;
       ## Hardening
       DeviceAllow = "";
       LockPersonality = true;

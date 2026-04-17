@@ -54,18 +54,6 @@ let
         canonicalName = "desk00-u265kf-lan.void";
       }
     ];
-  smartdnsRecords =
-    dnsRecords
-    |> lib.map (
-      record:
-      if record.type == "A" then
-        "address /${record.name}/${record.address}"
-      else if record.type == "CNAME" then
-        "cname /${record.name}/${record.canonicalName}"
-      else
-        throw "Unknown record type: ${record.type}"
-    )
-    |> lib.concatStringsSep "\n";
 in
 rec {
   # 网络 子网掩码 网关 DNS 服务器 静态成员的声明
@@ -76,7 +64,7 @@ rec {
   dnsServer = "192.168.231.2";
   dhcpServer = "192.168.231.2";
   dhcpRange = "192.168.231.128,192.168.231.254,255.255.255.0,12h";
-  inherit staticMembers dnsRecords smartdnsRecords;
+  inherit staticMembers dnsRecords;
   nixosConfig = {
     staticMemberNetworkdConfig =
       {

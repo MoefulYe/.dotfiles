@@ -2,7 +2,7 @@
   writeText,
   cfg,
   mihomoCfg,
-  tproxyBypassUser,
+  bypassCfg,
   ...
 }:
 writeText "mihomo-tproxy.nft" ''
@@ -10,7 +10,6 @@ writeText "mihomo-tproxy.nft" ''
       define TPROXY_MARK=${builtins.toString cfg.tproxyMark}
       define MIHOMO_TPROXY_PORT=${builtins.toString mihomoCfg.tproxyPort}
       define MIHOMO_DNS_PORT=${builtins.toString mihomoCfg.dnsPort}
-      define BYPASS_USER=${tproxyBypassUser}
       set bypass-ipv4 {
         type ipv4_addr
         flags interval
@@ -70,7 +69,7 @@ writeText "mihomo-tproxy.nft" ''
         ct mark 0x1 meta mark set 0x1 accept comment "fastpath for proxied connections"
   		  ct state established,related accept comment "fastpath for direct connections"
         oifname != @outbounds return comment "bypass internal traffic"
-        meta skuid $BYPASS_USER return comment "bypass mihomo and resolved traffic to prevent loops"
+        socket cgroupv2 level ${toString bypassCfg.cgroupLevel} "${bypassCfg.cgroupName}" return comment "bypass services in tproxy bypass slice"
         ip daddr @bypass-ipv4 return comment "bypass special IPv4 addresses"
         ip6 daddr @bypass-ipv6 return comment "bypass special IPv6 addresses"
         tcp dport @bypass-tcp-ports return comment "bypass special ports"
@@ -83,7 +82,7 @@ writeText "mihomo-tproxy.nft" ''
       
       chain redirect-dns-output {
         type nat hook output priority dstnat; policy accept;
-        meta skuid $BYPASS_USER return comment "bypass mihomo and resolved dns request to prevent loops"
+        socket cgroupv2 level ${toString bypassCfg.cgroupLevel} "${bypassCfg.cgroupName}" return comment "bypass dns requests from services in tproxy bypass slice"
         tcp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
         udp dport 53 redirect to :$MIHOMO_DNS_PORT comment "redirect outgoing DNS to mihomo"
       }
