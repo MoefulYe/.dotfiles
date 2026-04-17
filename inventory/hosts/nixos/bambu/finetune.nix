@@ -20,6 +20,14 @@
     htop
   ];
 
+  # Keep Linux bridge traffic out of netfilter; Docker bridge traffic is not using
+  # the transparent-proxy path on this host.
+  boot.kernel.sysctl = {
+    "net.bridge.bridge-nf-call-iptables" = 0;
+    "net.bridge.bridge-nf-call-ip6tables" = 0;
+    "net.bridge.bridge-nf-call-arptables" = 0;
+  };
+
   services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
   services.openssh.settings.PasswordAuthentication = lib.mkForce true;
   services.openssh.ports = [ 22 ];
