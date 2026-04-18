@@ -19,7 +19,7 @@ _: {
       "cst"
     ];
     # TODO fix it
-    sshConfig = ./ssh-configs/yuzu.nix;
+    sshConfig = ./ssh-configs/bambu.nix;
   };
   "ashenye@citrus" = {
     role = "dog";
