@@ -24,7 +24,17 @@
 
   services.nginx = {
     enable = true;
+    recommendedProxySettings = true;
     recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+
+    virtualHosts."_" = {
+      default = true;
+      rejectSSL = true;
+      extraConfig = ''
+        return 444;
+      '';
+    };
   };
 
   networking.firewall.allowedTCPPorts = [

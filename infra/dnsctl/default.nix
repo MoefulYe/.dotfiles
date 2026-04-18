@@ -72,10 +72,10 @@ let
     types.submodule {
       options = nginxVirtualHostSubOptions // {
         forceSSL = nginxVirtualHostSubOptions.forceSSL // {
-          default = true;
+          default = nginxVirtualHostsUseSSL;
         };
         enableACME = nginxVirtualHostSubOptions.enableACME // {
-          default = true;
+          default = nginxVirtualHostsUseSSL;
         };
         dnsRecordExt = mkOption {
           type = types.attrsOf types.anything;
