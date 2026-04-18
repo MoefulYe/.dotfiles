@@ -56,9 +56,6 @@
     "nf_conntrack_netlink"
   ];
 
-  services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
-  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
-  services.openssh.ports = [ 22 ];
   infra.dnsctl = {
     ipv4 = "10.87.5.91";
     extraRecords = [

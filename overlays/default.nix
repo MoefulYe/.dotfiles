@@ -75,6 +75,7 @@ in
     };
     my-pkgs = self.packages."${final.stdenv.hostPlatform.system}" // {
       dingtalk = final.pkgs-stable-with-openssl_1_1_w.callPackage ../packages/dingtalk { };
+      lazydc = inputs.lazydc.packages.${final.stdenv.hostPlatform.system}.default;
     };
   };
   dnsctl = inputs.dnsctl-nix.overlays.default;

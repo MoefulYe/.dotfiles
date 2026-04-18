@@ -47,7 +47,11 @@
     impermanence.url = "github:nix-community/impermanence?shallow=1";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel?shallow=1";
     dnsctl-nix = {
-      url = "github:MoefulYe/dnsctl.nix?shallow=1";
+      url = "github:pippaye/dnsctl.nix?shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lazydc = {
+      url = "github:pippaye/lazydc?shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

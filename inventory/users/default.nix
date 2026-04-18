@@ -12,14 +12,14 @@ _: {
     sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl8IkGvU1g8lv/r+RtRVXXmtlW0XNac5zQrRgZ3RCij ashenye@lap01-macm4-mume";
     hmConfig = ./home-manager/mume.nix;
   };
-  "ashenye@qingloong" = {
+  "ashenye@bambu" = {
     role = "dog";
-    tags = [ "cst" ];
-    sshConfig = ./ssh-configs/qingloong.nix;
-  };
-  "root@zhuque" = {
-    tags = [ "cst" ];
-    sshConfig = ./ssh-configs/zhuque.nix;
+    tags = [
+      "router"
+      "cst"
+    ];
+    # TODO fix it
+    sshConfig = ./ssh-configs/yuzu.nix;
   };
   "ashenye@citrus" = {
     role = "dog";
@@ -34,12 +34,6 @@ _: {
   "ashenye@yuzu" = {
     role = "dog";
     tags = [ "vps" ];
-    sshConfig = ./ssh-configs/yuzu.nix;
-  };
-  "ashenye@bambu" = {
-    role = "dog";
-    tags = [ "router" ];
-    # TODO fix it
     sshConfig = ./ssh-configs/yuzu.nix;
   };
 }
