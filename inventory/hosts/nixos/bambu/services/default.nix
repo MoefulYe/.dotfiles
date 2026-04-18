@@ -15,4 +15,10 @@
 
   systemd.services.qbittorrent.serviceConfig.Slice =
     config.osProfiles.features.tproxy.tproxyBypass.sliceName;
+
+  infra.dnsctl.nginxVirtualHosts = {
+    jellyfin.locations."/" = {
+      proxyPass = "http://localhost:38083";
+    };
+  };
 }
