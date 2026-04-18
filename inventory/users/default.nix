@@ -20,6 +20,7 @@ _: {
     ];
     # TODO fix it
     sshConfig = ./ssh-configs/bambu.nix;
+    hmConfig = ./home-manager/bambu.nix;
   };
   "ashenye@citrus" = {
     role = "dog";
