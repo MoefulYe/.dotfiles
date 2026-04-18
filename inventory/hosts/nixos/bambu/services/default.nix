@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   virtualisation.docker.enable = true;
   users.users.ashenye.extraGroups = [ "docker" ];
@@ -6,6 +6,7 @@
     enable = true;
     openFirewall = true;
     webuiPort = 38081;
+    package = pkgs.qbittorrent-enhanced-nox;
   };
   services.jellyfin = {
     enable = true;
