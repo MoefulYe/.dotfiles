@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  me,
+  ...
+}:
 {
   virtualisation.docker.enable = true;
   users.users.ashenye.extraGroups = [ "docker" ];
@@ -41,4 +46,9 @@
     80
     443
   ];
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = me.email;
+  };
 }
