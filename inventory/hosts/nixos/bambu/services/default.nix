@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   virtualisation.docker.enable = true;
   users.users.ashenye.extraGroups = [ "docker" ];
@@ -10,4 +11,7 @@
     enable = true;
     openFirewall = true;
   };
+
+  systemd.services.qbittorrent.serviceConfig.Slice =
+    config.osProfiles.features.tproxy.tproxyBypass.sliceName;
 }
