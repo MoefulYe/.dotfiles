@@ -25,7 +25,6 @@
   services.nginx = {
     enable = true;
     recommendedGzipSettings = true;
-    recommendedOptimisation = true;
   };
 
   networking.firewall.allowedTCPPorts = [
