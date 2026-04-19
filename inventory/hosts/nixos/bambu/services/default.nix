@@ -84,7 +84,7 @@
       extraDomainNames = [ "*.zjucst.pippaye.top" ];
       dnsProvider = "cloudflare";
       environmentFile = config.sops.templates."acme-cloudflare.env".path;
-      dnsPropagationCheck = true;
+      dnsPropagationCheck = false;
     };
   };
 
