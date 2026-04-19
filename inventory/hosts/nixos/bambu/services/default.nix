@@ -91,4 +91,14 @@
     listen.port = 38084;
     options.enableBookUploading = true;
   };
+
+  services.sonarr = {
+    enable = true;
+    group = "qbittorrent";
+    user = "qbittorrent";
+    openFirewall = true;
+    settings = {
+      server.port = 38085;
+    };
+  };
 }
