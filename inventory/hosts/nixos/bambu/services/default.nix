@@ -67,6 +67,15 @@
     sopsFile = "${paths.secrets}/api-tokens.yaml";
   };
 
+  sops.templates."acme-cloudflare.env" = {
+    owner = "acme";
+    mode = "0400";
+    content = ''
+      CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.CF_PIPPAYE_ZONE_EDIT_TOKEN}
+      CLOUDFLARE_ZONE_API_TOKEN=${config.sops.placeholder.CF_PIPPAYE_ZONE_EDIT_TOKEN}
+    '';
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = me.email;
@@ -74,7 +83,7 @@
       domain = "zjucst.pippaye.top";
       extraDomainNames = [ "*.zjucst.pippaye.top" ];
       dnsProvider = "cloudflare";
-      environmentFile = "/var/run/secrets/CF_PIPPAYE_ZONE_EDIT_TOKEN";
+      environmentFile = config.sops.templates."acme-cloudflare.env".path;
       dnsPropagationCheck = true;
     };
   };
