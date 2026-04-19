@@ -80,11 +80,9 @@
     acceptTerms = true;
     defaults.email = me.email;
     certs."zjucst.pippaye.top" = {
-      domain = "zjucst.pippaye.top";
-      extraDomainNames = [ "*.zjucst.pippaye.top" ];
+      domain = "*.zjucst.pippaye.top";
       dnsProvider = "cloudflare";
       environmentFile = config.sops.templates."acme-cloudflare.env".path;
-      dnsPropagationCheck = false;
     };
   };
 
