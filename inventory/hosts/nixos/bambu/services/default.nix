@@ -37,6 +37,13 @@
         proxyPass = "http://localhost:38084";
       };
     };
+    sonarr = {
+      enableACME = false;
+      useACMEHost = "zjucst.pippaye.top";
+      locations."/" = {
+        proxyPass = "http://localhost:38085";
+      };
+    };
   };
 
   services.nginx = {
