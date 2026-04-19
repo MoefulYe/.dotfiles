@@ -61,7 +61,7 @@
     443
   ];
 
-  sops.secrets."CF_PIPPAYE_ZONE_EDIT_TOKEN" = {
+  sops.secrets."CF_DNS_TOKEN" = {
     owner = "acme";
     mode = "0400";
     sopsFile = "${paths.secrets}/api-tokens.yaml";
@@ -71,8 +71,8 @@
     owner = "acme";
     mode = "0400";
     content = ''
-      CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.CF_PIPPAYE_ZONE_EDIT_TOKEN}
-      CLOUDFLARE_ZONE_API_TOKEN=${config.sops.placeholder.CF_PIPPAYE_ZONE_EDIT_TOKEN}
+      CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.CF_DNS_TOKEN}
+      CLOUDFLARE_ZONE_API_TOKEN=${config.sops.placeholder.CF_DNS_TOKEN}
     '';
   };
 
