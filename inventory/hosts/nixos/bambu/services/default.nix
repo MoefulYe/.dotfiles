@@ -89,5 +89,6 @@
   services.calibre-web = {
     enable = true;
     listen.port = 38084;
+    options.enableBookUploading = true;
   };
 }
