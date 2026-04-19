@@ -20,6 +20,7 @@ rec {
       let
         config = {
           infra.dnsctl = {
+            nginxVirtualHostsProxied = false;
             domain = "pippaye.top";
             subdomain = "zjucst";
             ipv4 = address;
@@ -54,6 +55,7 @@ rec {
       let
         config = {
           infra.dnsctl = {
+            nginxVirtualHostsProxied = false;
             domain = "pippaye.top";
             subdomain = "zjucst";
           };
