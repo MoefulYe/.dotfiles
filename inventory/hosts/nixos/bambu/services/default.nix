@@ -23,13 +23,19 @@
     config.osProfiles.features.tproxy.tproxyBypass.sliceName;
 
   infra.dnsctl.nginxVirtualHosts = {
-    jellyfin.locations."/" = {
-      proxyPass = "http://localhost:38083";
+    jellyfin = {
+      enableACME = false;
       useACMEHost = "zjucst.pippaye.top";
+      locations."/" = {
+        proxyPass = "http://localhost:38083";
+      };
     };
-    calibre.locations."/" = {
-      proxyPass = "http://localhost:38084";
+    calibre = {
+      enableACME = false;
       useACMEHost = "zjucst.pippaye.top";
+      locations."/" = {
+        proxyPass = "http://localhost:38084";
+      };
     };
   };
 
@@ -47,6 +53,8 @@
       '';
     };
   };
+
+  users.users.nginx.extraGroups = [ "acme" ];
 
   networking.firewall.allowedTCPPorts = [
     80
