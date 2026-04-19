@@ -2,6 +2,7 @@
   config,
   pkgs,
   me,
+  paths,
   ...
 }:
 {
@@ -24,6 +25,7 @@
   infra.dnsctl.nginxVirtualHosts = {
     jellyfin.locations."/" = {
       proxyPass = "http://localhost:38083";
+      useACMEHost = "zjucst.pippaye.top";
     };
   };
 
@@ -50,5 +52,23 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = me.email;
+    certs."zjucst.pippaye.top" = {
+      domain = "zjucst.pippaye.top";
+      extraDomainNames = [ "*.zjucst.pippaye.top" ];
+      dnsProvider = "cloudflare";
+      environmentFile = "/var/run/secrets/CF_PIPPAYE_ZONE_EDIT_TOKEN";
+      dnsPropagationCheck = true;
+    };
+  };
+
+  services.calibre-web = {
+    enable = true;
+    listen.port = 38084;
+  };
+
+  sops.templates."mihomo.yaml" = {
+    owner = "acme";
+    mode = "0400";
+    sopsFile = "${paths.secrets}/api-tokens.yaml";
   };
 }
