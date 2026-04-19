@@ -27,6 +27,10 @@
       proxyPass = "http://localhost:38083";
       useACMEHost = "zjucst.pippaye.top";
     };
+    calibre.locations."/" = {
+      proxyPass = "http://localhost:38084";
+      useACMEHost = "zjucst.pippaye.top";
+    };
   };
 
   services.nginx = {
@@ -49,6 +53,12 @@
     443
   ];
 
+  sops.secrets."CF_PIPPAYE_ZONE_EDIT_TOKEN" = {
+    owner = "acme";
+    mode = "0400";
+    sopsFile = "${paths.secrets}/api-tokens.yaml";
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = me.email;
@@ -64,11 +74,5 @@
   services.calibre-web = {
     enable = true;
     listen.port = 38084;
-  };
-
-  sops.templates."mihomo.yaml" = {
-    owner = "acme";
-    mode = "0400";
-    sopsFile = "${paths.secrets}/api-tokens.yaml";
   };
 }
