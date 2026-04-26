@@ -5,7 +5,7 @@
 }@input:
 let
   inherit (paths) osProfiles;
-  defaultIface = "enp130s0";
+  defaultIface = "enp132s0";
   macvlanIface = "mv-enp131s0";
   zjucst = import "${paths.infra}/network/zjucst.nix" input;
 in
