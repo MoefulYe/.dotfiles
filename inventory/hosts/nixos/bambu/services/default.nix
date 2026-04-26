@@ -93,11 +93,11 @@
     };
   };
 
-  services.calibre-web = {
-    enable = true;
-    listen.port = 38084;
-    options.enableBookUploading = true;
-  };
+  # services.calibre-web = {
+  #   enable = true;
+  #   listen.port = 38084;
+  #   options.enableBookUploading = true;
+  # };
 
   services.sonarr = {
     enable = true;
