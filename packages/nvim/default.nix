@@ -9,7 +9,15 @@ let
 
   nvimConfig = {
     inherit pkgs;
-    module = import ./config { inherit lib lite; };
+    module = {
+      disabledModules = [
+        "${inputs.nixvim}/modules/top-level/files"
+      ];
+      imports = [
+        (import ./config { inherit lib lite; })
+        ./nixvim-files-default.nix
+      ];
+    };
     extraSpecialArgs = { inherit lite; };
   };
 in
